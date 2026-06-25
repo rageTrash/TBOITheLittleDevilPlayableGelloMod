@@ -1,0 +1,15 @@
+<pocketitems>
+	<card type="object"
+		pickup="3500"
+		name="Sacrificial Dagger"
+		description="Prove your love and devotion"
+		hud="SacrificialDagger_Gello"
+		mimiccharge="5" />
+
+	<rune
+		pickup="3501"
+		name="Soul of Gello"
+		description="Family = power"
+		hud="SoulofGello"
+		mimiccharge="8" />
+</pocketitems>

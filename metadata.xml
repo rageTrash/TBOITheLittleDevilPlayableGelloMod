@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <name>Playable Gello : ReFed!</name>
+    <directory>playable_gello_refed</directory>
+    <id>3570032277</id>
+    <description>
+This mod adds :
+[list]
+[*] 1 new character with it tainted version (you have to unlock it)
+[*] 13 new items
+[*] 3 new trinkets
+[*] 2 new consumables
+[*] 1 new slot variant
+[/list]
+
+[h2]Gello[/h2]
+Starts with 2 red hearts and 1 black heart
+Double tapping the fire keys makes gello bite
+Killing enemies this way will grants a temporary damage up
+(by default) touching a familiar will grant a damage up
+
+[h2]Tainted Gello[/h2]
+It depends with which class you select :)
+
+[h1]Main Compatibility[/h1]
+[list]
+[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=836319872]External Item Description[/url] (spanish and english)
+[*] [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2376005362]Encyclopedia[/url]
+[/list]
+
+Press c to configure the mod or to unlock everything
+
+[url=https://moddingofisaac.wiki.gg/wiki/Playable_Gello_:_ReFed!]Mod Wiki[/url]
+
+Not really important side note because some people in youtube comment section (3 as far i count) discusses gello gender
+Idk man i couldn't decide it when i made them. that it. I hope this clarifies things. Bye :P
+
+also tarnish version is still in the plans
+    </description>
+    <version>1.25</version>
+    <visibility>Public</visibility>
+    <tag id="Items"/>
+    <tag id="Active Items"/>
+    <tag id="Trinkets"/>
+    <tag id="Cards"/>
+    <tag id="Player Characters"/>
+    <tag id="Familiars"/>
+</metadata>

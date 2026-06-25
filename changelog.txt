@@ -1,0 +1,93 @@
+version 1.203
+fix achievements not working
+
+version 1.202
+fix familiars that spawn flys when consume giving an error
+
+version 1.201
+fix consume familiars that should spawn flys, spawn spider and vise versa
+fix trinkets that gello could consume throwing an error
+
+version 1.2
+gello now (by default because it can be change in the configs) will consume familiars
+added some effects when consuming some familiars
+added a setting for tainted gello consume familiars (by default they wont)
+
+version 1.158
+fix an error some one was having with eid
+semi classic gello:
+wont remove the item pedestal when consuming a familiar
+now consuming a familiar will grant a permanent damage up but now grant less temporary damage 
+
+version 1.1571
+fix use placenta not having it eid description updated
+made larry jr jr eid description shorter
+(eid) now lil hamster shows its current effect when overviewing the item (holding tab)
+
+version 1.15701
+fix eid throwing an error
+
+version 1.157
+fix use placenta not spawning a half a soul heart when an enemy dies
+reduce use placenta the chance of spawning a half a soul heart from 15% to 7.5%
+
+version 1.1562
+now missing post removes the familiar when its done the disappear animation
+
+version 1.15611
+fix missing post red familiar spawning as a fly
+
+version 1.1561
+very minimal eid characted description change for "scout" class
+
+version 1.156
+fix tainted gello mother unlock being unlocked when entering the boss room
+fix "venom" class throwing an error when is damage by a non npc entity
+
+version 1.155
+fix tainted gello unlocks not being unlocked with any class that it wasn't "???"
+added "scout" class
+
+version 1.153
+fix dss and mcm not working after stage 1
+
+version 1.152
+fix EID descriptions having "Familiar Unkown"
+
+version 1.151
+fix missing post beggar not spawning on the next floor
+added EID to missing post beggar explaining how to find the familiar
+fix missing post beggar spawning at the starting room when starting a new run on middle of the quest
+
+version 1.15
+fix fighter class having a very short bite cooldown
+fix tainted gello menu showing p2 for controller players
+remove the spawning card of some classes
+remove the starting familiar from healer
+fix missing post familiars being spawned every time you enter the room where they spawn
+missing post can't spawn 2 consecutives floor now
+fix tainted gello menu not giving previous classes in the run
+fix geologist class always spawning pickups when using we need to go depper!
+added an alt mode to friendly bite
+
+version 1.14
+change sacrificial dagger pickup description
+100% fix the controller problem
+
+version 1.13
+change how tainted gello menu gets the player index
+added a fire cooldown to friendly bite
+
+version 1.12
+fix a typo in the description of centepied
+increase the quality of centepied from 2 to 3
+added an extra check for palyer controller index
+
+version 1.11
+fix healer class throwing an error
+
+version 1.1
+fetal jar now give +0.24 tears, +0.5 damage and a size down when reviving
+corrected the eid description of the botanic class
+fix that some times when continuing or starting a run with tainted gello it will be the normal version
+fix the plants of the botanic class rendering off
