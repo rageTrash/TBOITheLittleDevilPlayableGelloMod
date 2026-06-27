@@ -85,17 +85,13 @@ local ModdedItems = {
 	[itemEnum.LIL_BITER] =        function() return Mod:IsUnlock("Lil Biter") end,
 	[itemEnum.LIL_COW] =          function() return Mod:IsUnlock("Lil Cow") end,
 	[itemEnum.LIL_EMBRION] =      function() return Mod:IsUnlock("Lil Embrion") end,
-
-    [itemEnum.MISSING_HANDLER] =       function() return false end,
-    [itemEnum.TEMP_DMG] =              function() return false end,
-    [itemEnum.TEMP_DMG_SLOW] =         function() return false end,
 }
 
 local function gelloPatch()
     local epi = Epiphany
     local eAPI = Epiphany.API
 
-	epi.UnlockChecker:AddModdedItems("Epiphany", itemEnum.LIL_HAMSTER, itemEnum.TEMP_DMG_SLOW, function(itemId)
+	epi.UnlockChecker:AddModdedItems("PlayableGello", itemEnum.LIL_HAMSTER, itemEnum.LIL_EMBRION, function(itemId)
 		return ModdedItems[itemId]()
 	end)
 

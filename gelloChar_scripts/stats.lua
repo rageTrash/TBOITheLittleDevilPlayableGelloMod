@@ -135,7 +135,11 @@ Mod:AddPriorityCallback(ModCallbacks.MC_EVALUATE_CACHE, -2048, function(_, playe
 end)
 
 Mod:AddPriorityCallback(ModCallbacks.MC_EVALUATE_CACHE, 0, function(_, player, cacheflag)
-	local fetalJarRevives = pSave("Fetal Jar revives", player):Get(0)
+	local fetalJarRevives = 0
+	if Mod.RepentogonPlus then
+		fetalJarRevives = player:GetEffects():GetNullEffectNum(Mod.Enum.NullItem.FETAL_JAR_STATS)
+	else fetalJarRevives = pSave("Fetal Jar revives", player):Get(0) end
+	
 	local permaStats = pSave(SAVE_PERMA_STATS_NAME, player):Get({})
 
 	if cacheflag & CacheFlag.CACHE_DAMAGE > 0 then
@@ -147,7 +151,12 @@ Mod:AddPriorityCallback(ModCallbacks.MC_EVALUATE_CACHE, 0, function(_, player, c
 		end
 
 		local itemEffect = player:GetEffects()
-		local tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG) + itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW)
+		local tempDmg = 0
+		if GelloCharMod.RepentogonPlus then
+			tempDmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG) + itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG_SLOW)
+		else
+			tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG) + itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW)
+		end
 		if tempDmg > 0 then
 			player.Damage = player.Damage + (tempDmg * 0.025) * dmgMult
 		end
@@ -247,24 +256,49 @@ Mod:AddPriorityCallback(ModCallbacks.MC_EVALUATE_CACHE, 2048, function(_, player
 end)
 
 
+local temDamageFun
+if GelloCharMod.RepentogonPlus then
+	temDamageFun = function(_, player)
+		local itemEffect = player:GetEffects()
+		if player:IsFrame(10, 0) then
+			local tempDmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG)
+			if tempDmg > 0 then
+				-- if damage > 10 removes 0.05 damage
+				if tempDmg > 400 then itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG, 2)
+				else itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG, 1) end
+			end
+		end
+		
+		if player:IsFrame(20, 0) then
+			local tempDmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG_SLOW)
+			if tempDmg > 0 then
+				-- if damage > 18.75 removes 0.05 damage
+				if tempDmg > 750 then itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, 2)
+				else itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, 1) end
+			end
+		end
+	end
+else
+	temDamageFun = function(_, player)
+		local itemEffect = player:GetEffects()
+		if player:IsFrame(10, 0) then
+			local tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG)
+			if tempDmg > 0 then
+				-- if damage > 10 removes 0.05 damage
+				if tempDmg > 400 then itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG, 2)
+				else itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG, 1) end
+			end
+		end
+		
+		if player:IsFrame(20, 0) then
+			local tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW)
+			if tempDmg > 0 then
+				-- if damage > 18.75 removes 0.05 damage
+				if tempDmg > 750 then itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, 2)
+				else itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, 1) end
+			end
+		end
+	end
+end
 
-Mod:AddPriorityCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, -1000, function(_, player)
-	local itemEffect = player:GetEffects()
-	if player:IsFrame(10, 0) then
-		local tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG)
-		if tempDmg > 0 then
-			-- if damage > 10 removes 0.05 damage
-			if tempDmg > 400 then itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG, 2)
-			else itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG, 1) end
-		end
-	end
-	
-	if player:IsFrame(20, 0) then
-		local tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW)
-		if tempDmg > 0 then
-			-- if damage > 18.75 removes 0.05 damage
-			if tempDmg > 750 then itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, 2)
-			else itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, 1) end
-		end
-	end
-end)
+Mod:AddPriorityCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, -1000, temDamageFun)

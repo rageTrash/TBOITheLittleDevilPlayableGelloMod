@@ -111,13 +111,18 @@ local function clearBiteData(tab, player)
 
 	if giveTemDmg > 0 then
 		local itemEffect = player:GetEffects()
-		local dmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG)
+		local dmg = 0
+		if Mod.RepentogonPlus then
+			dmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG)
+		else dmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG) end
 
 		if dmg > MAX_TEMP_DMG then
 		elseif dmg + giveTemDmg > MAX_TEMP_DMG then giveTemDmg = MAX_TEMP_DMG
 		else giveTemDmg = dmg + giveTemDmg end
 
-		itemEffect:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG, false, giveTemDmg - dmg)
+		if Mod.RepentogonPlus then
+			dmg = itemEffect:AddNullEffect(Mod.Enum.NullItem.TEMP_DMG, false, giveTemDmg - dmg)
+		else dmg = itemEffect:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG, false, giveTemDmg - dmg) end
 	end
 end
 

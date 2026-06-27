@@ -1,0 +1,156 @@
+<entities anm2root="gfx/" version="1" deathanm2="gfx/death enemies.anm2">
+
+    <entity anm2path="gello_bite_effect.anm2"
+        name="Gello Bite Effect"
+        id="1000" variant="3500"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3"
+        collisionRadius="13"  numGridCollisionPoints="12" shadowSize="0" stageHP="0">
+    </entity>
+    <entity anm2path="centepied_shield.anm2"
+        name="Centepied Shield"
+        id="1000" variant="3501" friction="0"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3"
+        collisionRadius="13"  numGridCollisionPoints="12" shadowSize="0" stageHP="0">
+			<gibs amount="1" blood="1" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="familiar/missing_post/familiar.anm2"
+        name="Missing Post Fam Render"
+        id="1000" variant="3502" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3"
+        collisionRadius="13"  numGridCollisionPoints="12" shadowSize="10" stageHP="0">
+			<gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="gello_ass_plant.anm2"
+        name="Gellos plant"
+        id="1000" variant="3503" friction="0"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3"
+        collisionRadius="13"  numGridCollisionPoints="12" shadowSize="0" stageHP="0">
+    </entity><!--
+    <entity anm2path="001.000_player.anm2"
+        name="Gellos dash"
+        id="1000" variant="3504" friction="0"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0"
+        collisionRadius="8"  numGridCollisionPoints="12" shadowSize="0" stageHP="0">
+    </entity>-->
+    <entity anm2path="ui_gello/eat_item.anm2"
+        name="Gellos Eat Effect"
+        id="1000" variant="3505" friction="0"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0"
+        collisionRadius="8"  numGridCollisionPoints="12" shadowSize="0" stageHP="0">
+    </entity>
+
+
+	<!-- Familiars -->
+    <entity anm2path="familiar/minisaac_gallus.anm2"
+        name="Minisaac (Gallus)"
+        id="3" variant="228" subtype="100"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3"
+        collisionRadius="13"  numGridCollisionPoints="12" shadowSize="10" stageHP="0" tags="cansacrifice" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="familiar/beelzebub.anm2"
+    	name="Beelzebub (Familiar)"
+        id="3" variant="3500" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" gridCollision="none"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="20" stageHP="0" tags="cansacrifice" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="familiar/lil_embrion.anm2"
+    	name="Lil Embrion (Familiar)"
+        id="3" variant="3501" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" gridCollision="none"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="10" stageHP="0" tags="cansacrifice" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="familiar/larry_jr_jr.anm2"
+    	name="Larry Jr Jr (Familiar)"
+        id="3" variant="3502" subtype="0" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="1.5" collisionMass="3" gridCollision="walls" collisionInterval="3"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="16" stageHP="0" tags="cansacrifice" customtags="nocharm" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <!-- this is so it doesn't spawn many items when using sacrificial altar -->
+    <entity anm2path="familiar/larry_jr_jr.anm2"
+        id="3" variant="3502" subtype="1" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="1.5" collisionMass="3" gridCollision="walls" collisionInterval="3"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="16" stageHP="0" tags="" customtags="nocharm" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="familiar/larry_jr_jr.anm2"
+        id="3" variant="3502" subtype="2" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="1.5" collisionMass="3" gridCollision="walls" collisionInterval="3"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="16" stageHP="0" tags="" customtags="nocharm" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    
+    <entity anm2path="familiar/lil_biter.anm2"
+        name="Lil Biter (Familiar)"
+        id="3" variant="3503" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" gridCollision="none"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="10" stageHP="0" tags="cansacrifice" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="familiar/lil_cow.anm2"
+        name="Lil Cow (Familiar)"
+        id="3" variant="3504" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" gridCollision="none"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="22" stageHP="0" tags="cansacrifice" collisionRadiusYMulti="0.6" customtags="familiarblockprojectiles" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+        <!-- Missing Post Familiars -->
+    <entity anm2path="familiar/missing_post/familiar.anm2"
+        name="Missing Post Familiar Helper"
+        id="3" variant="3505" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" gridCollision="none"
+        collisionRadius="13" numGridCollisionPoints="12" shadowSize="10" stageHP="0" tags="cansacrifice" >
+            <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+
+    <!-- Consumables -->
+    <entity anm2path="005.300_sacrificial_dagger.anm2"
+        name="Sacrificial Dagger (consumable)"
+        id="5" variant="300" subtype="3500" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12"
+        numGridCollisionPoints="24" shadowSize="16" stageHP="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+        <preload-snd id="8"/>
+    </entity>
+    <entity anm2path="005.300_soul_of_gello.anm2"
+        name="Soul of Gello"
+        id="5" variant="300" subtype="3501" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12"
+        numGridCollisionPoints="24" shadowSize="16" stageHP="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+        <preload-snd id="8"/>
+    </entity>
+
+
+    <!-- Slots -->
+    <entity anm2path="006.3500_missing_post.anm2"
+        name="Missing Post (Slot)"
+        id="6" variant="3500" subtype="0" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12"
+        numGridCollisionPoints="24" shadowSize="10" stageHP="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="006.3500.001_beggar.anm2"
+        name="Beggar (Missing Post)"
+        id="6" variant="3500" subtype="1" friction="1"
+        baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12"
+        numGridCollisionPoints="24" shadowSize="15" stageHP="0">
+        <gibs amount="6" blood="1" bone="1" eye="1" gut="1" large="0" />
+    </entity>
+
+
+    <!-- Enemy -->
+    <entity anm2path="familiar/missing_post/familiar_npc.anm2"
+        name="Missing Familiar Enemy"
+        id="85" variant="3500" friction="1" reroll="false" bestiary="false" portrait="0"
+        baseHP="10" boss="0" champion="0" collisionDamage="1" collisionMass="3" gridCollision="walls"
+        collisionRadius="17"  numGridCollisionPoints="4" shadowSize="10" stageHP="5" tags="noreroll">
+		    <bestiary transform="0,0,1" anim="FloatDown" />
+			<gibs amount="3" blood="1" bone="1" eye="1" gut="1" large="0" />
+    </entity>
+</entities>

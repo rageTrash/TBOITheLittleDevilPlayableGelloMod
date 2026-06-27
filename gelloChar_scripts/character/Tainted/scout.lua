@@ -34,38 +34,39 @@ local DirEnumToString = {
 	[Direction.NO_DIRECTION] = "Down",
 }
 
-Mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	local sp = eff:GetSprite()
-	local frame = eff.FrameCount
-	if frame == 1 then
-		local spawner = eff.SpawnerEntity
-		if spawner then
-			local player = spawner:ToPlayer()
-			if player == nil then return end
-			local playerSprite = player:GetSprite()
-			sp:Load(playerSprite:GetFilename(), true)
+if not Mod.RepentogonPlus then
+	Mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+		local sp = eff:GetSprite()
+		local frame = eff.FrameCount
+		if frame == 1 then
+			local spawner = eff.SpawnerEntity
+			if spawner then
+				local player = spawner:ToPlayer()
+				if player == nil then return end
+				local playerSprite = player:GetSprite()
+				sp:Load(playerSprite:GetFilename(), true)
 
-			sp:SetFrame("Head"..DirEnumToString[player:GetHeadDirection()], 0)
-			sp:SetOverlayFrame("Walk"..DirEnumToString[player:GetMovementDirection()], 0)
-			sp.Scale = playerSprite.Scale
-		else
-			sp:SetFrame("HeadDown", 0)
-			sp:SetOverlayFrame("WalkDown", 0)
+				sp:SetFrame("Head"..DirEnumToString[player:GetHeadDirection()], 0)
+				sp:SetOverlayFrame("Walk"..DirEnumToString[player:GetMovementDirection()], 0)
+				sp.Scale = playerSprite.Scale
+			else
+				sp:SetFrame("HeadDown", 0)
+				sp:SetOverlayFrame("WalkDown", 0)
+			end
 		end
-	end
 
-	if frame >= 15 then
-		eff:Remove()
-		return
-	end
+		if frame >= 15 then
+			eff:Remove()
+			return
+		end
 
-	eff.Color = Color(
-		0.25,0.25,0.25,
-		(128 - frame *8) / 255,
-		0.7,0.7,0.7
-	)
-end, Mod.Enum.Effect.DASH)
-
+		eff.Color = Color(
+			0.25,0.25,0.25,
+			(128 - frame *8) / 255,
+			0.7,0.7,0.7
+		)
+	end, Mod.Enum.Effect.DASH)
+end
 
 return {
 	Id = Mod.Enum.Character.GELLO_B4,

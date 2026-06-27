@@ -333,10 +333,12 @@ Mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, effect)
 		local parentPos = effect.Parent.Position
 		local head = effect:GetLastParent()
 		if head then
-			effect.Position = GetSpawnPos(spawner):Rotated( (head.FrameCount % RAD *DIVIDED) - SEGMENT_DISTANCE *pos ) + spawner.Position + spawner.Velocity
+			effect.Position = Mod:Lerp(effect.Position, GetSpawnPos(spawner):Rotated( (head.FrameCount % RAD *DIVIDED) - SEGMENT_DISTANCE *pos ) + spawner.Position, 0.4)
+			--effect.Position = GetSpawnPos(spawner):Rotated( (head.FrameCount % RAD *DIVIDED) - SEGMENT_DISTANCE *pos ) + spawner.Position + spawner.Velocity
 		end
 	else
-		effect.Position = GetSpawnPos(spawner):Rotated( effect.FrameCount % RAD *DIVIDED ) + spawner.Position + spawner.Velocity
+		effect.Position = Mod:Lerp(effect.Position, GetSpawnPos(spawner):Rotated( effect.FrameCount % RAD *DIVIDED ) + spawner.Position, 0.4)
+		--effect.Position = GetSpawnPos(spawner):Rotated( effect.FrameCount % RAD *DIVIDED ) + spawner.Position + spawner.Velocity
 	end
 end, Mod.Enum.Effect.CENTEPIED)
 

@@ -1,0 +1,21 @@
+<costumes anm2root="gfx/characters/">
+	<costume anm2path="character_gello_hair.anm2"        type="none" hasSkinAlt="false" id="0" />
+	<costume anm2path="character_gello_b_2_hair.anm2"    type="none" hasSkinAlt="false" id="1" />
+	<costume anm2path="character_gello_b_3_hair.anm2"    type="none" hasSkinAlt="false" id="2" />
+	<costume anm2path="character_gello_b_4_hair.anm2"    type="none" hasSkinAlt="false" id="3" />
+	<costume anm2path="character_gello_b_5_hair.anm2"    type="none" hasSkinAlt="false" id="4" />
+	<costume anm2path="character_gello_b_6_hair.anm2"    type="none" hasSkinAlt="false" id="5" />
+	<costume anm2path="character_gello_b_7_hair.anm2"    type="none" hasSkinAlt="false" id="6" />
+	<costume anm2path="character_gello_b_8_hair.anm2"    type="none" hasSkinAlt="false" id="7" />
+	<costume anm2path="character_gello_b_9_hair.anm2"    type="none" hasSkinAlt="false" id="8" />
+	<costume anm2path="character_gello_b_10_hair.anm2"   type="none" hasSkinAlt="false" id="9" />
+	<costume anm2path="character_gello_b_11_hair.anm2"   type="none" hasSkinAlt="false" id="10" />
+	<costume anm2path="character_gello_b_12_hair.anm2"   type="none" hasSkinAlt="false" id="11" />
+	<costume anm2path="character_gello_b_12_5_hair.anm2" type="none" hasSkinAlt="false" id="12" />
+
+	<costume anm2path="costume_motherly_chicken.anm2"    type="passive" id="3"/>
+	<costume anm2path="costume_use_placenta.anm2"        type="passive" id="4"/>
+	<costume anm2path="costume_cursed_plushie.anm2"      type="passive" id="5"/>
+
+	<!--<costume anm2path="001_the sad onion.anm2"       type="trinket" id="2"/>-->
+</costumes>

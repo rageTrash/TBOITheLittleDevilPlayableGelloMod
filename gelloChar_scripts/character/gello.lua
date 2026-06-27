@@ -26,8 +26,9 @@ Mod:AddCharacterUnlock(CharID, "Void Stomach", MarksNAchievHelper.MarkType.ALL_M
 Mod:AddUnlock("Tainted Gello")
 GelloCharMod.CharUnlocks[CharID]["Tainted Gello"] = {}
 
-ForcePlayerCostumeOrSomething:AddCharacterCostume(CharID, {Isaac.GetCostumeIdByPath("gfx/characters/character_gello_hair.anm2")}, "gfx/characters/player_gello.anm2")
-
+if not Mod.RepentogonPlus then
+	ForcePlayerCostumeOrSomething:AddCharacterCostume(CharID, {Isaac.GetCostumeIdByPath("gfx/characters/character_gello_hair.anm2")}, "gfx/characters/player_gello.anm2")
+end
 
 Mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_, player)
 	if player:GetPlayerType() ~= CharID then return end

@@ -38,7 +38,8 @@
 		craftquality="2"
 		devilprice="1"
 		tags="offensive dead"
-		gfx="lil_hamster_1.png" />
+		gfx="lil_hamster_1.png"
+		achievement="Lil Hamster" />
 
 	<familiar id="1" name="Beelzebub"
 		description="Lazy bastard"
@@ -46,7 +47,8 @@
 		craftquality="2"
 		devilprice="1"
 		tags="summonable offensive monstermanual"
-		gfx="beelzebub_baby.png" />
+		gfx="beelzebub_baby.png"
+		achievement="Beelzebub" />
 
 	<active id="2" name="Fetal Jar"
 		description="Eternal life"
@@ -54,9 +56,9 @@
 		quality="3"
 		craftquality="3"
 		devilprice="1"
-		persistent="true"
 		tags="nocantrip"
-		gfx="fetal_jar.png" />
+		gfx="fetal_jar.png"
+		achievement="Fetal Jar" />
 
 	<passive id="3" name="Motherly Chicken"
 		description="Baby generator"
@@ -64,7 +66,8 @@
 		craftquality="3"
 		devilprice="1"
 		tags="offensive nocantrip"
-		gfx="motherly_chicken.png" />
+		gfx="motherly_chicken.png"
+		achievement="Motherly Chicken" />
 
 	<passive id="4" name="Use Placenta"
 		description="Hp up?"
@@ -73,7 +76,8 @@
 		devilprice="1"
 		tags="summonable nocantrip nolostbr"
 		soulhearts="4"
-		gfx="use_placenta.png" />
+		gfx="use_placenta.png"
+		achievement="Use Placenta" />
 
 	<passive id="5" name="Cursed Plushie"
 		description="Eternal evil"
@@ -83,7 +87,8 @@
 		tags="offensive devil nocantrip"
 		cache="damage"
 		blackhearts="2"
-		gfx="cursed_plushie.png" />
+		gfx="cursed_plushie.png"
+		achievement="Cursed Plushie" />
 
 	<passive id="6" name="Gallus"
 		description="Murder = minios"
@@ -91,14 +96,16 @@
 		craftquality="2"
 		devilprice="1"
 		tags="offensive nocantrip"
-		gfx="gallus.png" />
+		gfx="gallus.png"
+		achievement="Gallus" />
 
 	<familiar id="7" name="Larry Jr Jr"
 		description="Another one?!"
 		quality="2"
 		craftquality="2"
 		tags="summonable baby offensive nocantrip monstermanual uniquefamiliar lazarussharedglobal lazarusshared"
-		gfx="larry_jr_jr.png" />
+		gfx="larry_jr_jr.png"
+		achievement="Larry Jr Jr" />
 
 	<passive id="8" name="Centepied"
 		description="It gives you a thousands hugs"
@@ -106,7 +113,8 @@
 		craftquality="3"
 		devilprice="1"
 		tags="summonable nocantrip lazarussharedglobal lazarusshared"
-		gfx="centepied.png" />
+		gfx="centepied.png"
+		achievement="Centepied" />
 	
 	<familiar id="12" name="Lil Embrion"
 		description="It adapts"
@@ -114,7 +122,8 @@
 		craftquality="3"
 		devilprice="2"
 		tags="summonable nocantrip monstermanual baby offensive"
-		gfx="lil_embrion.png" />
+		gfx="lil_embrion.png"
+		achievement="Lil Embrion" />
 
 	<active id="9" name="Friendly Bite"
 		description="It just being playful"
@@ -133,7 +142,8 @@
 		craftquality="3"
 		devilprice="2"
 		tags="offensive nocantrip"
-		gfx="friendly_bite.png" />
+		gfx="friendly_bite.png"
+		achievement="Friendly Bite" />
 	
 	<active id="13" name="Void Stomach"
 		description="Consume your destiny"
@@ -142,7 +152,8 @@
 		craftquality="3"
 		devilprice="2"
 		tags="offensive nocantrip"
-		gfx="void stomach.png" />
+		gfx="void stomach.png"
+		achievement="Void Stomach" />
 
 	<!-- T. Gello unlocks -->
 	<familiar id="10" name="Lil Biter"
@@ -151,7 +162,8 @@
 		craftquality="2"
 		devilprice="1"
 		tags="summonable offensive nocantrip monstermanual baby"
-		gfx="lil_biter.png" />
+		gfx="lil_biter.png"
+		achievement="Lil Biter" />
 
 	<familiar id="11" name="Lil Cow"
 		description="Moooving obstacle"
@@ -159,9 +171,33 @@
 		craftquality="3"
 		devilprice="2"
 		tags="summonable nocantrip monstermanual"
-		gfx="lil_cow.png" />
+		gfx="lil_cow.png"
+		achievement="Lil Cow" />
 
-	<!-- misc -->
+	
+
+	<!-- Gello unlocks -->
+	<trinket id="0" name="Weird Candy"
+		description="Make your friends stronger!"
+		tags=""
+		gfx="weird_candy.png"
+		achievement="Weird Candy" />
+
+	<!-- T. Gello unlocks -->
+	<trinket id="3" name="Egg"
+		description="It may hatch it to something"
+		tags=""
+		gfx="egg.png"
+		achievement="Egg" />
+
+	<trinket id="4" name="Strange Stone"
+		description="Remember your friends"
+		tags=""
+		gfx="strange_stone.png"
+		achievement="Strange Stone" />
+
+
+	<!-- null items -->
 	<familiar name="MISSING_POST_FAMILIAR_HANDLER"
 		description="You shouldn't see this"
 		quality="0"
@@ -170,8 +206,27 @@
 		persistent="true"
 		tags="noeden nocantrip quest uniquefamiliar"
 		gfx="../test.png"
-		achievement="999999" />
-	
+		achievement="9999" />
+
+	<null name="FETAL JAR - Lives"
+		persistent="true"
+		customtags="revive"
+	>
+	<null name="FETAL JAR - Stats"
+		persistent="true"
+		customtags="firedelay damage size"
+	>
+	<null name="GELLO_TEMP_DAMAGE_HANDLER"
+		persistent="true"
+		customtags="damage"
+	>
+	<null name="GELLO_SLOW_TEMP_DAMAGE_HANDLER"
+		persistent="true"
+		customtags="damage"
+	>
+
+	<!--
+
 	<passive name="GELLO_TEMP_DAMAGE_HANDLER"
 		description="You shouldn't see this"
 		quality="0"
@@ -181,7 +236,7 @@
 		persistent="true"
 		tags="noeden nocantrip quest"
 		gfx="../test.png"
-		achievement="999999" />
+		achievement="9999" />
 
 	<passive name="GELLO_SLOW_TEMP_DAMAGE_HANDLER"
 		description="You shouldn't see this"
@@ -192,25 +247,6 @@
 		persistent="true"
 		tags="noeden nocantrip quest"
 		gfx="../test.png"
-		achievement="999999" />
-
-
-	<!-- Gello unlocks -->
-	<trinket id="0" name="Weird Candy"
-		description="Make your friends stronger!"
-		tags=""
-		gfx="weird_candy.png" />
-
-	<!-- T. Gello unlocks -->
-	<trinket id="3" name="Egg"
-		description="It may hatch it to something"
-		tags=""
-		gfx="egg.png" />
-
-	<trinket id="4" name="Strange Stone"
-		description="Remember your friends"
-		tags=""
-		gfx="strange_stone.png" />
-
-
+		achievement="9999" />
+-->
 </items>

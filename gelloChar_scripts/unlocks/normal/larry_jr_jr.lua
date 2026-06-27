@@ -387,6 +387,7 @@ end)
 
 
 --- adapted(?) from Fiend Folio
+if not Mod.RepentogonPlus then
 local hiddenFromSiren = {}
 Mod:AddPriorityCallback(ModCallbacks.MC_PRE_NPC_UPDATE, CallbackPriority.LATE, function(_, siren)
 	for _, e in ipairs(Isaac.FindByType(3, Mod.Enum.Familiar.LARRY_JR_JR)) do
@@ -401,6 +402,7 @@ Mod:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, siren)
 	end
 	hiddenFromSiren = {}
 end, EntityType.ENTITY_SIREN)
+end
 
 
 

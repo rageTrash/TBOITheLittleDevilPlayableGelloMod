@@ -51,9 +51,18 @@ enum.Item = {
 
 	-- Misc items
 	MISSING_HANDLER =  Isaac.GetItemIdByName("MISSING_POST_FAMILIAR_HANDLER"),
-	TEMP_DMG =         Isaac.GetItemIdByName("GELLO_TEMP_DAMAGE_HANDLER"),
-	TEMP_DMG_SLOW =    Isaac.GetItemIdByName("GELLO_SLOW_TEMP_DAMAGE_HANDLER"),
 }
+if GelloCharMod.RepentogonPlus then
+	enum.NullItem = {
+		FETAL_JAR_LIVES = Isaac.GetNullItemIdByName("FETAL JAR - Lives"),
+		FETAL_JAR_STATS = Isaac.GetNullItemIdByName("FETAL JAR - Stats"),
+		TEMP_DMG =        Isaac.GetNullItemIdByName("GELLO_TEMP_DAMAGE_HANDLER"),
+		TEMP_DMG_SLOW =   Isaac.GetNullItemIdByName("GELLO_SLOW_TEMP_DAMAGE_HANDLER"),
+	}
+else
+	enum.Item.TEMP_DMG =         Isaac.GetItemIdByName("GELLO_TEMP_DAMAGE_HANDLER")
+	enum.Item.TEMP_DMG_SLOW =    Isaac.GetItemIdByName("GELLO_SLOW_TEMP_DAMAGE_HANDLER")
+end
 
 enum.Trinket = {
 	-- Gello unlocks
@@ -90,9 +99,12 @@ enum.Effect = {
 	CENTEPIED =  Isaac.GetEntityVariantByName("Centepied Shield"),
 	FAM_RENDER = Isaac.GetEntityVariantByName("Missing Post Fam Render"),
 	PLANT =      Isaac.GetEntityVariantByName("Gellos plant"),
-	DASH =       Isaac.GetEntityVariantByName("Gellos dash"),
-	EAT =       Isaac.GetEntityVariantByName("Gellos Eat Effect"),
+	EAT =        Isaac.GetEntityVariantByName("Gellos Eat Effect"),
 }
+if not GelloCharMod.RepentogonPlus then
+	enum.Effect.DASH = Isaac.GetEntityVariantByName("Gellos dash")
+end
+
 
 enum.Sound = {
 	BITE = Isaac.GetSoundIdByName("GelloBiteSoundEffect")

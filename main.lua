@@ -10,7 +10,7 @@ GelloCharMod.RNG = RNG()
 GelloCharMod.json = require("json")
 GelloCharMod.SFX = SFXManager()
 GelloCharMod.Game = Game()
-
+GelloCharMod.RepentogonPlus = (REPENTOGON and REPENTANCE_PLUS)
 
 function GelloCharMod.Include(rute)
 	return require("gelloChar_scripts."..rute)

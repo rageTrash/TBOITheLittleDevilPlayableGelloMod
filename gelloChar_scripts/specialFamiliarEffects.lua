@@ -169,7 +169,11 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 
 		if tempdmg > 0 then
 			--print("DMG GRANTED :",math.ceil(ADD_DMG *tempdmg), "=",ADD_DMG,"x",tempdmg)
-			player:GetEffects():AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, false, math.ceil(ADD_DMG *tempdmg) )
+			if Mod.RepentogonPlus then
+				player:GetEffects():AddNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, false, math.ceil(ADD_DMG *tempdmg) )
+			else
+				player:GetEffects():AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, false, math.ceil(ADD_DMG *tempdmg) )
+			end
 		end
 
 		

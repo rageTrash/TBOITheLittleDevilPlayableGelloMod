@@ -19,7 +19,10 @@ Mod:AddCallback(ModCallbacks.MC_USE_CARD, function(_, _, player, flags)
 	end
 
 	local itemEffect = player:GetEffects()
-	local dmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW)
+	local dmg =0
+	if Mod.RepentogonPlus then
+		dmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG_SLOW)
+	else dmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW) end
 	if dmg > MAX_TEMP_DMG then return end
 
 	local mult = 20 -- 0.5 dmg
@@ -36,5 +39,7 @@ Mod:AddCallback(ModCallbacks.MC_USE_CARD, function(_, _, player, flags)
 	if dmg + famNum > MAX_TEMP_DMG then famNum = MAX_TEMP_DMG
 	else famNum = dmg + famNum end
 	
-	itemEffect:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, false, famNum - dmg)
+	if Mod.RepentogonPlus then
+		dmg = itemEffect:AddNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, false, famNum - dmg)
+	else dmg = itemEffect:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, false, famNum - dmg) end
 end, Mod.Enum.Card.SOUL_OF_GELLO)

@@ -418,17 +418,19 @@ Encyclopedia.AddItem({
     ID = itemEnum.MISSING_HANDLER,
     Hide = true
 })
-Encyclopedia.AddItem({
-    ModName = modName,
-    Class = modName,
-    Name = "Missing Familiar",
-    ID = itemEnum.TEMP_DMG,
-    Hide = true
-})
-Encyclopedia.AddItem({
-    ModName = modName,
-    Class = modName,
-    Name = "Missing Familiar",
-    ID = itemEnum.TEMP_DMG_SLOW,
-    Hide = true
-})
+if not Mod.RepentogonPlus then
+    Encyclopedia.AddItem({
+        ModName = modName,
+        Class = modName,
+        Name = "Missing Familiar",
+        ID = itemEnum.TEMP_DMG,
+        Hide = true
+    })
+    Encyclopedia.AddItem({
+        ModName = modName,
+        Class = modName,
+        Name = "Missing Familiar",
+        ID = itemEnum.TEMP_DMG_SLOW,
+        Hide = true
+    })
+end

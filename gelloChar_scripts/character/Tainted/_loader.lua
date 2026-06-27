@@ -233,17 +233,21 @@ local taintedCostumes = {
 
 local CharID = Mod.Enum.Character.GELLO_B13
 Mod:AddCharacterForMarks(CharID)
-Mod:AddCharPauseScreenCompletionMarkAPI(CharID)
-ForcePlayerCostumeOrSomething:AddCharacterCostume(CharID,
-	taintedCostumes[0][2],
-	taintedCostumes[0][1])
+if not Mod.RepentogonPlus then
+	Mod:AddCharPauseScreenCompletionMarkAPI(CharID)
+	ForcePlayerCostumeOrSomething:AddCharacterCostume(CharID,
+		taintedCostumes[0][2],
+		taintedCostumes[0][1])
+end
 	
 --print(Mod.Enum.Character.GELLO_B1, Mod.Enum.Character.GELLO_B12)
 for id = Mod.Enum.Character.GELLO_B12, Mod.Enum.Character.GELLO_B1 do
-	Mod:AddCharPauseScreenCompletionMarkAPI(id)
 	Mod:SetParentMarks(id, CharID)
-	local cost = taintedCostumes[Mod.Enum.Character.GELLO_B1 - id +1]
-	ForcePlayerCostumeOrSomething:AddCharacterCostume(id, cost[2], cost[1])
+	if not Mod.RepentogonPlus then
+		Mod:AddCharPauseScreenCompletionMarkAPI(id)
+		local cost = taintedCostumes[Mod.Enum.Character.GELLO_B1 - id +1]
+		ForcePlayerCostumeOrSomething:AddCharacterCostume(id, cost[2], cost[1])
+	end
 end
 
 
@@ -978,8 +982,12 @@ local function gelloChargebarUpdate(player, pType)
 				if dis > 20 then
 					local trailAmount = (dis *1.1) // 40
 					for i=1, trailAmount do
-						local ent = Mod:Spawn(1000, Mod.Enum.Effect.DASH, 0, Mod:Lerp(pos, newPos, i / trailAmount), Vector.Zero, player)
-						ent.SpawnerEntity = player
+						if Mod.RepentogonPlus then
+			            	player:CreateAfterimage(15, Mod:Lerp(pos, newPos, i / trailAmount))
+						else
+							local ent = Mod:Spawn(1000, Mod.Enum.Effect.DASH, 0, Mod:Lerp(pos, newPos, i / trailAmount), Vector.Zero, player)
+							ent.SpawnerEntity = player
+						end
 					end
 					player.Position = newPos
 					player.Velocity = player.Velocity *1.5

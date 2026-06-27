@@ -9,15 +9,17 @@ CustomCommands:AddCommand(
 	"This command does nothing. Only use for grouping commands"
 )]]
 
+if not GelloCharMod.RepentogonPlus then
 GelloCharMod.Include(rute.."completion_marks_api.pause_screen_completion_marks_api")
 GelloCharMod.Include(rute.."completion_marks_api.add_character_mark_api")
+ebd
 
 GelloCharMod.Include(rute.."dssmenu.gellomenu")
 
 GelloCharMod.HiddenItemManager = GelloCharMod.Include(rute .. "hiddenItemManager.hidden_item_manager")
 GelloCharMod.HiddenItemManager:Init(GelloCharMod)
 
-GelloCharMod.Include(rute.."hud_helper.hud_helper")
+--GelloCharMod.Include(rute.."hud_helper.hud_helper")
 GelloCharMod.Include(rute.."vanillathings._loader")
 GelloCharMod.Include(rute.."run_later")
 

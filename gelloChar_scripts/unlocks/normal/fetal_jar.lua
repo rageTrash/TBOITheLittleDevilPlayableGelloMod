@@ -8,17 +8,24 @@ IDK_CustomRevive.AddCustomRevive(Mod.Enum.Item.FETAL_JAR, IDK_CustomRevive.Reviv
 local function reviveFun(p)
 	p:AnimateCollectible(Mod.Enum.Item.FETAL_JAR)
 
-	if p:GetSoulHearts() >0 then p:AddSoulHearts(-1) end
 	if p:GetEffectiveMaxHearts() <= 0 then
 		p:AddMaxHearts(2)
 	end
 	p:AddHearts(99)
-	pSave("Fetal Jar revives", p):Set( pSave("Fetal Jar revives", p):Get(0) +1 )
-	Mod.PlayerTools.DoCache(p, CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SIZE)
+	if Mod.RepentogonPlus then
+		player:GetEffects():AddNullEffect(Mod.Enum.NullItem.FETAL_JAR_STATS)
+	else
+		pSave("Fetal Jar revives", p):Set( pSave("Fetal Jar revives", p):Get(0) +1 )
+		Mod.PlayerTools.DoCache(p, CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SIZE)
+	end
 end
 
 local function removeCollectibleEffect(player)
-	player:GetEffects():RemoveCollectibleEffect(Mod.Enum.Item.FETAL_JAR, 1)
+	if Mod.RepentogonPlus then
+		player:GetEffects():RemoveNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES, 1)
+	else
+		player:GetEffects():RemoveCollectibleEffect(Mod.Enum.Item.FETAL_JAR, 1)
+	end
 end
 Mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, _, _, player, flags, slot)
 	if flags & UseFlag.USE_CARBATTERY > 0 then return end
@@ -31,18 +38,24 @@ Mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, _, _, player, flags, slot)
 		end
 	end
 	if #tab > 0 then
+		if Mod.RepentogonPlus then player:GetEffects():AddNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES) end
 		player:RemoveCollectible(tab[rng:RandomInt(#tab)+1], true)
 		return flags & UseFlag.USE_NOANIM == 0
 	end
 
-	Mod:RunLater(1, removeCollectibleEffect, player)
+	if not Mod.RepentogonPlus then Mod:RunLater(1, removeCollectibleEffect, player) end
 	return { Discharge = false, ShowAnim = false }
 end, Mod.Enum.Item.FETAL_JAR)
 
 
 Mod:AddCallback(IDK_CustomRevive.Callbacks.PRE_CUSTOM_REVIVE_ITEM, function(_, player, _, isTrinket)
 	if isTrinket then return end
-	return player:GetEffects():HasCollectibleEffect(Mod.Enum.Item.FETAL_JAR)
+	local effects = player:GetEffects()
+	if Mod.RepentogonPlus then
+		return effects:HasNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES)
+	end
+
+	return effects:HasCollectibleEffect(Mod.Enum.Item.FETAL_JAR)
 end, Mod.Enum.Item.FETAL_JAR)
 
 Mod:AddCallback(IDK_CustomRevive.Callbacks.POST_CUSTOM_REVIVE_ITEM, function(_, player, _, isTrinket)
@@ -61,5 +74,5 @@ Mod:AddCallback(IDK_CustomRevive.Callbacks.POST_CUSTOM_REVIVE_ITEM, function(_, 
 		game:StartRoomTransition(doorData.TargetRoomIndex, doorData.Direction, RoomTransitionAnim.ANKH)
 	end
 
-	Mod:RunLater(1, reviveFun, player)
+	if not REPENTOGON then Mod:RunLater(1, reviveFun, player) end
 end, Mod.Enum.Item.FETAL_JAR)

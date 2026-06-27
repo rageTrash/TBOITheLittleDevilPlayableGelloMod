@@ -1,0 +1,25 @@
+<achievements gfxroot="gfx/ui/achievement/gelloCharacter/">
+
+	<achievement name="Beelzebub" text='"Beelzebub" has appeared in the basement' gfx="Beelzebub.png" />
+	<achievement name="Centepied" text='"Centepied" has appeared in the basement' gfx="Centepied.png" />
+	<achievement name="Cursed Plushie" text='"Cursed Plushie" has appeared in the basement' gfx="Cursed Plushie.png" />
+	<achievement name="Fetal Jar" text='"Fetal Jar" has appeared in the basement' gfx="Fetal Jar.png" />
+	<achievement name="Friendly Bite" text='"Friendly Bite" has appeared in the basement' gfx="Friendly Bite.png" />
+	<achievement name="Gallus" text='"Gallus" has appeared in the basement' gfx="Gallus.png" />
+	<achievement name="Larry Jr Jr" text='"Larry Jr Jr" has appeared in the basement' gfx="Larry Jr Jr.png" />
+	<achievement name="Lil Embrion" text='"Lil Embrion" has appeared in the basement' gfx="Lil Embrion.png" />
+	<achievement name="Lil Hamster" text='"Lil Hamster" has appeared in the basement' gfx="Lil Hamster.png" />
+	<achievement name="Motherly Chicken" text='"Motherly Chicken" has appeared in the basement' gfx="Motherly Chicken.png" />
+	<achievement name="Use Placenta" text='"Use Placenta" has appeared in the basement' gfx="Use Placenta.png" />
+	<achievement name="Void Stomach" text='"Void Stomach" has appeared in the basement' gfx="Void Stomach.png" />
+	<achievement name="Weird Candy" text='"Weird Candy" has appeared in the basement' gfx="Weird Candy.png" />
+
+	<achievement name="Tainted Gello" text='You unlocked "Gello"' gfx="Tainted Gello.png" />
+	<achievement name="Lil Cow" text='"Lil Cow" has appeared in the basement' gfx="Lil Cow.png" />
+	<achievement name="Sacrificial Dagger" text='"Sacrificial Dagger" has appeared in the basement' gfx="Sacrificial Dagger.png" />
+	<achievement name="Soul of Gello" text='"Soul of Gello" has appeared in the basement' gfx="Soul of Gello.png" />
+	<achievement name="Strange Stone" text='"Strange Stone" has appeared in the basement' gfx="Strange Stone.png" />
+	<achievement name="Egg" text='"Egg" has appeared in the basement' gfx="Egg.png" />
+	<achievement name="Lil Biter" text='"Lil Biter" has appeared in the basement' gfx="Lil Biter.png" />
+	<achievement name="Missing Post" text='"Missing Post" has appeared in the basement' gfx="Missing Post.png" />
+</achievements>

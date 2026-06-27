@@ -185,10 +185,12 @@ Mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_, fam)
 			fam.RoomClearCount = 0
 		end
 
-		if fTools.IsCharmBySiren(fam) then
-			for _, e in ipairs(Isaac.FindInRadius(fam.Position, 24, EntityPartition.TEAR))   do e:Die() end
-		else
-			for _, e in ipairs(Isaac.FindInRadius(fam.Position, 24, EntityPartition.BULLET)) do e:Die() end
+		if not Mod.RepentogonPlus then
+			if fTools.IsCharmBySiren(fam) then
+				for _, e in ipairs(Isaac.FindInRadius(fam.Position, 24, EntityPartition.TEAR))   do e:Die() end
+			else
+				for _, e in ipairs(Isaac.FindInRadius(fam.Position, 24, EntityPartition.BULLET)) do e:Die() end
+			end
 		end
 	else
 		fam:MultiplyFriction(0.66)
