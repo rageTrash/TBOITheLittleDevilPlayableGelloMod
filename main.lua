@@ -69,7 +69,9 @@ local function setupData()
 		end
 		if count == #MarksNAchievHelper.MarkType.ALL_MARKS and allMarks then mnaData.Achievements.VOID_STOMACH = 1 end
 	end
-		
+	GelloCharMod.SaveHandler.Data("Update REPENTOGON"):Set(GelloCharMod.SaveHandler.Data("Update REPENTOGON"):Get(false) ~= GelloCharMod.RepentogonPlus )
+
+
 	GelloCharMod.SyncSettings()
 	local settings =GelloCharMod.Data and GelloCharMod.Data.Settings
 	if settings then
@@ -106,13 +108,27 @@ GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_GAME_STARTED, -200, functi
     end
     GelloCharMod.GameStart = true
 end)
---
-GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_PLAYER_INIT, -200, function() -- we have to load the achievements really really early
-	if GelloCharMod.Init then return end
-	setupData()
-	
-	GelloCharMod.Init = true
-end)
+
+if GelloCharMod.RepentogonPlus then
+	local loadsCount = 0
+	GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, -100, function(_, saveSlot, isSelected)
+		if not isSelected then return end
+		if loadsCount < 3 then
+			loadsCount = loadsCount+1
+			return
+		end
+		GelloCharMod.Init = false
+		setupData()
+		GelloCharMod.Init = true
+	end)
+else
+	GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_PLAYER_INIT, -200, function() -- we have to load the achievements really really early
+		if GelloCharMod.Init then return end
+		setupData()
+		
+		GelloCharMod.Init = true
+	end)
+end
 
 GelloCharMod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function (_, continued)
 	if continued then
@@ -139,6 +155,7 @@ end)
 GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_NEW_LEVEL, 200, GelloCharMod.SaveGameData)
 
 GelloCharMod.Include("_loader")
+
 
 
 Isaac.DebugString("Playable Gello - ReFed - v"..GelloCharMod.Version.." Loaded")

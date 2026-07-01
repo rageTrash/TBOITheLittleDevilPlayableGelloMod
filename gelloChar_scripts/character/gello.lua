@@ -297,3 +297,47 @@ Mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	Mod:SetEntityData(eff, "Pickup Data", data)
 
 end, Mod.Enum.Effect.EAT)
+
+
+if Mod.RepentogonPlus then
+	local GELLO_ACHIEVEMENT_ID = Isaac.GetAchievementIdByName("Gello")
+	GelloCharMod.GelloCharAchievement = GELLO_ACHIEVEMENT_ID -- only doing it this because im lazy :ppppp
+
+	local promp = GenericPrompt()
+	promp:Initialize()
+	promp:SetText("Would you like", "have Gello locked")
+	--Mod:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, function()
+	--	if not Isaac.GetPersistentGameData():Unlocked(GELLO_ACHIEVEMENT_ID) then
+	--	end
+	--end)
+	local prompChoices = false
+	Mod:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, function()
+		local persData = Isaac.GetPersistentGameData()
+		if persData:GetBestiaryEncounterCount(EntityType.ENTITY_MOM, 0) == 0 then
+			Mod.SaveHandler.Data("Gello Promp"):Set(false)
+			return
+		end
+		if MenuManager.GetActiveMenu() == MainMenuType.GAME and not Mod.SaveHandler.Data("Gello Promp"):Get(false) then
+			if prompChoices then
+				promp:Update(true)
+				promp:Render()
+				if not promp:IsActive() then
+					if promp:GetSubmittedSelection() ~= 1 then
+						persData:Unlock(GELLO_ACHIEVEMENT_ID, true)
+					end
+					Mod.SaveHandler.Data("Gello Promp"):Set(true)
+					prompChoices = false
+				end
+			elseif not persData:Unlocked(GELLO_ACHIEVEMENT_ID) then
+				prompChoices = true
+				promp:Show()
+			end
+		end
+	end)
+
+	Mod:AddCallback(ModCallbacks.MC_POST_COMPLETION_EVENT, function(_, compleationMark)
+		if compleationMark ~= CompletionType.LAMB or Isaac.GetPersistentGameData():Unlocked(GELLO_ACHIEVEMENT_ID) then return end
+		Isaac.GetPersistentGameData():TryUnlock(GELLO_ACHIEVEMENT_ID)
+	end)
+	
+end

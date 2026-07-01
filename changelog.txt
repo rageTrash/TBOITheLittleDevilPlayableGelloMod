@@ -1,3 +1,7 @@
+version 2.0
+added total compatibility to repentogon
+reworked gello and tainted gello
+
 version 1.203
 fix achievements not working
 

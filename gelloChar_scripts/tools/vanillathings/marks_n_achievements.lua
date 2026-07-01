@@ -1,4 +1,4 @@
-local VERSION = 1.231
+local VERSION = 1.24
 local YOUR_MOD = GelloCharMod
 
 
@@ -422,7 +422,7 @@ end
 function MarksNAchievHelper.__UpdateChallengeUnlocks()
 	local challengeID = Isaac.GetChallenge()
 	local modName = MarksNAchievHelper._challengeOrigin[challengeID]
-	if not modName then return end
+	if not modName or MarksNAchievHelper._renpentogonMod[modName] then return end
 
 	for _, achievName in pairs(MarksNAchievHelper._challenge[modName][challengeID] or {}) do
 		if not MarksNAchievHelper:GetAchievementState(modName, achievName) then

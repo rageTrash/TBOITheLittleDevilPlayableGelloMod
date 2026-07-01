@@ -1,5 +1,0 @@
-<sounds root="sfx/">
-	<sound name="GelloBiteSoundEffect">
-		<sample weight="1" path="gelloBiteSound.wav" />
-	</sound>
-</sounds>

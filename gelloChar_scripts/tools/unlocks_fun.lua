@@ -86,7 +86,7 @@ function GelloCharMod:SetMarkNAchievementsData(data)
             [tostring(Mod.Enum.Character.GELLO_B13)] = data.Marks.GELLO_B,
         },
     })
-    if Mod.RepentogonPlus then
+    if Mod.RepentogonPlus and not GelloCharMod.Init then -- syncing the vanilla data to repentogon
         Isaac.SetCompletionMarks({
             PlayerType = Mod.Enum.Character.GELLO,
             MomsHeart  = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.MOMS_HEART )],
@@ -117,6 +117,10 @@ function GelloCharMod:SetMarkNAchievementsData(data)
             Mother     = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MOTHER )],
             Beast      = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.THE_BEAST )],
         })
+
+        for achievName, val in pairs(data.Achievements) do
+            GelloCharMod:SetUnlock(achievName, val >0)
+        end
     end
 end
 

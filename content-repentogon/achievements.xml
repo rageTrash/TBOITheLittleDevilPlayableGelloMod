@@ -1,5 +1,6 @@
 <achievements gfxroot="gfx/ui/achievement/gelloCharacter/">
 
+	<achievement name="Gello" text='You unlocked "Gello"' gfx="Gello.png" />
 	<achievement name="Beelzebub" text='"Beelzebub" has appeared in the basement' gfx="Beelzebub.png" />
 	<achievement name="Centepied" text='"Centepied" has appeared in the basement' gfx="Centepied.png" />
 	<achievement name="Cursed Plushie" text='"Cursed Plushie" has appeared in the basement' gfx="Cursed Plushie.png" />
