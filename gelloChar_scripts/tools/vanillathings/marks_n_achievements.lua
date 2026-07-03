@@ -117,7 +117,7 @@ end
 
 function MarksNAchievHelper:AddAchievement(modName, achievName, achievFilePath, paperFilePath)
 	MarksNAchievHelper._achievements[modName] = MarksNAchievHelper._achievements[modName] or {}
-	MarksNAchievHelper._achievements[modName][achievName] = false
+	MarksNAchievHelper._achievements[modName][achievName] = 0
 
 	MarksNAchievHelper._achievData[modName] = MarksNAchievHelper._achievData[modName] or {}
 	MarksNAchievHelper._achievData[modName][achievName] = MarksNAchievHelper._achievData[modName][achievName] or {}
@@ -262,8 +262,8 @@ function MarksNAchievHelper:SetMarkAchievement(modName, charID, achievName, mark
 	local marks = marks or {}
 	local marksTable = {}
 	if type(marks) ~= "table" then marks = {marks} end
-	for _, markType in pairs(marks) do
-		local markType = tonumber(markType) or 0
+	for _, markType in ipairs(marks) do
+		local markType = tonumber(markType)
 
 		if not markType or markType > MarksNAchievHelper.MarkType.THE_BEAST or markType < MarksNAchievHelper.MarkType.MOMS_HEART then
 			print("MarksNAchievHelper:SetMarkAchievement - Argument #5 contains an invalid Mark Type")
@@ -296,15 +296,18 @@ function MarksNAchievHelper:TryUnlockAchievement(modName, achievName, noPaperAni
 	if MarksNAchievHelper._achievements[modName][achievName] == nil then return false end
 	if MarksNAchievHelper:GetAchievementState(modName, achievName) then return false end
 
-	MarksNAchievHelper:SetAchievementState(modName, achievName, true)
 	if not noPaperAnim then
 		if MarksNAchievHelper._renpentogonMod[modName] then
-			Isaac.GetPersistentGameData():Unlock(MarksNAchievHelper._renpentogonMod[modName][achievName], false)
+			MarksNAchievHelper._achievements[modName][achievName] = 1
+			Isaac.GetPersistentGameData():Unlock(MarksNAchievHelper._renpentogonMod[modName][achievName])
 		else
+			MarksNAchievHelper:SetAchievementState(modName, achievName, true)
+
 			local data = MarksNAchievHelper:GetAchievementData(modName, achievName)
 			MarksNAchievHelper:QueuePaperUnlock(data.FilePath, data.PaperFilePath)
 		end
 	elseif MarksNAchievHelper._renpentogonMod[modName] then
+		MarksNAchievHelper._achievements[modName][achievName] = 1
 		Isaac.GetPersistentGameData():Unlock(MarksNAchievHelper._renpentogonMod[modName][achievName], true)
 	end
 	return true
@@ -389,7 +392,7 @@ function MarksNAchievHelper.__UpdateCharacterMarks(markType, diff)
 
 		local charID = tostring(player:GetPlayerType())
 		local modName = MarksNAchievHelper._charOrigin[charID]
-		if not modName then goto skip end
+		if not modName or MarksNAchievHelper._renpentogonMod[modName] then goto skip end
 		charID = tostring(MarksNAchievHelper:GetCharacterMarksParent(modName, charID) or charID)
 
 		if MarksNAchievHelper:GetCharacterMarks(modName, charID, markType) < diff then
@@ -538,29 +541,30 @@ end
 
 
 if REPENTOGON then
+	local repMarkToMnAMarks = {
+		[CompletionType.MOMS_HEART] = MarksNAchievHelper.MarkType.MOMS_HEART,
+		[CompletionType.SATAN] = MarksNAchievHelper.MarkType.SATAN,
+		[CompletionType.ISAAC] = MarksNAchievHelper.MarkType.ISAAC,
+		[CompletionType.LAMB] = MarksNAchievHelper.MarkType.THE_LAMB,
+		[CompletionType.BLUE_BABY] = MarksNAchievHelper.MarkType.BLUE_BABY,
+		[CompletionType.BOSS_RUSH] = MarksNAchievHelper.MarkType.BOSS_RUSH,
+		[CompletionType.MEGA_SATAN] = MarksNAchievHelper.MarkType.MEGA_SATAN,
+		[CompletionType.HUSH] = MarksNAchievHelper.MarkType.HUSH,
+		[CompletionType.ULTRA_GREED] = MarksNAchievHelper.MarkType.GREED,
+		[CompletionType.ULTRA_GREEDIER] = MarksNAchievHelper.MarkType.GREED,
+		[CompletionType.DELIRIUM] = MarksNAchievHelper.MarkType.DELIRIUM,
+		[CompletionType.MOTHER] = MarksNAchievHelper.MarkType.MOTHER,
+		[CompletionType.BEAST] = MarksNAchievHelper.MarkType.THE_BEAST,
+	}
 	function MarksNAchievHelper:__repentogonMarks(mark, charID)
-		local markType = ({
-			[CompletionType.MOMS_HEART] = MarksNAchievHelper.MarkType.MOMS_HEART,
-			[CompletionType.SATAN] = MarksNAchievHelper.MarkType.SATAN,
-			[CompletionType.ISAAC] = MarksNAchievHelper.MarkType.ISAAC,
-			[CompletionType.LAMB] = MarksNAchievHelper.MarkType.THE_LAMB,
-			[CompletionType.BLUE_BABY] = MarksNAchievHelper.MarkType.BLUE_BABY,
-			[CompletionType.BOSS_RUSH] = MarksNAchievHelper.MarkType.BOSS_RUSH,
-			[CompletionType.MEGA_SATAN] = MarksNAchievHelper.MarkType.MEGA_SATAN,
-			[CompletionType.HUSH] = MarksNAchievHelper.MarkType.HUSH,
-			[CompletionType.ULTRA_GREED] = MarksNAchievHelper.MarkType.GREED,
-			[CompletionType.ULTRA_GREEDIER] = MarksNAchievHelper.MarkType.GREED,
-			[CompletionType.DELIRIUM] = MarksNAchievHelper.MarkType.DELIRIUM,
-			[CompletionType.MOTHER] = MarksNAchievHelper.MarkType.MOTHER,
-			[CompletionType.BEAST] = MarksNAchievHelper.MarkType.THE_BEAST,
-		})[mark]
+		local markType = repMarkToMnAMarks[mark]
 		if markType == nil then return end
-
+		markType = tostring(markType)
 		local diff = MarksNAchievHelper:GetDifficulty()
 
 		charID = tostring(charID)
 		local modName = MarksNAchievHelper._charOrigin[charID]
-		if not modName then goto skip end
+		if not modName or not MarksNAchievHelper._renpentogonMod[modName] then return end
 		charID = tostring(MarksNAchievHelper:GetCharacterMarksParent(modName, charID) or charID)
 
 		if MarksNAchievHelper:GetCharacterMarks(modName, charID, markType) < diff then
@@ -574,7 +578,6 @@ if REPENTOGON then
 			if not MarksNAchievHelper:GetAchievementState(modName, name) and marks[markType] then
 			
 				local triggerUnlock = true
-				
 				for mType, mVal in pairs(marks) do
 					if MarksNAchievHelper:GetCharacterMarks(modName, charID, mType) < mVal then
 						triggerUnlock = false
@@ -582,7 +585,10 @@ if REPENTOGON then
 					end
 				end
 
-				if triggerUnlock then MarksNAchievHelper:TryUnlockAchievement(modName, name) end
+				if triggerUnlock then
+					MarksNAchievHelper._achievements[modName][name] = 1
+					Isaac.GetPersistentGameData():Unlock(MarksNAchievHelper._renpentogonMod[modName][name])
+				end
 			end
 		end
 	end

@@ -211,19 +211,19 @@
 	<null name="FETAL JAR - Lives"
 		persistent="true"
 		customtags="revive"
-	>
+	/>
 	<null name="FETAL JAR - Stats"
 		persistent="true"
 		customtags="firedelay damage size"
-	>
+	/>
 	<null name="GELLO_TEMP_DAMAGE_HANDLER"
 		persistent="true"
 		customtags="damage"
-	>
+	/>
 	<null name="GELLO_SLOW_TEMP_DAMAGE_HANDLER"
 		persistent="true"
 		customtags="damage"
-	>
+	/>
 
 	<!--
 

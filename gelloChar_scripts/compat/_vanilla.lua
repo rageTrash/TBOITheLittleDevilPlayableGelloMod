@@ -2189,7 +2189,7 @@ local function forEachPlayer_level(player)
 
         local rng = player:GetCollectibleRNG(CollectibleType.COLLECTIBLE_ZODIAC)
 
-        for i=1, #zodiacs then
+        for i=1, #zodiacs do
             local prevItemId = zodiacs[i]
             local prevData = Mod:GetConsumeItemEffect(prevItemId)
             local prevDmg = (itemConfig:GetCollectible(prevItemId).Quality+1) /4

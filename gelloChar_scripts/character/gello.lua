@@ -2,8 +2,12 @@ local Mod = GelloCharMod
 
 local CharID = Mod.Enum.Character.GELLO
 
+
 Mod:AddCharacterForMarks(CharID)
-Mod:AddCharPauseScreenCompletionMarkAPI(CharID)
+if not Mod.RepentogonPlus then
+	Mod:AddCharPauseScreenCompletionMarkAPI(CharID)
+	ForcePlayerCostumeOrSomething:AddCharacterCostume(CharID, {Isaac.GetCostumeIdByPath("gfx/characters/character_gello_hair.anm2")}, "gfx/characters/player_gello.anm2")
+end
 Mod:AddCharacterUnlock(CharID, "Lil Hamster", MarksNAchievHelper.MarkType.ISAAC, MarksNAchievHelper.DifficultyType.NORMAL)
 Mod:AddCharacterUnlock(CharID, "Larry Jr Jr", MarksNAchievHelper.MarkType.BLUE_BABY, MarksNAchievHelper.DifficultyType.NORMAL)
 
@@ -25,10 +29,6 @@ Mod:AddCharacterUnlock(CharID, "Use Placenta", MarksNAchievHelper.MarkType.THE_B
 Mod:AddCharacterUnlock(CharID, "Void Stomach", MarksNAchievHelper.MarkType.ALL_MARKS, MarksNAchievHelper.DifficultyType.HARD)
 Mod:AddUnlock("Tainted Gello")
 GelloCharMod.CharUnlocks[CharID]["Tainted Gello"] = {}
-
-if not Mod.RepentogonPlus then
-	ForcePlayerCostumeOrSomething:AddCharacterCostume(CharID, {Isaac.GetCostumeIdByPath("gfx/characters/character_gello_hair.anm2")}, "gfx/characters/player_gello.anm2")
-end
 
 Mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_, player)
 	if player:GetPlayerType() ~= CharID then return end
@@ -206,18 +206,20 @@ local function renderPlayerChargebar(player)
 	end
 end
 
-local function renderChargeBars()
-	if Mod:IsRenderingMenu() or not Options.ChargeBars then return end
-
-	local renderMode = game:GetRoom():GetRenderMode()
-	if not (renderMode == RenderMode.RENDER_NULL or renderMode == RenderMode.RENDER_NORMAL or renderMode == RenderMode.RENDER_WATER_ABOVE) then return end
-	Mod.PlayerTools.ForEach(renderPlayerChargebar)
-end
 
 if REPENTOGON then
-	Mod:AddPriorityCallback(ModCallbacks.MC_POST_ROOM_RENDER_ENTITIES, -300, renderChargeBars)
+	Mod:AddPriorityCallback(ModCallbacks.MC_POST_ROOM_RENDER_ENTITIES, -300, function()
+		if GelloCharMod:IsRenderingMenu() or not Options.ChargeBars then return end
+		Mod.PlayerTools.ForEach(renderPlayerChargebar)
+	end)
 else
-	Mod:AddPriorityCallback(ModCallbacks.MC_POST_RENDER, -300, renderChargeBars)
+	Mod:AddPriorityCallback(ModCallbacks.MC_POST_RENDER, -300, function()
+		if GelloCharMod:IsRenderingMenu() or not Options.ChargeBars then return end
+
+		local renderMode = game:GetRoom():GetRenderMode()
+		if not (renderMode == RenderMode.RENDER_NULL or renderMode == RenderMode.RENDER_NORMAL or renderMode == RenderMode.RENDER_WATER_ABOVE) then return end
+		Mod.PlayerTools.ForEach(renderPlayerChargebar)
+	end)
 end
 
 
@@ -305,7 +307,7 @@ if Mod.RepentogonPlus then
 
 	local promp = GenericPrompt()
 	promp:Initialize()
-	promp:SetText("Would you like", "have Gello locked")
+	promp:SetText("Would you like", "have Gello locked?")
 	--Mod:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, function()
 	--	if not Isaac.GetPersistentGameData():Unlocked(GELLO_ACHIEVEMENT_ID) then
 	--	end

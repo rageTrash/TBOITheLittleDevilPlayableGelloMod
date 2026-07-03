@@ -15,7 +15,7 @@ function GelloCharMod:AddCharacterUnlock(charID, achievName, marks, diffType, ac
     GelloCharMod:AddUnlock(achievName, achievFilePath, paperFilePath)
     MarksNAchievHelper:SetMarkAchievement(modName, charID, achievName, marks, diffType)
     
-    local marks = marks or {}
+    marks = marks or {}
     if type(marks) ~= "table" then marks = {[marks] = diffType} end
 
     GelloCharMod.CharUnlocks[charID] = GelloCharMod.CharUnlocks[charID] or {}
@@ -117,6 +117,17 @@ function GelloCharMod:SetMarkNAchievementsData(data)
             Mother     = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MOTHER )],
             Beast      = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.THE_BEAST )],
         })
+
+        local persistData = Isaac.GetPersistentGameData()
+        if not persistData:Unlocked(GelloCharMod.GelloCharAchievement) then
+            for _, val in pairs(data.Marks.GELLO) do
+                if val > 0 then
+                    Mod.SaveHandler.Data("Gello Promp"):Set(true)
+                    persistData:Unlock(GelloCharMod.GelloCharAchievement, true)
+                    break
+                end
+            end
+        end
 
         for achievName, val in pairs(data.Achievements) do
             GelloCharMod:SetUnlock(achievName, val >0)

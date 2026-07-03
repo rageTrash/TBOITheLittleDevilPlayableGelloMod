@@ -188,23 +188,50 @@ Mod:AddCallback(ModCallbacks.MC_PRE_ROOM_ENTITY_SPAWN, function(_,t, v, s)
     end
 end)
 
-Mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
-    if not MarksNAchievHelper:IsAchievementsEnable(true) then return end
-    if Mod:IsUnlock("Tainted Gello") then return end
-    local level = game:GetLevel()
-    if level:GetStage() ~= LevelStage.STAGE8 and level:GetCurrentRoomIndex() ~= 94 then return end
-    if Isaac.GetPlayer(0):GetPlayerType() ~= Mod.Enum.Character.GELLO then return end
-    
-    for _, e in ipairs(Isaac.FindByType(6, 14)) do
-        if e.FrameCount == 0 then
-            local sp = e:GetSprite()
-            
-            sp:Load(ANIM_PATH, true)
-            sp:ReplaceSpritesheet(0, "gfx/characters/costumes/"..gellosGfxs[ (e.InitSeed % 13 +1) ])
-            sp:LoadGraphics()
-            
-            sp:Play("Idle", true)
+if Mod.RepentogonPlus then
+    Mod:AddCallback(ModCallbacks.MC_POST_SLOT_INIT, function(_, slot)
+        if not MarksNAchievHelper:IsAchievementsEnable(true) then return end
+        if Mod:IsUnlock("Tainted Gello") then return end
+        local level = game:GetLevel()
+        if level:GetStage() ~= LevelStage.STAGE8 and level:GetCurrentRoomIndex() ~= 94 then return end
+        if Isaac.GetPlayer(0):GetPlayerType() ~= Mod.Enum.Character.GELLO then return end
+
+        local sp = slot:GetSprite()
+        
+        sp:Load(ANIM_PATH, true)
+        sp:ReplaceSpritesheet(0, "gfx/characters/costumes/"..gellosGfxs[ (slot.InitSeed % 13 +1) ])
+        sp:LoadGraphics()
+        
+        sp:Play("Idle", true)
+    end, SlotVariant.HOME_CLOSET_PLAYER)
+    Mod:AddCallback(ModCallbacks.MC_POST_SLOT_UPDATE, function(_, slot)
+        if not MarksNAchievHelper:IsAchievementsEnable(true) then return end
+        if Mod:IsUnlock("Tainted Gello") then return end
+        local level = game:GetLevel()
+        if level:GetStage() ~= LevelStage.STAGE8 and level:GetCurrentRoomIndex() ~= 94 then return end
+        if Isaac.GetPlayer(0):GetPlayerType() ~= Mod.Enum.Character.GELLO then return end
+        
+        if slot:GetSprite():IsFinished("PayPrize") then Mod:TriggerUnlock("Tainted Gello") end
+    end, SlotVariant.HOME_CLOSET_PLAYER)
+else
+    Mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+        if not MarksNAchievHelper:IsAchievementsEnable(true) then return end
+        if Mod:IsUnlock("Tainted Gello") then return end
+        local level = game:GetLevel()
+        if level:GetStage() ~= LevelStage.STAGE8 and level:GetCurrentRoomIndex() ~= 94 then return end
+        if Isaac.GetPlayer(0):GetPlayerType() ~= Mod.Enum.Character.GELLO then return end
+        
+        for _, e in ipairs(Isaac.FindByType(6, 14)) do
+            if e.FrameCount == 1 then
+                local sp = e:GetSprite()
+                
+                sp:Load(ANIM_PATH, true)
+                sp:ReplaceSpritesheet(0, "gfx/characters/costumes/"..gellosGfxs[ (e.InitSeed % 13 +1) ])
+                sp:LoadGraphics()
+                
+                sp:Play("Idle", true)
+            end
+            if e:GetSprite():IsFinished("PayPrize") then Mod:TriggerUnlock("Tainted Gello") end
         end
-        if e:GetSprite():IsFinished("PayPrize") then Mod:TriggerUnlock("Tainted Gello") end
-    end
-end)
+    end)
+end

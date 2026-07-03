@@ -10,9 +10,9 @@ CustomCommands:AddCommand(
 )]]
 
 if not GelloCharMod.RepentogonPlus then
-GelloCharMod.Include(rute.."completion_marks_api.pause_screen_completion_marks_api")
-GelloCharMod.Include(rute.."completion_marks_api.add_character_mark_api")
-ebd
+	GelloCharMod.Include(rute.."completion_marks_api.pause_screen_completion_marks_api")
+	GelloCharMod.Include(rute.."completion_marks_api.add_character_mark_api")
+end
 
 GelloCharMod.Include(rute.."dssmenu.gellomenu")
 

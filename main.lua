@@ -111,15 +111,19 @@ end)
 
 if GelloCharMod.RepentogonPlus then
 	local loadsCount = 0
-	GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, -100, function(_, saveSlot, isSelected)
+	local currentSlot = -1
+	GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, -200, function(_, saveSlot, isSelected)
 		if not isSelected then return end
-		if loadsCount < 3 then
-			loadsCount = loadsCount+1
-			return
-		end
+		if currentSlot == saveSlot then return end
 		GelloCharMod.Init = false
 		setupData()
 		GelloCharMod.Init = true
+
+		currentSlot = saveSlot
+	end)
+	GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_COMPLETION_MARK_GET, 400, function()
+		GelloCharMod.SaveHandler.Data("MarksNAchievements"):Set( GelloCharMod:GetMarkNAchievementsData() )
+		GelloCharMod:SaveData(GelloCharMod.json.encode(GelloCharMod.Data))
 	end)
 else
 	GelloCharMod:AddPriorityCallback(ModCallbacks.MC_POST_PLAYER_INIT, -200, function() -- we have to load the achievements really really early

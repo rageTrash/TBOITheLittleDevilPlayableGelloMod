@@ -32,7 +32,7 @@ local glitchClassSave = Mod.SaveHandler.Save("GelloGlitchClass")
 
 local itemPool = game:GetItemPool()
 local INNATE_GROUP = "GELLO_INNATE_ITEM"
-
+local IsTaintedGelloPresent = false
 
 local tGellos = {
 	[Mod.Enum.Character.GELLO_B1] = true,
@@ -1398,6 +1398,7 @@ font:Load("font/pftempestasevencondensed.fnt")
 local pointsHUDIcon = Sprite()
 pointsHUDIcon:Load("gfx/ui_gello/pointsIcon_ui.anm2", true)
 function renderPointsIcon()
+	if not pointsHUDIcon:IsLoaded() or not IsTaintedGelloPresent then return end
 	local points = GelloPoints:Get(0)
 	if game:GetRoom():HasCurseMist() then points = 0 end
 
@@ -1419,14 +1420,16 @@ function renderPointsIcon()
 			count = count+1
 		end
 		xPos = 11 + 5 *count
-	elseif pTools.AnyPlayerHasCollectible(CollectibleType.COLLECTIBLE_DEEP_POCKETS)
+	elseif pTools.AnyPlayerHasCollectible(CollectibleType.COLLECTIBLE_DEEP_POCKETS) then
 		xPos = xPos +5
 	end
 	xPos = xPos + hudOffset *2 +6
 	yPos = yPos + hudOffset *1.2
 	if pType == PlayerType.PLAYER_JACOB then yPos = yPos +14 end
 
-	pointsHUDIcon.Color.A = alpha
+	local color = pointsHUDIcon.Color
+	color.A = alpha
+	pointsHUDIcon.Color = color
 	pointsHUDIcon:Render( Vector(xPos, yPos) )
 
 	font:DrawString(string.format("%02d", points), xPos, yPos, KColor(1, 1, 1, alpha))

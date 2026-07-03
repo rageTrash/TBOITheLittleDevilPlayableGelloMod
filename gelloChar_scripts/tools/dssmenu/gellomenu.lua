@@ -432,6 +432,7 @@ local exampledirectory = {
                     str = "lock all", fsize = 2,
                     func = function() charUpdateUnlock(false, charEnum.GELLO_B13) end,
                     tooltip = { strset = {"locks all", "t. gellos", "achievements"} }
+                },
                 {
                     str = "sync unlocks to marks", fsize = 2,
                     func = function() resyncUnlocksByMarks(charEnum.GELLO) end,
@@ -441,8 +442,9 @@ local exampledirectory = {
                     str = "sync marks to unlocks", fsize = 2,
                     func = function() resyncMarksByUnlocks(charEnum.GELLO) end,
                     tooltip = { strset = {"sync the marks to", "to t. gellos unlocks"} }
-                },{ str = "", nosel = true },
-                },{ str = "", nosel = true },
+                },
+                { str = "", nosel = true },
+                { str = "", nosel = true },
 
                 { str = "marks achievements", nosel = true },
             }

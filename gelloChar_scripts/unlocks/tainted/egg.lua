@@ -44,16 +44,20 @@ local function sync(player)
 	local save = pSave("PermaFamiliars", player):Get(nil)
 	if save == nil then return end
 	local effects = player:GetEffects()
-	for idStr, num in pairs(save.Items) do
-		local ID = tonumber(idStr)
-		if ID then
-			effects:AddCollectibleEffect(ID, true, num)
+	if save.Items then
+		for idStr, num in pairs(save.Items) do
+			local ID = tonumber(idStr)
+			if ID then
+				effects:AddCollectibleEffect(ID, true, num)
+			end
 		end
 	end
-	for idStr, num in pairs(save.Trinkets) do
-		local ID = tonumber(idStr)
-		if ID then
-			effects:AddTrinketEffect(ID, true, num)
+	if save.Trinkets then
+		for idStr, num in pairs(save.Trinkets) do
+			local ID = tonumber(idStr)
+			if ID then
+				effects:AddTrinketEffect(ID, true, num)
+			end
 		end
 	end
 end

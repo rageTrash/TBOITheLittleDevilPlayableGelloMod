@@ -1,7 +1,7 @@
 local rute = "character."
 local Mod = GelloCharMod
 
-for _, load in pairs({
+for _, load in ipairs({
 	"gello",
 	"Tainted._loader",
 }) do GelloCharMod.Include(rute..load) end

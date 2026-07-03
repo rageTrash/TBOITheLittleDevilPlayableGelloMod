@@ -21,94 +21,6 @@ local function generateStatesTable(num)
 	return tab
 end
 
-function GelloCharMod:GetCentepiedData(ent)
-	if ent and (ent:ToNPC() or ent:ToPlayer()) then
-		if ent:ToPlayer() then
-			return pSave("Centepied_Data", ent:ToPlayer()):Get(nil)
-		else
-			return Mod:GetEntityData(ent, "Centepied_Data", nil)
-		end
-	end
-end
-
-function GelloCharMod:SetCentepiedData(ent, data)
-	if ent and (ent:ToNPC() or ent:ToPlayer()) then
-		if ent:ToPlayer() then
-			local player = ent:ToPlayer()
-			local sData = pSave("Centepied_Data", player):Get(nil)
-
-			pSave("Centepied_Data", player):Set({
-				IsBroken = data.IsBroken or sData and sData.IsBroken,
-				Num = data.Num or sData and sData.Num,
-				OgNum = data.OgNum or sData and sData.OgNum,
-				States = data.States or sData and sData.States,
-			})
-		else
-			local entData = Mod:GetEntityData(ent, "Centepied_Data", nil)
-			Mod:SetEntityData(ent, "Centepied_Data", {
-				IsBroken = data.IsBroken or entData and entData.IsBroken,
-				Num = data.Num or entData and entData.Num,
-				OgNum = data.OgNum or entData and entData.OgNum,
-				States = data.States or entData and entData.States,
-			})
-		end
-	end
-end
-
-function GelloCharMod:RemoveCentepiedShield(ent)
-	if ent and (ent:ToNPC() or ent:ToPlayer()) then
-		if ent:ToPlayer() then
-			pSave("Centepied_Data", ent:ToPlayer()):Set(nil)
-		else
-			Mod:SetEntityData(ent, "Centepied_Data", nil)
-		end
-		UpdateCentepiedAmount(ent)
-	end
-end
-
---- give centepied shield is below all this local functions
-
-local function GetSpawnPos(spawner)
-	local data = Mod:GetEntityData(spawner, "Centepied_SpawnData")
-	if data == nil or data.Size ~= spawner.Size then
-		data = {}
-		data.Size = spawner.Size
-		local pos = math.max(SPAWN_MULT * data.Size, 30)
-		data.Pos = Vector(0,  pos)
-
-		Mod:SetEntityData(spawner, "Centepied_SpawnData", data)
-	end
-	return data.Pos
-end
-
-local function GetAngleStr(effect)
-	local spawner = effect.SpawnerEntity
-	if not spawner then
-		return "S"
-	end
-	local angle = (effect.Position - spawner.Position):Normalized():GetAngleDegrees()
-
-
-	if angle <= 22.5 and angle >= -22.5 then
-		return "E"
-	elseif angle <= -67.5 and angle >= -112.5 then
-		return "N"
-	elseif angle >= 67.5 and angle <= 112.5 then
-		return "S"
-	elseif angle >= 157.5 or angle <= -157.5 then
-		return "W"
-	elseif angle > -67.5 and angle < -22.5 then
-		return "NE"
-	elseif angle > -157.5 and angle < -112.5 then
-		return "NW"
-	elseif angle > 22.5 and angle < 67.5 then
-		return "SE"
-	elseif angle > 112.5 and angle < 157.5 then
-		return "SW"
-	end
-end
-
-
 local function UpdateCentepiedAmount(ent)
 	local data = Mod:GetCentepiedData(ent)
 	local num = data and not data.IsBroken and data.Num or 0
@@ -178,6 +90,52 @@ local function UpdateCentepiedAmount(ent)
 	Mod:SetCentepiedData(ent, data)
 end
 
+function GelloCharMod:GetCentepiedData(ent)
+	if ent and (ent:ToNPC() or ent:ToPlayer()) then
+		if ent:ToPlayer() then
+			return pSave("Centepied_Data", ent:ToPlayer()):Get(nil)
+		else
+			return Mod:GetEntityData(ent, "Centepied_Data", nil)
+		end
+	end
+end
+
+function GelloCharMod:SetCentepiedData(ent, data)
+	if ent and (ent:ToNPC() or ent:ToPlayer()) then
+		if ent:ToPlayer() then
+			local player = ent:ToPlayer()
+			local sData = pSave("Centepied_Data", player):Get(nil)
+
+			pSave("Centepied_Data", player):Set({
+				IsBroken = data.IsBroken or sData and sData.IsBroken,
+				Num = data.Num or sData and sData.Num,
+				OgNum = data.OgNum or sData and sData.OgNum,
+				States = data.States or sData and sData.States,
+			})
+		else
+			local entData = Mod:GetEntityData(ent, "Centepied_Data", nil)
+			Mod:SetEntityData(ent, "Centepied_Data", {
+				IsBroken = data.IsBroken or entData and entData.IsBroken,
+				Num = data.Num or entData and entData.Num,
+				OgNum = data.OgNum or entData and entData.OgNum,
+				States = data.States or entData and entData.States,
+			})
+		end
+	end
+end
+
+function GelloCharMod:RemoveCentepiedShield(ent)
+	if ent and (ent:ToNPC() or ent:ToPlayer()) then
+		if ent:ToPlayer() then
+			pSave("Centepied_Data", ent:ToPlayer()):Set(nil)
+		else
+			Mod:SetEntityData(ent, "Centepied_Data", nil)
+		end
+		UpdateCentepiedAmount(ent)
+	end
+end
+
+--- give centepied shield is below all this local functions
 function GelloCharMod:GiveCentepiedShield(ent, num)
 	if ent and (ent:ToNPC() or ent:ToPlayer()) and num > MIN_NUM then
 		local data = Mod:GetCentepiedData(ent)
@@ -209,6 +167,48 @@ function GelloCharMod:GiveCentepiedShield(ent, num)
 	end
 	return false
 end
+
+
+local function GetSpawnPos(spawner)
+	local data = Mod:GetEntityData(spawner, "Centepied_SpawnData")
+	if data == nil or data.Size ~= spawner.Size then
+		data = {}
+		data.Size = spawner.Size
+		local pos = math.max(SPAWN_MULT * data.Size, 30)
+		data.Pos = Vector(0,  pos)
+
+		Mod:SetEntityData(spawner, "Centepied_SpawnData", data)
+	end
+	return data.Pos
+end
+
+local function GetAngleStr(effect)
+	local spawner = effect.SpawnerEntity
+	if not spawner then
+		return "S"
+	end
+	local angle = (effect.Position - spawner.Position):Normalized():GetAngleDegrees()
+
+
+	if angle <= 22.5 and angle >= -22.5 then
+		return "E"
+	elseif angle <= -67.5 and angle >= -112.5 then
+		return "N"
+	elseif angle >= 67.5 and angle <= 112.5 then
+		return "S"
+	elseif angle >= 157.5 or angle <= -157.5 then
+		return "W"
+	elseif angle > -67.5 and angle < -22.5 then
+		return "NE"
+	elseif angle > -157.5 and angle < -112.5 then
+		return "NW"
+	elseif angle > 22.5 and angle < 67.5 then
+		return "SE"
+	elseif angle > 112.5 and angle < 157.5 then
+		return "SW"
+	end
+end
+
 
 
 
