@@ -19,7 +19,7 @@ end
 
 local function resyncMarksByUnlocks(charID)
     for _, mark in ipairs(MarksNAchievHelper.MarkType.ALL_MARKS) do
-        Mod:GetMark(charID, mark, 0)
+        Mod:SetMark(charID, mark, 0)
     end
     for name, marks in pairs(Mod:GetCharacterUnlocks(charID)) do
         if Mod:IsUnlock(name) then
@@ -372,7 +372,35 @@ local exampledirectory = {
             },
 
             { str = "", nosel = true },
-            { str = "gello unlocks", dest = "gello_unlocks", fsize = 2 },
+            {
+                str = "gello", fsize = 2, displayif = function() return Mod.RepentogonPlus end,
+                func = function()
+                    if not Mod.RepentogonPlus then return end
+                    local persData = Isaac.GetPersistentGameData()
+                    if persData:Unlocked(Mod.GelloCharAchievement) then
+                        Isaac.ExecuteCommand("lockachievement "..Mod.GelloCharAchievement)
+                    else
+                        persData:Unlock(Mod.GelloCharAchievement, true)
+                    end
+                end,
+                tooltip = { strset = {"unlocks", "gello"} }
+            },
+            { str = "na", nosel = true, fsize = 2, displayif = function() return Mod.RepentogonPlus end,
+                update = function(b, i, t)
+                    if not Mod.RepentogonPlus then return end
+                    if Isaac.GetPersistentGameData():Unlocked(Mod.GelloCharAchievement) then
+                        b.str = "unlocked"
+                    else
+                        b.str = "locked"
+                    end
+                end
+            },
+            { str = "", nosel = true, displayif = function() return Mod.RepentogonPlus end },
+
+            { str = "gello unlocks", dest = "gello_unlocks", displayif = function()
+                if not Mod.RepentogonPlus then return true end
+                return Isaac.GetPersistentGameData():Unlocked(Mod.GelloCharAchievement)
+            end, fsize = 2 },
             { str = "t. gello unlocks", dest = "gello_b_unlocks", displayif = function() return Mod:IsUnlock("Tainted Gello") end, fsize = 2 },
         },
     },

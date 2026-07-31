@@ -2,23 +2,20 @@ local Mod = GelloCharMod
 local game = Mod.Game
 local pSave = GelloCharMod.SaveHandler.Player
 
-IDK_CustomRevive.AddCustomRevive(Mod.Enum.Item.FETAL_JAR, IDK_CustomRevive.RevivePriority.SOUL_OF_LAZARUS, false)
-
-
-local function reviveFun(p)
-	p:AnimateCollectible(Mod.Enum.Item.FETAL_JAR)
-
-	if p:GetEffectiveMaxHearts() <= 0 then
-		p:AddMaxHearts(2)
-	end
-	p:AddHearts(99)
-	if Mod.RepentogonPlus then
-		player:GetEffects():AddNullEffect(Mod.Enum.NullItem.FETAL_JAR_STATS)
-	else
-		pSave("Fetal Jar revives", p):Set( pSave("Fetal Jar revives", p):Get(0) +1 )
-		Mod.PlayerTools.DoCache(p, CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SIZE)
-	end
+if Mod.RepentogonPlus then
+	IDK_CustomRevive.AddCustomRevive(
+		Mod.Enum.NullItem.FETAL_JAR_LIVES,
+		IDK_CustomRevive.RevivePriority.SOUL_OF_LAZARUS,
+		IDK_CustomRevive.ReviveType.NULL
+	)
+else
+	IDK_CustomRevive.AddCustomRevive(
+		Mod.Enum.Item.FETAL_JAR,
+		IDK_CustomRevive.RevivePriority.SOUL_OF_LAZARUS,
+		IDK_CustomRevive.ReviveType.ITEM
+	)
 end
+
 
 local function removeCollectibleEffect(player)
 	if Mod.RepentogonPlus then
@@ -48,31 +45,55 @@ Mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, _, _, player, flags, slot)
 end, Mod.Enum.Item.FETAL_JAR)
 
 
-Mod:AddCallback(IDK_CustomRevive.Callbacks.PRE_CUSTOM_REVIVE_ITEM, function(_, player, _, isTrinket)
-	if isTrinket then return end
+Mod:AddCallback(IDK_CustomRevive.Callbacks.CAN_PLAYER_REVIVE_CHECK, function(_, player, config)
 	local effects = player:GetEffects()
 	if Mod.RepentogonPlus then
-		return effects:HasNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES)
+		if config:IsNull() and config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES then
+			return effects:HasNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES)
+		end
+	elseif config:IsCollectible() and config.ID == Mod.Enum.Item.FETAL_JAR then
+		return effects:HasCollectibleEffect(Mod.Enum.Item.FETAL_JAR)
 	end
+end)
 
-	return effects:HasCollectibleEffect(Mod.Enum.Item.FETAL_JAR)
-end, Mod.Enum.Item.FETAL_JAR)
-
-Mod:AddCallback(IDK_CustomRevive.Callbacks.POST_CUSTOM_REVIVE_ITEM, function(_, player, _, isTrinket)
-	if isTrinket then return end
+Mod:AddCallback(IDK_CustomRevive.Callbacks.ON_PLAYER_REVIVE, function(_, player, config)
+	local effects = player:GetEffects()
+	if Mod.RepentogonPlus then
+		if not (config:IsNull() and config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES) then return end
+	elseif not (config:IsCollectible() and config.ID == Mod.Enum.Item.FETAL_JAR) then return
+	end
 	removeCollectibleEffect(player)
 
-	local level = game:GetLevel()
-	local enterDir = level.EnterDoor
-	local room = level:GetCurrentRoom()
-	-- base from Fiend Folio
-	if enterDir == -1 or room:GetDoor(enterDir) == nil or level:GetCurrentRoomIndex() == level:GetPreviousRoomIndex() then
-		game:StartRoomTransition(level:GetCurrentRoomIndex(), -1, RoomTransitionAnim.ANKH)
-	else
-		local doorData = room:GetDoor(enterDir)
-		level.LeaveDoor = -1
-		game:StartRoomTransition(doorData.TargetRoomIndex, doorData.Direction, RoomTransitionAnim.ANKH)
+	--local level = game:GetLevel()
+	--local enterDir = level.EnterDoor
+	--local room = level:GetCurrentRoom()
+	---- base from Fiend Folio
+	--if enterDir == -1 or room:GetDoor(enterDir) == nil or level:GetCurrentRoomIndex() == level:GetPreviousRoomIndex() then
+	--	game:StartRoomTransition(level:GetCurrentRoomIndex(), -1, RoomTransitionAnim.ANKH)
+	--else
+	--	local doorData = room:GetDoor(enterDir)
+	--	level.LeaveDoor = -1
+	--	game:StartRoomTransition(doorData.TargetRoomIndex, doorData.Direction, RoomTransitionAnim.ANKH)
+	--end
+
+	if player:GetEffectiveMaxHearts() <= 0 then
+		player:AddMaxHearts(2)
+	end
+	player:AddHearts(99)
+	player:SetMinDamageCooldown(30)
+
+	local ref = EntityRef(player)
+	local dmg = 15 + (player.Damage / 10)
+	for _, ent in ipairs(Isaac.FindInRadius(player.Position, 80, EntityPartition.ENEMY)) do
+		ent:TakeDamage(dmg, 0, ref, 0)
 	end
 
-	if not REPENTOGON then Mod:RunLater(1, reviveFun, player) end
-end, Mod.Enum.Item.FETAL_JAR)
+	if Mod.RepentogonPlus then
+		player:GetEffects():AddNullEffect(Mod.Enum.NullItem.FETAL_JAR_STATS)
+	else
+		pSave("Fetal Jar revives", p):Set( pSave("Fetal Jar revives", p):Get(0) +1 )
+		Mod.PlayerTools.DoCache(p, CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SIZE)
+	end
+
+	player:AnimateCollectible(Mod.Enum.Item.FETAL_JAR)
+end)

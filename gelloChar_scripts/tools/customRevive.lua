@@ -1,5 +1,5 @@
 local YR_MOD = GelloCharMod
-local VERSION = 1.3
+local VERSION = 1.4
 
 if IDK_CustomRevive ~= nil and IDK_CustomRevive.Version and IDK_CustomRevive.Version >= VERSION then return end
 IDK_CustomRevive = IDK_CustomRevive or {}
@@ -8,11 +8,14 @@ IDK_CustomRevive.Version = VERSION
 if IDK_CustomRevive.Mod ~= nil then
 	if REPENTOGON then
 		IDK_CustomRevive.Mod:RemoveCallback(ModCallbacks.MC_PRE_TRIGGER_PLAYER_DEATH, IDK_CustomRevive.PrePlayerTriggerDeath)
-		IDK_CustomRevive.Mod:RemoveCallback(ModCallbacks.MC_POST_PLAYER_REVIVE, IDK_CustomRevive.PostPlayerRevive)
+		IDK_CustomRevive.Mod:RemoveCallback(ModCallbacks.MC_PRE_PLAYER_REVIVE, IDK_CustomRevive.PrePlayerRevive)
 		IDK_CustomRevive.Mod:RemoveCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, IDK_CustomRevive.PlayerUpdateCallback)
 	else
 		IDK_CustomRevive.Mod:RemoveCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, IDK_CustomRevive.EntityTakeDMGCallback)
 		IDK_CustomRevive.Mod:RemoveCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, IDK_CustomRevive.PlayerUpdateCallback)
+	end
+	if IDK_CustomRevive.GameStart then
+		IDK_CustomRevive.Mod:RemoveCallback(ModCallbacks.MC_POST_GAME_STARTED, IDK_CustomRevive.GameStart)
 	end
 end
 IDK_CustomRevive.Mod = YR_MOD
@@ -34,10 +37,19 @@ local RevivePriority = {
 	LOW = 13,
 }
 
-IDK_CustomRevive.Callbacks = IDK_CustomRevive.Callbacks or {
-	PRE_CUSTOM_REVIVE_ITEM = {},            --- arg : [ EntityPlayer, ItemID(int), IsTrinket(bool), RevivePriority(int), AdvanceRNG(bool) ] return : [ bool ] extra param : [ ItemID(int) ]
-	POST_CUSTOM_REVIVE_ITEM = {},           --- arg : [ EntityPlayer, ItemID(int), IsTrinket(bool) ] extra param : [ ItemID(int) ]
+local ReviveType = {
+	ITEM = 0,
+	TRINKET = 1,
+	NULL = 2,
 }
+
+IDK_CustomRevive.Callbacks = IDK_CustomRevive.Callbacks or {
+	CAN_PLAYER_REVIVE_CHECK = {},    --- arg : [ EntityPlayer, ItemConfig, AdvanceRNG(bool) ] return : [ bool ]
+	ON_PLAYER_REVIVE = {},           --- arg : [ EntityPlayer, ItemConfig ]
+}
+IDK_CustomRevive.Callbacks.PRE_CUSTOM_REVIVE_ITEM  = IDK_CustomRevive.Callbacks.CAN_PLAYER_REVIVE_CHECK
+IDK_CustomRevive.Callbacks.POST_CUSTOM_REVIVE_ITEM = IDK_CustomRevive.Callbacks.ON_PLAYER_REVIVE
+
 
 local checkItems = {
 	[0] = function() return false end,
@@ -91,18 +103,31 @@ local checkItems = {
 
 
 IDK_CustomRevive.RevivePriority = RevivePriority
+IDK_CustomRevive.ReviveType = ReviveType
 IDK_CustomRevive.RevivalList = IDK_CustomRevive.RevivalList or {}
 for t, val in pairs(RevivePriority) do
 	IDK_CustomRevive.RevivalList[val] = IDK_CustomRevive.RevivalList[val] or {}
 end
 
 
+local cache_GetData = {}
+function IDK_CustomRevive.GetData(player)
+	local ptr = GetPtrHash(player)
+	if not cache_GetData[ptr] then cache_GetData[ptr] = {} end
 
-function IDK_CustomRevive.AddCustomRevive(ID, priority, isTrinket)
+	return cache_GetData[ptr]
+end
+
+
+function IDK_CustomRevive.AddCustomRevive(ItemId, priority, reviveType)
+	if type(ItemId) ~= "number" or math.floor(ItemId) ~= ItemId or ItemId < CollectibleType.NUM_COLLECTIBLES then
+		error("argument #1 is an invalid value", 2)
+		return
+	end
 	local priority = priority or RevivePriority.HIGH
-	local isTrinket = isTrinket or false
+	local reviveType = reviveType or ReviveType.ITEM
 
-	table.insert(IDK_CustomRevive.RevivalList[priority], {ID = ID, IsTrinket = isTrinket})
+	table.insert(IDK_CustomRevive.RevivalList[priority], {ID = ItemId, ReviveType = reviveType})
 end
 
 
@@ -110,19 +135,24 @@ function IDK_CustomRevive.CanPlayerRevive(player, priority, advanceRNG)
 	if not player or type(player) ~= "userdata" then return false end
 	local priority = priority or 0
 	if type(priority) ~= "number" or priority < 0 or priority > 13 then return false end
-	local advanceRNG = advanceRNG or true
+	local advanceRNG = type(advanceRNG) == "boolean" and advanceRNG or true
 	local effects = player:GetEffects()
 
+	local itemConfig = Isaac.GetItemConfig()
 	for _, data in ipairs(IDK_CustomRevive.RevivalList[priority]) do
-		if ( data.IsTrinket and (player:HasTrinket(data.ID) or effects:HasTrinketEffect(data.ID)) ) or
-			( not data.IsTrinket and (player:HasCollectible(data.ID) or effects:HasCollectibleEffect(data.ID)) ) then
-				
-			for _, call in ipairs(Isaac.GetCallbacks(IDK_CustomRevive.Callbacks.PRE_CUSTOM_REVIVE_ITEM)) do
-				if call.Param == nil or call.Param == data.ID then
-					local res = call.Function(call.Mod, player, data.ID, data.IsTrinket, priority, advanceRNG)
-					if res == true then
-						return true, data.ID, data.IsTrinket
-					end
+		local con = nil
+		if data.ReviveType == ReviveType.ITEM then
+			con = itemConfig:GetCollectible(data.ID)
+		elseif data.ReviveType == ReviveType.TRINKET then
+			con = itemConfig:GetTrinket(data.ID)
+		elseif data.ReviveType == ReviveType.NULL then
+			con = itemConfig:GetNullItem(data.ID)
+		end
+		if con then
+			for _, call in ipairs(Isaac.GetCallbacks(IDK_CustomRevive.Callbacks.CAN_PLAYER_REVIVE_CHECK)) do
+				local res = call.Function(call.Mod, player, con, advanceRNG)
+				if type(res) == "boolean" and res == true then
+					return true, con
 				end
 			end
 		end
@@ -190,24 +220,25 @@ function IDK_CustomRevive.IsPlayerGoingToDie(player, dmg, src)
 end
 local game = Game()
 function IDK_CustomRevive.SetPlayerRevive(player)
-	local data = player:GetData()
-	if data.IDK_CustomRevive_Data and data.IDK_CustomRevive_Data.Num > 0 then return true end
+	local data = IDK_CustomRevive.GetData(player)
+	if data.Num and data.Num > 0 then return true end
 
 	local revive = false
-	local id = 0
-	local isTrinket = false
+	local config = nil
 
 	for i=0, #checkItems do
 		if not checkItems[i](player) then
-			revive, id, isTrinket = IDK_CustomRevive.CanPlayerRevive(player, i)
+			revive, config = IDK_CustomRevive.CanPlayerRevive(player, i)
 		else return false end
 		if revive then break end
 	end
 
 	if revive then
 		player:GetEffects():AddNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE)
-		local lazSouls = data.IDK_CustomRevive_Data and data.IDK_CustomRevive_Data.Num or 0
-		data.IDK_CustomRevive_Data = {ID = id, IsTrinket = isTrinket, ForceRemove = game:GetFrameCount() +2, Num = lazSouls +1}
+		local lazSouls = data.Num and data.Num or 0
+		data.Config = config
+		data.ForceRemove = game:GetFrameCount() +2
+		data.Num = lazSouls +1
 		return true
 	end
 end
@@ -270,40 +301,44 @@ if not REPENTOGON and not IDK_CustomRevive.EntityMetadataSet then
 end
 
 
+function IDK_CustomRevive.GameStart() cache_GetData = {} end
+IDK_CustomRevive.Mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, IDK_CustomRevive.GameStart)
+
+
 if REPENTOGON then
 	function IDK_CustomRevive.PrePlayerTriggerDeath(_, player)
 		IDK_CustomRevive.SetPlayerRevive(player)
 	end
-	function IDK_CustomRevive.PostPlayerRevive(_, player)
-		local data = player:GetData()
-		if data.IDK_CustomRevive_Data == nil then return end
-		if player:GetSoulHearts() >0 then player:AddSoulHearts(-1) end
+	function IDK_CustomRevive.PrePlayerRevive(_, player)
+		local data = IDK_CustomRevive.GetData(player)
+		if data == nil then return end
+		
+		player:Revive()
+		player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.Num)
+		if player:GetSoulHearts() >0 then player:AddSoulHearts(-player:GetSoulHearts()) end
 
-		local reviveData = data.IDK_CustomRevive_Data
-		for _, call in ipairs(Isaac.GetCallbacks(IDK_CustomRevive.Callbacks.POST_CUSTOM_REVIVE_ITEM)) do
-			if call.Param == nil or call.Param == reviveData.ID then
-				call.Function(call.Mod, player, reviveData.ID, reviveData.IsTrinket)
-			end
+		for _, call in ipairs(Isaac.GetCallbacks(IDK_CustomRevive.Callbacks.ON_PLAYER_REVIVE)) do
+			call.Function(call.Mod, player, data.Config)
 		end
-		data.IDK_CustomRevive_Data = nil
+		data = nil
 	end
 	function IDK_CustomRevive.PlayerUpdateCallback(_, player)
 		if game:GetFrameCount() <= 0 then return end
-		local data = player:GetData()
-		if data.IDK_CustomRevive_Data == nil then return end
+		local data = IDK_CustomRevive.GetData(player)
+		if data == nil then return end
 		
 		if player:IsHoldingItem() then
-			data.IDK_CustomRevive_Data.ForceRemove = game:GetFrameCount() +2
+			data.ForceRemove = game:GetFrameCount() +2
 		elseif player:IsExtraAnimationFinished() then
-			if game:GetFrameCount() >= data.IDK_CustomRevive_Data.ForceRemove then
-				player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.IDK_CustomRevive_Data.Num)
-				data.IDK_CustomRevive_Data = nil
+			if game:GetFrameCount() >= data.ForceRemove then
+				player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.Num)
+				data = nil
 			end
 		end
 	end
 
 	IDK_CustomRevive.Mod:AddPriorityCallback(ModCallbacks.MC_PRE_TRIGGER_PLAYER_DEATH, (2^32 -1), IDK_CustomRevive.PrePlayerTriggerDeath)
-	IDK_CustomRevive.Mod:AddPriorityCallback(ModCallbacks.MC_POST_PLAYER_REVIVE, (2^32 -1), IDK_CustomRevive.PostPlayerRevive)
+	IDK_CustomRevive.Mod:AddPriorityCallback(ModCallbacks.MC_PRE_PLAYER_REVIVE, (2^32 -1), IDK_CustomRevive.PrePlayerRevive)
 	IDK_CustomRevive.Mod:AddPriorityCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, (2^32 -1), IDK_CustomRevive.PlayerUpdateCallback, 0)
 else
 	function IDK_CustomRevive.EntityTakeDMGCallback(_, ent, amount, dmgFlags, src)
@@ -316,35 +351,34 @@ else
 	end
 	function IDK_CustomRevive.PlayerUpdateCallback(_, player)
 		if game:GetFrameCount() <= 0 then return end
-		local data = player:GetData()
+		local data = IDK_CustomRevive.GetData(player)
 
-		if player:GetMaxHearts() + player:GetBoneHearts() + player:GetSoulHearts() == 0 and data.IDK_CustomRevive_Data == nil then
+		if player:GetMaxHearts() + player:GetBoneHearts() + player:GetSoulHearts() == 0 and data == nil then
 			IDK_CustomRevive.SetPlayerRevive(player)
 			return
 		end
 
 		local sp = player:GetSprite()
 		if sp:GetAnimation():match("Death") then
-			if data.IDK_CustomRevive_Data == nil then
+			if data == nil then
 				IDK_CustomRevive.SetPlayerRevive(player)
-			elseif sp:IsFinished() and data.IDK_CustomRevive_Data ~= nil then
-				if player:GetSoulHearts() >0 then player:AddSoulHearts(-1) end
+			elseif sp:IsFinished() and data ~= nil then
+				player:Revive()
+				player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.Num)
+				if player:GetSoulHearts() >0 then player:AddSoulHearts(-player:GetSoulHearts()) end
 
-				local reviveData = data.IDK_CustomRevive_Data
-				for _, call in ipairs(Isaac.GetCallbacks(IDK_CustomRevive.Callbacks.POST_CUSTOM_REVIVE_ITEM)) do
-					if call.Param == nil or call.Param == reviveData.ID then
-						call.Function(call.Mod, player, reviveData.ID, reviveData.IsTrinket)
-					end
+				for _, call in ipairs(Isaac.GetCallbacks(IDK_CustomRevive.Callbacks.ON_PLAYER_REVIVE)) do
+					call.Function(call.Mod, player, data.Config)
 				end
-				data.IDK_CustomRevive_Data = nil
+				data = nil
 			end
-		elseif data.IDK_CustomRevive_Data ~= nil then
+		elseif data ~= nil then
 			if player:IsHoldingItem() then
-				data.IDK_CustomRevive_Data.ForceRemove = game:GetFrameCount() +2
+				data.ForceRemove = game:GetFrameCount() +2
 			elseif player:IsExtraAnimationFinished() then
-				if game:GetFrameCount() >= data.IDK_CustomRevive_Data.ForceRemove then
-					player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.IDK_CustomRevive_Data.Num)
-					data.IDK_CustomRevive_Data = nil
+				if game:GetFrameCount() >= data.ForceRemove then
+					player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.Num)
+					data = nil
 				end
 			end
 		end

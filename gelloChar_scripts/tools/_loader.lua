@@ -16,8 +16,9 @@ end
 
 GelloCharMod.Include(rute.."dssmenu.gellomenu")
 
-GelloCharMod.HiddenItemManager = GelloCharMod.Include(rute .. "hiddenItemManager.hidden_item_manager")
+GelloCharMod.HiddenItemManager = GelloCharMod.Include(rute .. "innate_items_manager.hidden_item_manager")
 GelloCharMod.HiddenItemManager:Init(GelloCharMod)
+--GelloCharMod.Include(rute.."innate_items_manager.manager")
 
 --GelloCharMod.Include(rute.."hud_helper.hud_helper")
 GelloCharMod.Include(rute.."vanillathings._loader")

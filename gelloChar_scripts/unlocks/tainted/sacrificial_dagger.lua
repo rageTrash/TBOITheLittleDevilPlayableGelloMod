@@ -24,11 +24,11 @@ Mod:AddCallback(ModCallbacks.MC_USE_CARD, function(_, _, player, flags)
 
 		local coinTable = Mod:GenerateTableCoins(coinSpawn*5, RNG)
 		for i=1, #coinTable do
-			Mod:Spawn(5, 20, coinTable[i], player.Position, Mod:RandomVector(-3.5,3.5, RNG), player)
+			Mod:Spawn(5, 20, coinTable[i], player.Position, Mod:RandomVector(-3.5,3.5, RNG), player, RNG:Next())
 		end
 		
 	elseif flags & UseFlag.USE_MIMIC == 0 then
-		local ent = Mod:Spawn(5, 300, Mod.Enum.Card.SACRIFICIAL_DAGGER, player.Position + Vector(0,40), Vector.Zero, player)
+		local ent = Mod:Spawn(5, 300, Mod.Enum.Card.SACRIFICIAL_DAGGER, player.Position + Vector(0,40), Vector.Zero, player, RNG:Next())
 
 		if Epiphany then
 			Epiphany:AddMidasImmunity(ent:ToPickup())

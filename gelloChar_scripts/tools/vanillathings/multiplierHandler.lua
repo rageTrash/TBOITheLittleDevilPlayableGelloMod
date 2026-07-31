@@ -1,4 +1,4 @@
-local VERSION = 1.17
+local VERSION = 1.171
 local YOUR_MOD = GelloCharMod
 
 if YOUR_MOD == nil then
@@ -27,6 +27,7 @@ if MultiplierHandler.Game == nil then MultiplierHandler.Game = Game() end
 local game = MultiplierHandler.Game
 
 local epiphoraFrameMult = 1/270
+local epiphoraFrameMult_RepPlus = 1/180
 
 
 local defaultStats = {
@@ -533,7 +534,7 @@ local function getVarialMultTear(player)
 		
 		local charge = player:GetEpiphoraCharge()
 		if REPENTANCE_PLUS then
-			mult = mult * ( 1+ epiphoraFrameMult * math.min(charge, 270) )
+			mult = mult * ( 1+ epiphoraFrameMult_RepPlus * math.min(charge, 180) )
 		else
 		    if charge >= 270 then
 		        mult = mult *2
@@ -547,7 +548,7 @@ local function getVarialMultTear(player)
 		local charge = (getData(player, "Epiphora") or {}).Timer or 0
 
 		if REPENTANCE_PLUS then
-			mult = mult * ( 1+ epiphoraFrameMult * math.min(charge, 270) )
+			mult = mult * ( 1+ epiphoraFrameMult_RepPlus * math.min(charge, 180) )
 		else
 		    if charge >= 270 then
 		        mult = mult *2

@@ -288,19 +288,6 @@ local itemsDesc = {
 		en_us = "Lil Cow",
 		spa = "Pequeña Vaca",
 	}},
-
-	{ID = Mod.Enum.Item.MISSING_HANDLER, Desc = {
-		en_us = makeDesc(
-			"Give a special familiar",
-			""),
-		
-		spa = makeDesc(
-			"Da un familiar especial",
-			""),
-	}, Name = {
-		en_us = "Missing Familiar",
-		spa = "Familiar Perdido",
-	}},
 }
 
 for _, data in ipairs(itemsDesc) do

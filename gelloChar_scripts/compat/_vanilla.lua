@@ -57,6 +57,10 @@ Mod:AddConsumeItemEffect(
         EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}
     }
     ,{ Id = CollectibleType.COLLECTIBLE_PARASITOID, Fun = spawnFlys, EID = flysDesc, }
+    ,{ Id = CollectibleType.COLLECTIBLE_BROWN_NUGGET,
+        Fun = function(player, rng) player:AddBlueFlies(10, player.Position, player) end,
+        EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}
+    }
 )
 
 
@@ -218,6 +222,8 @@ Mod:AddConsumeItemEffect(
         EID = {en_us = "Spawns 3 Black Hearts", spa = "Genera 3 Corazones Negro"}, Stats = {DmgOffset = 0.5}
     }
     ,{ Id = CollectibleType.COLLECTIBLE_DARK_PRINCES_CROWN, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {Tears = 0.2} }
+    ,{ Id = CollectibleType.COLLECTIBLE_GHOST_PEPPER, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {TempDmgOffset = 2.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_LITTLE_HORN, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {TempDmgOffset = 3.5} }
 )
 
 
@@ -472,6 +478,19 @@ Mod:AddConsumeItemEffect(
         end,
         EID = {en_us = "Spawns a Lucky Penny", spa = "Genera una Moneda de la Suerte"}
     }
+    ,{ Id = CollectibleType.COLLECTIBLE_GREEDS_GULLET,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local pos = player.Position
+            for _=0, math.ceil(player:GetMaxHearts() /2) do
+                spawnPickup(room:FindFreePickupSpawnPosition(po, 40, true), 20, CoinSubType.COIN_DIME, player, rng:Next())
+            end
+        end,
+        EID = {
+            en_us = "Spawns a dime#For each heart container, spawns an additional dime",
+            spa = "Genera un dime#Por canda contenedor de corazón, general un dime adicional"
+        }
+    }
 )
 
 
@@ -598,6 +617,7 @@ Mod:AddConsumeItemEffect(-- batteries
         EID = {en_us = "Spawns a Battery and 3 to 5 spiders", spa = "Genera una Bateria y 3 a 5 arañas"},
     }
     ,{ Id = CollectibleType.COLLECTIBLE_TECH_X, Fun = spawnMegaBattery, EID = megaBatteryDesc, Stats = {ForceDmg = 2.3} }
+    ,{ Id = CollectibleType.COLLECTIBLE_JACOBS_LADDER, Fun = spawnBattery, EID = batteryDesc, }
 )
 
 
@@ -818,7 +838,8 @@ Mod:AddConsumeItemEffect( -- mostly stat things or setting an active off
     ,{ Id = CollectibleType.COLLECTIBLE_DEPRESSION, Stats = {Tears = 0.34} }
     ,{ Id = CollectibleType.COLLECTIBLE_PLAN_C, NoActive = true }
     ,{ Id = CollectibleType.COLLECTIBLE_VOID, NoActive = true }
-    ,{ Id = CollectibleType.COLLECTIBLE_VOID, EID = {en_us = "Does the effect of a random dice", spa = "Hace el efecto de un dado"} }
+    ,{ Id = CollectibleType.COLLECTIBLE_D_INFINITY, EID = {en_us = "Does the effect of a random dice", spa = "Hace el efecto de un dado"} }
+    ,{ Id = CollectibleType.COLLECTIBLE_CAMO_UNDIES, Stats = {Tears = 0.34, ForceTempDmg = 10} }
 )
 
 
@@ -1090,6 +1111,16 @@ Mod:AddConsumeItemEffect(
         EID = {
             en_us = "When defeating the boss of the floor and neither deal room spawn#Isaac is teleported to the devil room#This can trigger up to 3 times",
             spa = "Al derrotal al jefe del piso y ninguno de los cuartos del trato se genera#Isaac es teletransportado al cuarto del diablo#Esto puede activarse hasta 3 veces"
+        }
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_EUCHARIST,
+        Fun = function()
+            local sav = saveHand("Consume - Eucharist")
+            sav:Set(sav:Get(0) +3)
+        end,
+        EID = {
+            en_us = "When defeating the boss of the floor and neither deal room spawn#Isaac is teleported to the angel room#This can trigger up to 3 times",
+            spa = "Al derrotal al jefe del piso y ninguno de los cuartos del trato se genera#Isaac es teletransportado al cuarto del angel#Esto puede activarse hasta 3 veces"
         }
     }
 
@@ -1925,6 +1956,17 @@ Mod:AddConsumeItemEffect(
             spa = "Genera un Corazón de Alma y un recolectable usando la formula de Glifo del equilibrio",
         }
     }
+    ,{  Id = CollectibleType.COLLECTIBLE_DUALITY,
+        Fun = function(player)
+            local sav = saveHand("Consume - Duality")
+            sav:Set(sav:Get(0) + 3)
+        end,
+        EID = {
+            en_us = "For the next 3 floors#Spawns the Joker card",
+            spa = "Por los siguientes 3 pisos#Genera la carta de Joker",
+        }
+    }
+
 
     --CollectibleType.COLLECTIBLE_KING_BABY
     --CollectibleType.COLLECTIBLE_CHAOS
@@ -1995,6 +2037,29 @@ Mod:AddPriorityCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, -100, function()
             if not devilSpawn then
                 genericPlayer:UseCard(Card.CARD_JOKER, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
                 goatHeadSav:Set(goatHeadSav:Get(0)-1)
+            end
+        end
+    else
+        local eucharistSav = saveHand("Consume - Eucharist")
+        if eucharistSav:Get(0) >0 then
+            if room:GetType() == RoomType.ROOM_BOSS and room:IsCurrentRoomLastBoss() then
+                local devilSpawn = false
+                for i=0, DoorSlot.NUM_DOOR_SLOTS-1 do
+                    local doorGrid = room:GetDoor(i)
+
+                    if doorGrid and (doorGrid.TargetRoomType == RoomType.ROOM_DEVIL or doorGrid.TargetRoomType == RoomType.ROOM_ANGEL) then
+                        devilSpawn = true
+                        break
+                    end
+                end
+                if not devilSpawn then
+                    if level:GetRoomByIdx(GridRooms.ROOM_DEVIL_IDX).Data == nil then
+                        level:InitializeDevilAngelRoom(true, false)
+                    end
+                    
+                    genericPlayer:UseCard(Card.CARD_JOKER, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
+                    eucharistSav:Set(eucharistSav:Get(0)-1)
+                end
             end
         end
     end
@@ -2290,6 +2355,12 @@ Mod:AddPriorityCallback(ModCallbacks.MC_POST_NEW_LEVEL, -100, function()
         level:ApplyCompassEffect(true)
         level:ApplyMapEffect()
         mindSav:Set(mindSav:Get(0)-1)
+    end
+
+    local dualitySav = saveHand("Consume - Duality")
+    if dualitySav:Get(0) >0 then
+        Mod:Spawn(5, 300, 31, room:FindFreePickupSpawnPosition(pos, 40, true), nil, nil, levelRNG:Next() )
+        dualitySav:Set(dualitySav:Get(0)-1)
     end
 
     local deepPocketSav = saveHand("Consume - Deep Pockets")

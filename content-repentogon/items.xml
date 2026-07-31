@@ -214,15 +214,15 @@
 	/>
 	<null name="FETAL JAR - Stats"
 		persistent="true"
-		customtags="firedelay damage size"
+		cache="firedelay damage size"
 	/>
 	<null name="GELLO_TEMP_DAMAGE_HANDLER"
 		persistent="true"
-		customtags="damage"
+		cache="damage"
 	/>
 	<null name="GELLO_SLOW_TEMP_DAMAGE_HANDLER"
 		persistent="true"
-		customtags="damage"
+		cache="damage"
 	/>
 
 	<!--

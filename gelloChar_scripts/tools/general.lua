@@ -26,7 +26,11 @@ function GelloCharMod:Spawn(t, v, s, pos, vel, spawner, seed)
 	local s = s or 0
 	local pos = pos or Vector.Zero
 	local vel = vel or Vector.Zero
-	local seed = seed or Random()
+	if not seed then
+		if spawner ~= nil then
+			seed = spawner:GetDropRNG():Next()
+		else seed = Random() end
+	elseif seed == 0 then seed = Random() end
 	if seed == 0 then seed = 1 end
 
 	return game:Spawn(t, v, pos, vel, spawner, s, seed)
@@ -388,7 +392,8 @@ function GelloCharMod:SetEntityData(ent, key, val)
 	cache_GetData[ptr] = data
 end
 Mod:AddPriorityCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, 10000, function(_, ent) cache_GetData[ GetPtrHash(ent) ] = nil end)
-Mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function() cache_GetData = {} end)
+Mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, function() cache_GetData = {} end)
+Mod:AddCallback(ModCallbacks.MC_POST_GAME_END, function() cache_GetData = {} end)
 
 
 

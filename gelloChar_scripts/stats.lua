@@ -146,19 +146,13 @@ Mod:AddPriorityCallback(ModCallbacks.MC_EVALUATE_CACHE, 0, function(_, player, c
 		local dmgMult = MultiplierHandler:GetPlayerDamageMult(player)
 		if player:HasCollectible(Mod.Enum.Item.CURSED_PLUSHIE) then
 			local dmg = 1.5 * player:GetCollectibleNum(Mod.Enum.Item.CURSED_PLUSHIE)
-			dmg = dmg + (0.5 * player:GetTrinketMultiplier(80) * player:GetCollectibleNum(Mod.Enum.Item.CURSED_PLUSHIE)) -- black feather synergy
+			dmg = dmg + (0.5 * player:GetTrinketMultiplier(TrinketType.TRINKET_BLACK_FEATHER) * player:GetCollectibleNum(Mod.Enum.Item.CURSED_PLUSHIE)) -- black feather synergy
 			player.Damage = player.Damage + dmg * dmgMult
 		end
 
-		local itemEffect = player:GetEffects()
-		local tempDmg = 0
-		if GelloCharMod.RepentogonPlus then
-			tempDmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG) + itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG_SLOW)
-		else
-			tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG) + itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW)
-		end
+		local tempDmg = Mod:GetTempDamage(player) + Mod:GetSlowTempDamage(player)
 		if tempDmg > 0 then
-			player.Damage = player.Damage + (tempDmg * 0.025) * dmgMult
+			player.Damage = player.Damage + tempDmg * dmgMult
 		end
 		if fetalJarRevives > 0 then
 			player.Damage = player.Damage + (fetalJarRevives / 2) * dmgMult
@@ -258,47 +252,70 @@ end)
 
 local temDamageFun
 if GelloCharMod.RepentogonPlus then
-	temDamageFun = function(_, player)
-		local itemEffect = player:GetEffects()
-		if player:IsFrame(10, 0) then
-			local tempDmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG)
-			if tempDmg > 0 then
-				-- if damage > 10 removes 0.05 damage
-				if tempDmg > 400 then itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG, 2)
-				else itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG, 1) end
-			end
-		end
-		
-		if player:IsFrame(20, 0) then
-			local tempDmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG_SLOW)
-			if tempDmg > 0 then
-				-- if damage > 18.75 removes 0.05 damage
-				if tempDmg > 750 then itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, 2)
-				else itemEffect:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, 1) end
-			end
+	function GelloCharMod:AddTempDamage(player, dmg)
+		local eff = player:GetEffects()
+		if dmg < 0 then
+			eff:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG, math.ceil(dmg / 0.025 *-1) )
+		elseif dmg > 0 then
+			eff:AddNullEffect(Mod.Enum.NullItem.TEMP_DMG, false, math.ceil(dmg / 0.025) )
 		end
 	end
+	function GelloCharMod:AddSlowTempDamage(player, dmg)
+		local eff = player:GetEffects()
+		if dmg < 0 then
+			eff:RemoveNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, math.ceil(dmg / 0.025 *-1) )
+		elseif dmg > 0 then
+			eff:AddNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, false, math.ceil(dmg / 0.025) )
+		end
+	end
+	function GelloCharMod:GetTempDamage(player)
+		return player:GetEffects():GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG) * 0.025
+	end
+	function GelloCharMod:GetSlowTempDamage(player)
+		return player:GetEffects():GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG_SLOW) * 0.025
+	end
 else
-	temDamageFun = function(_, player)
-		local itemEffect = player:GetEffects()
-		if player:IsFrame(10, 0) then
-			local tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG)
-			if tempDmg > 0 then
-				-- if damage > 10 removes 0.05 damage
-				if tempDmg > 400 then itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG, 2)
-				else itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG, 1) end
-			end
+	function GelloCharMod:AddTempDamage(player, dmg)
+		local eff = player:GetEffects()
+		if dmg < 0 then
+			eff:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG, math.ceil(dmg / 0.025 *-1))
+		elseif dmg > 0 then
+			eff:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG, false, math.ceil(dmg / 0.025) )
 		end
-		
-		if player:IsFrame(20, 0) then
-			local tempDmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW)
-			if tempDmg > 0 then
-				-- if damage > 18.75 removes 0.05 damage
-				if tempDmg > 750 then itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, 2)
-				else itemEffect:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, 1) end
-			end
+	end
+	function GelloCharMod:AddSlowTempDamage(player, dmg)
+		local eff = player:GetEffects()
+		if dmg < 0 then
+			eff:RemoveCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, math.ceil(dmg / 0.025 *-1) )
+		elseif dmg > 0 then
+			eff:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, false, math.ceil(dmg / 0.025) )
 		end
+	end
+	function GelloCharMod:GetTempDamage(player)
+		return player:GetEffects():GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG) * 0.025
+	end
+	function GelloCharMod:GetSlowTempDamage(player)
+		return player:GetEffects():GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG_SLOW) * 0.025
 	end
 end
 
-Mod:AddPriorityCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, -1000, temDamageFun)
+Mod:AddPriorityCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, -1000, function(_, player)
+	local itemEffect = player:GetEffects()
+	if player:IsFrame(10, 0) then
+		local tempDmg = Mod:GetTempDamage(player)
+		if tempDmg > 0 then
+			-- if damage > 10 removes 0.05 damage
+			if tempDmg > 10 then Mod:AddTempDamage(player, -0.05)
+			else Mod:AddTempDamage(player, -0.025) end
+		end
+	end
+	
+	if player:IsFrame(20, 0) then
+		local tempDmg = Mod:GetSlowTempDamage(player)
+		if tempDmg > 0 then
+			-- if damage > 18.75 removes 0.05 damage
+			if tempDmg > 18.75 then Mod:AddSlowTempDamage(player, -0.05)
+			else Mod:AddSlowTempDamage(player, -0.025) end
+		end
+	end
+end)

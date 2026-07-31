@@ -4,7 +4,8 @@ local sfx = Mod.SFX
 
 local playerSave = Mod.SaveHandler.Player
 
-local MAX_TEMP_DMG = 300 -- 7.5 dmg
+--local MAX_TEMP_DMG = 300 -- 7.5 dmg
+local MAX_TEMP_DMG = 7.5
 local BITE_RADIUS = 50
 local GORE_AMOUNT = 4
 
@@ -95,9 +96,11 @@ end
 
 local function clearBiteData(tab, player)
 	local giveTemDmg = 0
-	local addDmg = 20 -- 0.5 dmg
+	--local addDmg = 20 -- 0.5 dmg
+	local addDmg = 0.5
 	if player:GetPlayerType() == Mod.Enum.Character.GELLO and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-		addDmg = 30 -- 0.75 dmg
+		--addDmg = 30 -- 0.75 dmg
+		addDmg = 0.75
 	end
 	for _, data in ipairs(tab) do
 		if giveTemDmg >= MAX_TEMP_DMG then break end
@@ -111,18 +114,19 @@ local function clearBiteData(tab, player)
 
 	if giveTemDmg > 0 then
 		local itemEffect = player:GetEffects()
-		local dmg = 0
-		if Mod.RepentogonPlus then
-			dmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG)
-		else dmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG) end
+		local dmg = Mod:GetTempDamage(player)
+		--if Mod.RepentogonPlus then
+		--	dmg = itemEffect:GetNullEffectNum(Mod.Enum.NullItem.TEMP_DMG)
+		--else dmg = itemEffect:GetCollectibleEffectNum(Mod.Enum.Item.TEMP_DMG) end
 
 		if dmg > MAX_TEMP_DMG then
 		elseif dmg + giveTemDmg > MAX_TEMP_DMG then giveTemDmg = MAX_TEMP_DMG
 		else giveTemDmg = dmg + giveTemDmg end
 
-		if Mod.RepentogonPlus then
-			dmg = itemEffect:AddNullEffect(Mod.Enum.NullItem.TEMP_DMG, false, giveTemDmg - dmg)
-		else dmg = itemEffect:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG, false, giveTemDmg - dmg) end
+		Mod:AddTempDamage(player, giveTemDmg - dmg)
+		--if Mod.RepentogonPlus then
+		--	dmg = itemEffect:AddNullEffect(Mod.Enum.NullItem.TEMP_DMG, false, giveTemDmg - dmg)
+		--else dmg = itemEffect:AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG, false, giveTemDmg - dmg) end
 	end
 end
 

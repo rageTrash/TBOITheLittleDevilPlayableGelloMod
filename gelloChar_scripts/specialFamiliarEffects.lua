@@ -5,7 +5,8 @@ local saveHand = Mod.SaveHandler.Save("Non Edible Item")
 local tGelloPointsSave = Mod.SaveHandler.Save("GelloPoints")
 local SAVE_FLAT_DMG_NAME = "Gello perma damage"
 local SAVE_PERMA_STATS_NAME = "Gello extra perma stats"
-local ADD_DMG = 40
+--local ADD_DMG = 40
+local ADD_DMG = 1
 
 local GELLO_SAVEDATA = {
 	PrevClasses = {},
@@ -169,11 +170,12 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 
 		if tempdmg > 0 then
 			--print("DMG GRANTED :",math.ceil(ADD_DMG *tempdmg), "=",ADD_DMG,"x",tempdmg)
-			if Mod.RepentogonPlus then
-				player:GetEffects():AddNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, false, math.ceil(ADD_DMG *tempdmg) )
-			else
-				player:GetEffects():AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, false, math.ceil(ADD_DMG *tempdmg) )
-			end
+			Mod:AddSlowTempDamage(player, ADD_DMG *tempdmg)
+			--if Mod.RepentogonPlus then
+			--	player:GetEffects():AddNullEffect(Mod.Enum.NullItem.TEMP_DMG_SLOW, false, math.ceil(ADD_DMG *tempdmg) )
+			--else
+			--	player:GetEffects():AddCollectibleEffect(Mod.Enum.Item.TEMP_DMG_SLOW, false, math.ceil(ADD_DMG *tempdmg) )
+			--end
 		end
 
 		
@@ -209,12 +211,12 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 			pickup.Price = 0
 		end
 
-		
-		pickup.SubType = 0
-		local sp = pickup:GetSprite()
-		sp:ReplaceSpritesheet(1, "")
-		sp:ReplaceSpritesheet(4, "")
-		sp:LoadGraphics()
+		pickup:Morph(5, 100, 0)
+		--pickup.SubType = 0
+		--local sp = pickup:GetSprite()
+		--sp:ReplaceSpritesheet(1, "")
+		--sp:ReplaceSpritesheet(4, "")
+		--sp:LoadGraphics()
 
 		if itemCon.Type == ItemType.ITEM_ACTIVE and itemCon.ChargeType == ItemConfig.CHARGE_NORMAL and itemNoActive[sub] ~= true then
 			player:UseActiveItem(sub, UseFlag.USE_NOANIM)

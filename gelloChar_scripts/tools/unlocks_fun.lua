@@ -4,8 +4,24 @@ GelloCharMod.RegisterUnlocks = {}
 
 local modName = Mod.Name
 
+local MnAMarksToRepMark
 if Mod.RepentogonPlus then
     MarksNAchievHelper:UseRepentogonFor(modName)
+    MnAMarksToRepMark = {
+		[MarksNAchievHelper.MarkType.MOMS_HEART] = CompletionType.MOMS_HEART,
+		[MarksNAchievHelper.MarkType.SATAN] = CompletionType.SATAN,
+		[MarksNAchievHelper.MarkType.ISAAC] = CompletionType.ISAAC,
+		[MarksNAchievHelper.MarkType.THE_LAMB] = CompletionType.LAMB,
+		[MarksNAchievHelper.MarkType.BLUE_BABY] = CompletionType.BLUE_BABY,
+		[MarksNAchievHelper.MarkType.BOSS_RUSH] = CompletionType.BOSS_RUSH,
+		[MarksNAchievHelper.MarkType.MEGA_SATAN] = CompletionType.MEGA_SATAN,
+		[MarksNAchievHelper.MarkType.HUSH] = CompletionType.HUSH,
+		[MarksNAchievHelper.MarkType.GREED] = CompletionType.ULTRA_GREED,
+		[MarksNAchievHelper.MarkType.GREED] = CompletionType.ULTRA_GREEDIER,
+		[MarksNAchievHelper.MarkType.DELIRIUM] = CompletionType.DELIRIUM,
+		[MarksNAchievHelper.MarkType.MOTHER] = CompletionType.MOTHER,
+		[MarksNAchievHelper.MarkType.THE_BEAST] = CompletionType.BEAST,
+	}
 end
 
 function GelloCharMod:AddCharacterUnlock(charID, achievName, marks, diffType, achievFilePath, paperFilePath)
@@ -52,6 +68,11 @@ function GelloCharMod:GetMark(charID, mark)
 end
 function GelloCharMod:SetMark(charID, mark, diffType)
     MarksNAchievHelper:UpdateCharacterMarks(modName, charID, mark, diffType)
+    if MnAMarksToRepMark then
+        local mark = MnAMarksToRepMark[mark]
+        if mark == nil then return end
+        Isaac.SetCompletionMark(charID, mark, diffType)
+    end
 end
 function GelloCharMod:CanCharacterMark(charID)
     return MarksNAchievHelper:CanCharacterHaveMarks(charID)
