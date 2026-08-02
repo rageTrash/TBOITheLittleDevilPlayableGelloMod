@@ -39,5 +39,5 @@ GelloCharMod.Include(rute.."do_cache")
 GelloCharMod.Include(rute.."unlocks_fun")
 GelloCharMod.Include(rute.."unlocks_handler")
 
-GelloCharMod.Include(rute.."customRevive")
+GelloCharMod.Include(rute.."CustomReviveLibThing")(GelloCharMod)
 GelloCharMod.Include(rute.."rewind")

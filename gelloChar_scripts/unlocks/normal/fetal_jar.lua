@@ -2,18 +2,19 @@ local Mod = GelloCharMod
 local game = Mod.Game
 local pSave = GelloCharMod.SaveHandler.Player
 
+local ExtraParam
 if Mod.RepentogonPlus then
-	IDK_CustomRevive.AddCustomRevive(
-		Mod.Enum.NullItem.FETAL_JAR_LIVES,
-		IDK_CustomRevive.RevivePriority.SOUL_OF_LAZARUS,
-		IDK_CustomRevive.ReviveType.NULL
+	CustomReviveLibThing.AddCustomRevive(
+		Isaac.GetItemConfig():GetNullItem(Mod.Enum.NullItem.FETAL_JAR_LIVES),
+		CustomReviveLibThing.RevivePriority.SOUL_OF_LAZARUS
 	)
+	ExtraParam = Isaac.GetItemConfig():GetNullItem(Mod.Enum.NullItem.FETAL_JAR_LIVES)
 else
-	IDK_CustomRevive.AddCustomRevive(
-		Mod.Enum.Item.FETAL_JAR,
-		IDK_CustomRevive.RevivePriority.SOUL_OF_LAZARUS,
-		IDK_CustomRevive.ReviveType.ITEM
+	CustomReviveLibThing.AddCustomRevive(
+		Isaac.GetItemConfig():GetCollectible(Mod.Enum.Item.FETAL_JAR),
+		CustomReviveLibThing.RevivePriority.SOUL_OF_LAZARUS
 	)
+	ExtraParam = Isaac.GetItemConfig():GetCollectible(Mod.Enum.Item.FETAL_JAR)
 end
 
 
@@ -45,23 +46,24 @@ Mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, _, _, player, flags, slot)
 end, Mod.Enum.Item.FETAL_JAR)
 
 
-Mod:AddCallback(IDK_CustomRevive.Callbacks.CAN_PLAYER_REVIVE_CHECK, function(_, player, config)
+Mod:AddCallback(CustomReviveLibThing.Callbacks.CAN_PLAYER_REVIVE_CHECK, function(_, player, config)
 	local effects = player:GetEffects()
 	if Mod.RepentogonPlus then
-		if config:IsNull() and config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES then
-			return effects:HasNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES)
-		end
-	elseif config:IsCollectible() and config.ID == Mod.Enum.Item.FETAL_JAR then
+		print("Is Null", config:IsNull(), config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES)
+		return effects:HasNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES)
+	else
+		print("Is Collectible", config:IsCollectible(), config.ID == Mod.Enum.Item.FETAL_JAR)
 		return effects:HasCollectibleEffect(Mod.Enum.Item.FETAL_JAR)
 	end
-end)
+end, ExtraParam)
 
-Mod:AddCallback(IDK_CustomRevive.Callbacks.ON_PLAYER_REVIVE, function(_, player, config)
+Mod:AddCallback(CustomReviveLibThing.Callbacks.ON_PLAYER_REVIVE, function(_, player, config)
 	local effects = player:GetEffects()
-	if Mod.RepentogonPlus then
-		if not (config:IsNull() and config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES) then return end
-	elseif not (config:IsCollectible() and config.ID == Mod.Enum.Item.FETAL_JAR) then return
-	end
+	print("Revive", ((config:IsNull() and "Null") or (config:IsCollectible() and "Collectible") or (config:IsTrinket() and "Trinket")), config.ID)
+	--if Mod.RepentogonPlus then
+	--	if not (config:IsNull() and config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES) then return end
+	--elseif not (config:IsCollectible() and config.ID == Mod.Enum.Item.FETAL_JAR) then return
+	--end
 	removeCollectibleEffect(player)
 
 	--local level = game:GetLevel()
@@ -91,9 +93,9 @@ Mod:AddCallback(IDK_CustomRevive.Callbacks.ON_PLAYER_REVIVE, function(_, player,
 	if Mod.RepentogonPlus then
 		player:GetEffects():AddNullEffect(Mod.Enum.NullItem.FETAL_JAR_STATS)
 	else
-		pSave("Fetal Jar revives", p):Set( pSave("Fetal Jar revives", p):Get(0) +1 )
-		Mod.PlayerTools.DoCache(p, CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SIZE)
+		pSave("Fetal Jar revives", player):Set( pSave("Fetal Jar revives", player):Get(0) +1 )
+		Mod.PlayerTools.DoCache(player, CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_FIREDELAY | CacheFlag.CACHE_SIZE)
 	end
 
 	player:AnimateCollectible(Mod.Enum.Item.FETAL_JAR)
-end)
+end, ExtraParam)
