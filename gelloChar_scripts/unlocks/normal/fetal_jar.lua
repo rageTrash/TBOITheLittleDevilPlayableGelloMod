@@ -46,7 +46,7 @@ Mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, _, _, player, flags, slot)
 end, Mod.Enum.Item.FETAL_JAR)
 
 
-Mod:AddCallback(CustomReviveLibThing.Callbacks.CAN_PLAYER_REVIVE_CHECK, function(_, player, config)
+Mod:AddCallback(CustomReviveLibThing.Callbacks.PLAYER_REVIVE_CHECK, function(_, player, config)
 	local effects = player:GetEffects()
 	if Mod.RepentogonPlus then
 		print("Is Null", config:IsNull(), config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES)

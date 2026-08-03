@@ -94,7 +94,7 @@ local tGelloMults = {
 }
 
 Mod:AddPriorityCallback(ModCallbacks.MC_EVALUATE_CACHE, -2048, function(_, player, cacheflag)
-	if cacheflag & CacheFlag.CACHE_SPEED > 0 and pSave("Consume - Notched Axe - Active", player):Get() then
+	if cacheflag & CacheFlag.CACHE_SPEED > 0 and pSave("Consume - Notched Axe - Active", player):Get(false) then
 		player.MoveSpeed = player.MoveSpeed +0.4
 	end
 

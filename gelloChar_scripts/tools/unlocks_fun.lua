@@ -108,39 +108,71 @@ function GelloCharMod:SetMarkNAchievementsData(data)
         },
     })
     if Mod.RepentogonPlus and not GelloCharMod.Init then -- syncing the vanilla data to repentogon
-        Isaac.SetCompletionMarks({
+        local GelloMarks = {
             PlayerType = Mod.Enum.Character.GELLO,
-            MomsHeart  = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.MOMS_HEART )],
-            Isaac      = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.ISAAC )],
-            Satan      = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.SATAN )],
-            BossRush   = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.BOSS_RUSH )],
-            BlueBaby   = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.BLUE_BABY )],
-            Lamb       = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.THE_LAMB )],
-            MegaSatan  = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.MEGA_SATAN )],
-            UltraGreed = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.ULTRA_GREED )],
-            Hush       = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.HUSH )],
-            Delirium   = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.DELIRIUM )],
-            Mother     = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.MOTHER )],
-            Beast      = data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.THE_BEAST )],
-        })
-        Isaac.SetCompletionMarks({
+            MomsHeart  = 0,
+            Isaac      = 0,
+            Satan      = 0,
+            BossRush   = 0,
+            BlueBaby   = 0,
+            Lamb       = 0,
+            MegaSatan  = 0,
+            UltraGreed = 0,
+            Hush       = 0,
+            Delirium   = 0,
+            Mother     = 0,
+            Beast      = 0,
+        }
+        if data.Marks.GELLO then
+            GelloMarks.MomsHeart  = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.MOMS_HEART )] or 0)
+            GelloMarks.Isaac      = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.ISAAC )] or 0)
+            GelloMarks.Satan      = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.SATAN )] or 0)
+            GelloMarks.BossRush   = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.BOSS_RUSH )] or 0)
+            GelloMarks.BlueBaby   = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.BLUE_BABY )] or 0)
+            GelloMarks.Lamb       = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.THE_LAMB )] or 0)
+            GelloMarks.MegaSatan  = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.MEGA_SATAN )] or 0)
+            GelloMarks.UltraGreed = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.ULTRA_GREED )] or 0)
+            GelloMarks.Hush       = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.HUSH )] or 0)
+            GelloMarks.Delirium   = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.DELIRIUM )] or 0)
+            GelloMarks.Mother     = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.MOTHER )] or 0)
+            GelloMarks.Beast      = (data.Marks.GELLO[tostring( MarksNAchievHelper.MarkType.THE_BEAST )] or 0)
+        end
+        Isaac.SetCompletionMarks(GelloMarks)
+
+        local TaintedGelloMarks = {
             PlayerType = Mod.Enum.Character.GELLO_B13,
-            MomsHeart  = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MOMS_HEART )],
-            Isaac      = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.ISAAC )],
-            Satan      = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.SATAN )],
-            BossRush   = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.BOSS_RUSH )],
-            BlueBaby   = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.BLUE_BABY )],
-            Lamb       = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.THE_LAMB )],
-            MegaSatan  = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MEGA_SATAN )],
-            UltraGreed = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.ULTRA_GREED )],
-            Hush       = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.HUSH )],
-            Delirium   = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.DELIRIUM )],
-            Mother     = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MOTHER )],
-            Beast      = data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.THE_BEAST )],
-        })
+            MomsHeart  = 0,
+            Isaac      = 0,
+            Satan      = 0,
+            BossRush   = 0,
+            BlueBaby   = 0,
+            Lamb       = 0,
+            MegaSatan  = 0,
+            UltraGreed = 0,
+            Hush       = 0,
+            Delirium   = 0,
+            Mother     = 0,
+            Beast      = 0,
+        }
+        if data.Marks.GELLO_B then
+            TaintedGelloMarks.MomsHeart  = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MOMS_HEART )] or 0)
+            TaintedGelloMarks.Isaac      = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.ISAAC )] or 0)
+            TaintedGelloMarks.Satan      = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.SATAN )] or 0)
+            TaintedGelloMarks.BossRush   = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.BOSS_RUSH )] or 0)
+            TaintedGelloMarks.BlueBaby   = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.BLUE_BABY )] or 0)
+            TaintedGelloMarks.Lamb       = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.THE_LAMB )] or 0)
+            TaintedGelloMarks.MegaSatan  = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MEGA_SATAN )] or 0)
+            TaintedGelloMarks.UltraGreed = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.ULTRA_GREED )] or 0)
+            TaintedGelloMarks.Hush       = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.HUSH )] or 0)
+            TaintedGelloMarks.Delirium   = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.DELIRIUM )] or 0)
+            TaintedGelloMarks.Mother     = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.MOTHER )] or 0)
+            TaintedGelloMarks.Beast      = (data.Marks.GELLO_B[tostring( MarksNAchievHelper.MarkType.THE_BEAST )] or 0)
+        end
+        Isaac.SetCompletionMarks(TaintedGelloMarks)
+
 
         local persistData = Isaac.GetPersistentGameData()
-        if not persistData:Unlocked(GelloCharMod.GelloCharAchievement) then
+        if data.Marks.GELLO and not persistData:Unlocked(GelloCharMod.GelloCharAchievement) then
             for _, val in pairs(data.Marks.GELLO) do
                 if val > 0 then
                     Mod.SaveHandler.Data("Gello Promp"):Set(true)

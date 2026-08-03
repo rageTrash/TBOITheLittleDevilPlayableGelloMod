@@ -211,12 +211,11 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 			pickup.Price = 0
 		end
 
-		pickup:Morph(5, 100, 0)
-		--pickup.SubType = 0
-		--local sp = pickup:GetSprite()
-		--sp:ReplaceSpritesheet(1, "")
-		--sp:ReplaceSpritesheet(4, "")
-		--sp:LoadGraphics()
+		pickup.SubType = 0
+		local sp = pickup:GetSprite()
+		sp:ReplaceSpritesheet(1, "")
+		sp:ReplaceSpritesheet(4, "")
+		sp:LoadGraphics()
 
 		if itemCon.Type == ItemType.ITEM_ACTIVE and itemCon.ChargeType == ItemConfig.CHARGE_NORMAL and itemNoActive[sub] ~= true then
 			player:UseActiveItem(sub, UseFlag.USE_NOANIM)

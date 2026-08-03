@@ -2369,7 +2369,7 @@ end)
 
 
 Mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
-    if playerSave("Consume - Notched Axe - Active", player):Get() and player:GetCollectibleNum(CollectibleType.COLLECTIBLE_THUNDER_THIGHS) <= 1 then player:RemoveCostume(configThunderThighs) end
+    if playerSave("Consume - Notched Axe - Active", player):Get(false) and player:GetCollectibleNum(CollectibleType.COLLECTIBLE_THUNDER_THIGHS) <= 1 then player:RemoveCostume(configThunderThighs) end
 end)
 
 
