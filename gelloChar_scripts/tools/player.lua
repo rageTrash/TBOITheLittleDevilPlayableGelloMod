@@ -499,16 +499,19 @@ else
 end
 
 
-local function HoldPickup(player, holdPickup)
-	if not holdPickup or not player then return end
+local function HoldPickup(player, pickup)
+	if not pickup or not player then return end
 
-	local sprite = pickup:GetSprite()
-	local anm2 = sprite:GetFilename()
+	if pickup.Variant == 100 then
+		player:AnimateCollectible(pickup.SubType, nil, "PlayerPickup")
+	elseif pickup.Variant == 350 then
+		player:AnimateTrinket(pickup.SubType, nil, "Idle")
+	else
+		local sprite = pickup:GetSprite()
+		sprite:SetFrame("Idle", 0)
 
-	sprite:Load(anm2, true)
-	sprite:SetFrame("Idle", 0)
-
-	player:AnimatePickup(sprite)
+		player:AnimatePickup(sprite)
+	end
 end
 
 
@@ -529,7 +532,20 @@ GelloCharMod.CustomPricesTable = {
 	[PickupPrice.PRICE_ONE_SOUL_HEART] = function(player) player:AddSoulHearts(-2) end,
 	[PickupPrice.PRICE_TWO_SOUL_HEARTS] = function(player) player:AddSoulHearts(-4) end,
 	[PickupPrice.PRICE_ONE_HEART_AND_ONE_SOUL_HEART] = function(player) player:AddMaxHearts(-2); player:AddSoulHearts(-2) end,
-	[PickupPrice.PRICE_FREE] = function(player) if player:HasTrinket(TrinketType.TRINKET_STORE_CREDIT) then player:TryRemoveTrinket(TrinketType.TRINKET_STORE_CREDIT) end end,
+	[PickupPrice.PRICE_FREE] = function(player) player:TryRemoveTrinket(TrinketType.TRINKET_STORE_CREDIT) end,
+}
+
+GelloCharMod.CanPayCustomPricesTable = {
+	[PickupPrice.PRICE_ONE_HEART] = function(player) return player:GetEffectiveMaxHearts() >0 end,
+	[PickupPrice.PRICE_TWO_HEARTS] = function(player) return player:GetEffectiveMaxHearts() >0 end,
+	[PickupPrice.PRICE_THREE_SOULHEARTS] = function(player) return player:GetSoulHearts() >0 end,
+	[PickupPrice.PRICE_ONE_HEART_AND_TWO_SOULHEARTS] = function(player) return player:GetEffectiveMaxHearts() >0 end,
+	[PickupPrice.PRICE_SPIKES] = function(player, pickup) return true end,
+	[PickupPrice.PRICE_SOUL] = function(player) return player:HasTrinket(TrinketType.TRINKET_YOUR_SOUL) end,
+	[PickupPrice.PRICE_ONE_SOUL_HEART] = function(player) return player:GetSoulHearts() >0 end,
+	[PickupPrice.PRICE_TWO_SOUL_HEARTS] = function(player) return player:GetSoulHearts() >0 end,
+	[PickupPrice.PRICE_ONE_HEART_AND_ONE_SOUL_HEART] = function(player) return player:GetEffectiveMaxHearts() >0 end,
+	[PickupPrice.PRICE_FREE] = function(player) return player:HasTrinket(TrinketType.TRINKET_STORE_CREDIT) end,
 }
 
 function PlayerTools.PayPickup(player, pickup, holdPickup)
@@ -556,7 +572,10 @@ function PlayerTools.PayPickup(player, pickup, holdPickup)
 		if ret == false then return false end
 		if holdPickup then
 			HoldPickup(player, pickup)
+		else
+			if player:GetEffectiveMaxHearts() + player:GetSoulHearts() == 0 then player:Kill() end
 		end
+
 		return true
 	end
 
@@ -577,7 +596,7 @@ function PlayerTools.CanPlayerPayPickup(player, pickup)
 		return true
 
 	elseif price < 0 then
-		local ret = Mod.TableTools.Switch(price, Mod.CustomPricesTable, function()end)(player, pickup)
+		local ret = Mod.TableTools.Switch(price, Mod.CanPayCustomPricesTable, function()end)(player, pickup)
 		if ret == false then return false end
 		return true
 	end

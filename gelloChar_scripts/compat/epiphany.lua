@@ -63,6 +63,10 @@ Mod.AddModPath("Epiphany",function()
 		if not epi.SHOP_ITEMS.CAN_BUY[Mod.PickupPrice.PRICE_KEYS](player, pickup) then return false end
 		epi.SHOP_ITEMS.PAY_PRICE[epi.PickupPrice.PRICE_KEYS](player)
 	end
+
+	Mod.CanPayCustomPricesTable[epi.PickupPrice.PRICE_TWO_BROKEN_HEARTS] = function(player) return true end
+	Mod.CanPayCustomPricesTable[epi.PickupPrice.PRICE_TWO_BLUE_BROKEN_HEARTS] = function(player) return true end
+	Mod.CanPayCustomPricesTable[epi.PickupPrice.PRICE_KEYS] = function(player, pickup) return epi.SHOP_ITEMS.CAN_BUY[Mod.PickupPrice.PRICE_KEYS](player, pickup) end
 end)
 
 

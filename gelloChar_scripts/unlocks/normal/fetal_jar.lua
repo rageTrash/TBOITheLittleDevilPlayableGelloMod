@@ -49,17 +49,17 @@ end, Mod.Enum.Item.FETAL_JAR)
 Mod:AddCallback(CustomReviveLibThing.Callbacks.PLAYER_REVIVE_CHECK, function(_, player, config)
 	local effects = player:GetEffects()
 	if Mod.RepentogonPlus then
-		print("Is Null", config:IsNull(), config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES)
+		--print("Is Null", config:IsNull(), config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES)
 		return effects:HasNullEffect(Mod.Enum.NullItem.FETAL_JAR_LIVES)
 	else
-		print("Is Collectible", config:IsCollectible(), config.ID == Mod.Enum.Item.FETAL_JAR)
+		--print("Is Collectible", config:IsCollectible(), config.ID == Mod.Enum.Item.FETAL_JAR)
 		return effects:HasCollectibleEffect(Mod.Enum.Item.FETAL_JAR)
 	end
 end, ExtraParam)
 
 Mod:AddCallback(CustomReviveLibThing.Callbacks.ON_PLAYER_REVIVE, function(_, player, config)
 	local effects = player:GetEffects()
-	print("Revive", ((config:IsNull() and "Null") or (config:IsCollectible() and "Collectible") or (config:IsTrinket() and "Trinket")), config.ID)
+	--print("Revive", ((config:IsNull() and "Null") or (config:IsCollectible() and "Collectible") or (config:IsTrinket() and "Trinket")), config.ID)
 	--if Mod.RepentogonPlus then
 	--	if not (config:IsNull() and config.ID == Mod.Enum.NullItem.FETAL_JAR_LIVES) then return end
 	--elseif not (config:IsCollectible() and config.ID == Mod.Enum.Item.FETAL_JAR) then return
