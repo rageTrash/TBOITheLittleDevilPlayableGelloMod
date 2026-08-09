@@ -19,7 +19,7 @@ Mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, _, _, player, flags, slot)
         local sub = closestPickup.SubType
         local ent = Mod:Spawn(1000, Mod.Enum.Effect.EAT, 1, closestPickup.Position, nil, closestPickup)
         
-		if Mod:GelloTryConsumePickup(player, closestPickup) then
+		if Mod:GelloTryConsumePickup(player, closestPickup, true) then
             return flags & UseFlag.USE_NOANIM == 0
         end
         ent:Remove()

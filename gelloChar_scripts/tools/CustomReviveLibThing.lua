@@ -11,7 +11,7 @@ lib.Version = VERSION
 if lib.Mod ~= nil then -- removing previous callbacks to not duplicate them
     if REPENTOGON then
         lib.Mod:RemoveCallback(ModCallbacks.MC_PRE_TRIGGER_PLAYER_DEATH, lib.PrePlayerTriggerDeath)
-        lib.Mod:RemoveCallback(ModCallbacks.MC_POST_PLAYER_REVIVE, lib.PostPlayerRevive)
+        lib.Mod:RemoveCallback(ModCallbacks.MC_PRE_PLAYER_REVIVE, lib.PostPlayerRevive)
     else
         lib.Mod:RemoveCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, lib.EntityTakeDMGCallback)
         lib.Mod:RemoveCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, lib.PlayerUpdateCallback)
@@ -70,6 +70,8 @@ lib.Mod:AddPriorityCallback(ModCallbacks.MC_POST_GAME_STARTED, -2000, lib.GameSt
 local checkItems = {
     [0] = function() return false end,
     [1] = function(player)
+        for idx=0, 3 do if player:GetCard(idx) == Card.CARD_SOUL_LAZARUS then return true end
+
         if REPENTOGON then
             return player:GetEffects():HasNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE)
         end
@@ -345,8 +347,6 @@ if REPENTOGON then
         if data == nil then return end
 
         if data.Num then
-            if player:GetSoulHearts() >0 then player:AddSoulHearts(-player:GetSoulHearts()) end
-
             for _, call in ipairs(Isaac.GetCallbacks(Callbacks.ON_PLAYER_REVIVE)) do
                 local param = ConvertItemConfigItemParam(call.Param)
                 if call.Param == nil or (param ~= nil and param == data.ReviveData.AsParam) then
@@ -359,7 +359,7 @@ if REPENTOGON then
     end
 
     lib.Mod:AddPriorityCallback(ModCallbacks.MC_PRE_TRIGGER_PLAYER_DEATH, -(2^32 -1), lib.PrePlayerTriggerDeath)
-    lib.Mod:AddPriorityCallback(ModCallbacks.MC_POST_PLAYER_REVIVE, -(2^32 -1), lib.PostPlayerRevive)
+    lib.Mod:AddPriorityCallback(ModCallbacks.MC_PRE_PLAYER_REVIVE, -(2^32 -1), lib.PostPlayerRevive)
 else
     function lib.EntityTakeDMGCallback(_, ent, amount, dmgFlags, src)
         local player = ent:ToPlayer()
@@ -386,17 +386,16 @@ else
                 lib.SetPlayerRevive(player)
             elseif sp:IsFinished() then
                 if data.Num ~= nil then
-                    player:Revive()
-                    player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.Num)
-                    if player:GetSoulHearts() >0 then player:AddSoulHearts(-player:GetSoulHearts()) end
-                    player.Visible = true --fix for the player set as invisible after death (for whatever reason)
-
                     for _, call in ipairs(Isaac.GetCallbacks(Callbacks.ON_PLAYER_REVIVE)) do
                         local param = ConvertItemConfigItemParam(call.Param)
                         if call.Param == nil or (param ~= nil and param == data.ReviveData.AsParam) then
                             call.Function(call.Mod, player, data.ReviveData.Config)
                         end
                     end
+                    player:Revive()
+                    player:GetEffects():RemoveNullEffect(NullItemID.ID_LAZARUS_SOUL_REVIVE, data.Num)
+                    player.Visible = true --fix for the player set as invisible after death (for whatever reason)
+
                     data.ClearOn = game:GetFrameCount() +1
                 else
                     data.ClearOn = game:GetFrameCount() +1

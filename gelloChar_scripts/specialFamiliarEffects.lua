@@ -7,6 +7,12 @@ local SAVE_FLAT_DMG_NAME = "Gello perma damage"
 local SAVE_PERMA_STATS_NAME = "Gello extra perma stats"
 --local ADD_DMG = 40
 local ADD_DMG = 1
+local CONSUME_BLACKLIST = {
+	[CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_1]=true,
+	[CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_2]=true,
+	[CollectibleType.COLLECTIBLE_BROKEN_SHOVEL]=true,
+	[CollectibleType.COLLECTIBLE_DADS_NOTE]=true,
+}
 
 local GELLO_SAVEDATA = {
 	PrevClasses = {},
@@ -103,13 +109,13 @@ local itemExtraEffectsEID = {
 GelloCharMod.EID_ItemExtraEffects = itemExtraEffectsEID
 
 
-function GelloCharMod:GelloTryConsumePickup(player, pickup)
-	if pickup == nil then return end
+function GelloCharMod:GelloTryConsumePickup(player, pickup, isVoidStomach)
+	if pickup == nil then return false end
 	pickup = pickup:ToPickup()
-	if pickup == nil then return end
+	if pickup == nil or pickup.Variant ~= 100 then return false end
 
 	local sub = pickup.SubType
-	if sub <= 0 then return false end
+	if sub <= 0 or CONSUME_BLACKLIST[sub] then return false end
 
 	if pickup.Variant == 100 and Mod:CanEatPickup(pickup) then
 		if not Mod.PlayerTools.PayPickup(player, pickup, false) then return false end
@@ -117,7 +123,7 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 		--player:AddHearts(2)
 		--if holditem then player:AnimateCollectible(sub, "Pickup", "PlayerPickup") end
 
-		if itemExtraEffects[sub] then
+		if itemExtraEffects[sub] and sub > 2 then -- dont touch sad onion and inner eye rng just in case
 			itemExtraEffects[sub](player, player:GetCollectibleRNG(sub), pickup)
 		end
 
@@ -168,6 +174,18 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 			end
 		end
 
+		if isVoidStomach and player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
+			dmg = dmg * 1.5
+			tempdmg = tempdmg * 1.5
+			if extraStats then
+				if extraStats.Tears and extraStats.Tears > 0 then extraStats.Tears = extraStats.Tears *1.5 end
+				if extraStats.Speed and extraStats.Speed > 0 then extraStats.Speed = extraStats.Speed *1.5 end
+				if extraStats.ShotSpeed and extraStats.ShotSpeed > 0 then extraStats.ShotSpeed = extraStats.ShotSpeed *1.5 end
+				if extraStats.Range and extraStats.Range > 0 then extraStats.Range = extraStats.Range *1.5 end
+				if extraStats.Luck and extraStats.Luck > 0 then extraStats.Luck = extraStats.Luck *1.5 end
+			end
+		end
+
 		if tempdmg > 0 then
 			--print("DMG GRANTED :",math.ceil(ADD_DMG *tempdmg), "=",ADD_DMG,"x",tempdmg)
 			Mod:AddSlowTempDamage(player, ADD_DMG *tempdmg)
@@ -198,25 +216,6 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 			ent:Remove()
 		end
 
-		if pickup.Price ~= 0 then
-			if REPENTOGON then
-				if pickup:GetFlipCollectible() == nil then
-					pickup:Remove()
-					return true
-				end
-			elseif not Mod.PlayerTools.AnyPlayerHasCollectible(CollectibleType.COLLECTIBLE_FLIP) then
-				pickup:Remove()
-				return true
-			end
-			pickup.Price = 0
-		end
-
-		pickup.SubType = 0
-		local sp = pickup:GetSprite()
-		sp:ReplaceSpritesheet(1, "")
-		sp:ReplaceSpritesheet(4, "")
-		sp:LoadGraphics()
-
 		if itemCon.Type == ItemType.ITEM_ACTIVE and itemCon.ChargeType == ItemConfig.CHARGE_NORMAL and itemNoActive[sub] ~= true then
 			player:UseActiveItem(sub, UseFlag.USE_NOANIM)
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
@@ -236,6 +235,26 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup)
 			if add < 1 then add = 1 end
 			tGelloPointsSave:Set(points + add)
 		end
+
+		if pickup.Price ~= 0 then
+			if REPENTOGON then
+				if pickup:GetFlipCollectible() == nil then
+					pickup:Remove()
+					return true
+				end
+			elseif not Mod.PlayerTools.AnyPlayerHasCollectible(CollectibleType.COLLECTIBLE_FLIP) then
+				pickup:Remove()
+				return true
+			end
+			pickup.Price = 0
+		end
+
+		pickup.SubType = 0
+		local sp = pickup:GetSprite()
+		sp:ReplaceSpritesheet(1, "")
+		sp:ReplaceSpritesheet(4, "")
+		sp:LoadGraphics()
+		
 		return true
 	end
 	return false
@@ -290,7 +309,7 @@ function GelloCharMod:SetPickupNonEat(pickup)
 end
 
 function GelloCharMod:CanEatPickup(pickup)
-	if pickup.Type ~= 5 or pickup.Variant ~= 100 or pickup.SubType == 0 then return false end
+	if pickup.Type ~= 5 or pickup.Variant ~= 100 or pickup.SubType == 0 or CONSUME_BLACKLIST[pickup.SubType] then return false end
 	local list = saveHand:Get({})
 	return list[tostring(pickup.InitSeed)] ~= true
 end

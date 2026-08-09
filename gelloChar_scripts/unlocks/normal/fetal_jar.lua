@@ -82,7 +82,7 @@ Mod:AddCallback(CustomReviveLibThing.Callbacks.ON_PLAYER_REVIVE, function(_, pla
 		player:AddMaxHearts(2)
 	end
 	player:AddHearts(99)
-	player:SetMinDamageCooldown(30)
+	player:SetMinDamageCooldown(90)
 
 	local ref = EntityRef(player)
 	local dmg = 15 + (player.Damage / 10)

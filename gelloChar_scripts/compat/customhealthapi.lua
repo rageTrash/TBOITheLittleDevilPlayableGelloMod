@@ -1,6 +1,7 @@
 local Mod = GelloCharMod
 
 Mod.AddModPath("CustomHealthAPI", function()
+    if Mod.RepentogonPlus then return end
     CustomHealthAPI.Library.AddCallback("GelloCharMod", CustomHealthAPI.Enums.Callbacks.PRE_RENDER_LIVES, 0, function(player, numLives)
 
         local effects = player:GetEffects()

@@ -254,7 +254,7 @@ local PressentPools = {
 		ItemPoolType.POOL_CURSE,
 		ItemPoolType.POOL_KEY_MASTER,
 		ItemPoolType.POOL_BATTERY_BUM,
-		--ItemPoolType.POOL_MOMS_CHEST,
+		ItemPoolType.POOL_MOMS_CHEST,
 		ItemPoolType.POOL_CRANE_GAME,
 		ItemPoolType.POOL_ULTRA_SECRET,
 		ItemPoolType.POOL_BOMB_BUM,
@@ -287,24 +287,21 @@ local PressentPools = {
 		ItemPoolType.POOL_ROTTEN_BEGGAR,
 	}
 }
-local roomPoolRNG = RNG()
-function GelloCharMod:GetRandomPool(ignoreGreedPool, seed)
-	local ignoreGreedPool = ignoreGreedPool or false
-	if seed then roomPoolRNG:SetSeed(seed, 30); roomPoolRNG:Next(); roomPoolRNG:Next() end
+function GelloCharMod:GetRandomPool(ignoreGreedPool)
+	ignoreGreedPool = (type(ignoreGreedPool) == "boolean" and ignoreGreedPool) or false
 
 	if not ignoreGreedPool and game:IsGreedMode() then
-		if seed then return PressentPools.Greed[ Mod:RandomInt(1, #PressentPools.Greed, roomPoolRNG) ] end
-		return PressentPools.Greed[ Mod:RandomInt(1, #PressentPools.Greed) ]
+		return PressentPools.Greed[ Mod:RandomInt(1, #PressentPools.Greed, Mod.LevelTools.GetRoomRNG()) ]
 	end
-	if seed then return PressentPools.Normal[ Mod:RandomInt(1, #PressentPools.Normal, roomPoolRNG) ] end
-	return PressentPools.Normal[ Mod:RandomInt(1, #PressentPools.Normal) ]
+
+	return PressentPools.Normal[ Mod:RandomInt(1, #PressentPools.Normal, Mod.LevelTools.GetRoomRNG()) ]
 end
 
 
 
 function GelloCharMod:GetRandomTrinket(dontAdvanceRNG, forceGolden)
-	local dontAdvanceRNG = dontAdvanceRNG or false
-	local forceGolden = forceGolden or false
+	dontAdvanceRNG = (type(dontAdvanceRNG) == "boolean" and dontAdvanceRNG) or false
+	forceGolden = (type(forceGolden) == "boolean" and forceGolden) or false
 
 	local trinketID = game:GetItemPool():GetTrinket(dontAdvanceRNG)
 
@@ -318,13 +315,13 @@ end
 
 
 function GelloCharMod:GetRandomCollectible(pool, decrease, seed, default, ignoreRoomPool, ignoreGreedPool)
-	local pool = pool or -1
-	local decrease = decrease or true
+	pool = (type(pool) == "number" and pool) or -1
+	decrease = (type(decrease) == "boolean" and decrease) or true
 	local gamePools = game:GetItemPool()
 
-	local seed = seed or Random()
+	seed = (type(seed) == "number" and math.floor(seed)) or Mod.LevelTools.GetRoomRNG():RandomInt((2^32 -1))
 	if seed < 1 then
-		seed = Random()
+		seed = Mod.LevelTools.GetRoomRNG():RandomInt((2^32 -1))
 		if seed < 1 then seed = 1 end
 	end
 
@@ -332,7 +329,7 @@ function GelloCharMod:GetRandomCollectible(pool, decrease, seed, default, ignore
 		if not ignoreRoomPool then
 			pool = Mod:GetRoomPool()
 		else
-			pool = Mod:GetRandomPool(ignoreGreedPool, seed)
+			pool = Mod:GetRandomPool(ignoreGreedPool)
 		end
 	end
 
