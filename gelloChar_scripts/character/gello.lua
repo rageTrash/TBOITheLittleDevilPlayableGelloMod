@@ -307,7 +307,7 @@ if Mod.RepentogonPlus then
 
 	local promp = GenericPrompt()
 	promp:Initialize()
-	promp:SetText("Would you like", "have Gello locked?")
+	promp:SetText("Would you like to", "have Gello locked?")
 	--Mod:AddCallback(ModCallbacks.MC_POST_SAVESLOT_LOAD, function()
 	--	if not Isaac.GetPersistentGameData():Unlocked(GELLO_ACHIEVEMENT_ID) then
 	--	end
@@ -336,6 +336,7 @@ if Mod.RepentogonPlus then
 			end
 		end
 	end)
+	
 
 	Mod:AddCallback(ModCallbacks.MC_POST_COMPLETION_EVENT, function(_, compleationMark)
 		if compleationMark ~= CompletionType.LAMB or Isaac.GetPersistentGameData():Unlocked(GELLO_ACHIEVEMENT_ID) then return end

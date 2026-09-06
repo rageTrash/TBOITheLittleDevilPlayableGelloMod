@@ -46,7 +46,7 @@ Mod.AddModPath("FiendFolio", function()
             Fun = function(player, rng)
                 local room = game:GetRoom()
                 for _=1, 3 do
-                    Mod:Spawn(5, ffPickup.VARIANT.IMMORAL_HEART, 0, room:FindFreePickupSpawnPosition(player.Position, 40, true), Vector.Zero, player)
+                    Mod:Spawn(5, ffPickup.VARIANT.IMMORAL_HEART, 0, room:FindFreePickupSpawnPosition(player.Position, 40, true), Vector.Zero, player, rng:Next())
                 end
             end,
             EID = { en_us = "Spawns 3 Immoral Hearts", spa = "Genera 3 Corazones Imorales" }

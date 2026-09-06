@@ -361,7 +361,7 @@ Mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
         menuData.IsActive = true
         MenuData:Set(menuData)
         pTools.ForEach(function(player)
-            if Mod:IsTaintedGello(player) and player.Parent == nil and not GelloMenu.CheckIfWasAllreadyAdded(player) then
+            if Mod:IsTaintedGello(player) and player.Parent == nil and not GelloMenu.CheckIfPlayerWasAdded(player) then
                 GelloMenu.AddPlayerToQueue(player)
             end
         end)

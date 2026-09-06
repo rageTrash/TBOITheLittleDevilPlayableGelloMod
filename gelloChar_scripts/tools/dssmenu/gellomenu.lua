@@ -344,6 +344,21 @@ local exampledirectory = {
                     GelloCharMod.Data.Settings.FriendlyBiteAltMode = var == 2
                 end,
                 tooltip = { strset = { 'friendly bite', 'is an active', 'item' } }
+            },{ str = "", nosel = true },
+            
+            {
+                str = 'larry thematic drop', fsize = 2,
+                choices = {'false', 'true'},
+                setting = 1,
+                variable = "Data.Settings.LarryJrJr_ThematicDrop",
+                load = function()
+                    return (GelloCharMod.Data.Settings.LarryJrJr_ThematicDrop or Mod.GetDefaultSetting("LarryJrJr_ThematicDrop")) and 2 or 1
+                end,
+                store = function(var)
+                    GelloCharMod.Data.Settings.LarryJrJr_ThematicDrop = var == 2
+                end,
+                tooltip = { strset = { 'larry jr', 'thematic item', 'drop' } },
+                displayif = function() return Mod.RepentogonPlus end
             }
         }
     },

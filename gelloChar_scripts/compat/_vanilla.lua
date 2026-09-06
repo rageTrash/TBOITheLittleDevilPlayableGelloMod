@@ -30,7 +30,7 @@ Mod:AddConsumeItemEffect(
     ,{ Id = CollectibleType.COLLECTIBLE_SMART_FLY, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_PAPA_FLY, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_YO_LISTEN, Fun = spawnFlys, EID = flysDesc, Stats = {Luck = 1} }
-    ,{ Id = CollectibleType.COLLECTIBLE_PSY_FLY, Fun = spawnFlys, EID = flysDesc, }
+    ,{ Id = CollectibleType.COLLECTIBLE_PSY_FLY, Fun = spawnFlys, EID = flysDesc, Stats = {Range = 2.5, Tears =0.25, ShotSpeed = 0.15} }
     ,{ Id = CollectibleType.COLLECTIBLE_ROTTEN_BABY, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_BIG_FAN, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_MOMS_UNDERWEAR, Fun = spawnFlys, EID = flysDesc, Stats = {Range = 1.25} }
@@ -54,14 +54,23 @@ Mod:AddConsumeItemEffect(
     }
     ,{ Id = CollectibleType.COLLECTIBLE_JAR_OF_FLIES,
         Fun = function(player, rng) player:AddBlueFlies(10, player.Position, player) end,
-        EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}
+        EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}, NoActive = true
     }
     ,{ Id = CollectibleType.COLLECTIBLE_PARASITOID, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_BROWN_NUGGET,
         Fun = function(player, rng) player:AddBlueFlies(10, player.Position, player) end,
-        EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}
+        EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}, NoActive = true
     }
     ,{ Id = CollectibleType.COLLECTIBLE_ANGRY_FLY, Fun = spawnFlys, EID = flysDesc, }
+    ,{ Id = CollectibleType.COLLECTIBLE_FRUITY_PLUM, Fun = spawnFlys, EID = flysDesc, }
+    ,{ Id = CollectibleType.COLLECTIBLE_PLUM_FLUTE,
+        Fun = function(player, rng) player:AddBlueFlies(10, player.Position, player) end,
+        EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}, NoActive = true
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_SWARM,
+        Fun = function(player, rng) player:AddBlueFlies(10, player.Position, player) end,
+        EID = {en_us = "Spawns 10 flies", spa = "Genera 10 moscas"}
+    }
 )
 
 
@@ -89,6 +98,20 @@ Mod:AddConsumeItemEffect(
         end,
         EID = {en_us = "Spawns 8 to 14 spiders", spa = "Genera 8 a 14 arañas"}
     }
+    ,{ Id = CollectibleType.COLLECTIBLE_INTRUDER,
+        Fun = function(player, rng)
+            local pos = player.Position
+            for _=1, 10 do player:AddBlueSpider(pos) end
+        end,
+        EID = {en_us = "Spawns 10 spiders", spa = "Genera 10 arañas"}
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_KEEPERS_KIN,
+        Fun = function(player, rng)
+            local pos = player.Position
+            for _=1, 10 do player:AddBlueSpider(pos) end
+        end,
+        EID = {en_us = "Spawns 10 spiders", spa = "Genera 10 arañas"}
+    }
 )
 
 
@@ -106,6 +129,9 @@ Mod:AddConsumeItemEffect(
     ,{ Id = CollectibleType.COLLECTIBLE_COMPOUND_FRACTURE, Fun = spawnBoneHeart, EID = boneHeartDesc }
     ,{ Id = CollectibleType.COLLECTIBLE_MARROW, Fun = spawnBoneHeart, EID = boneHeartDesc }
     ,{ Id = CollectibleType.COLLECTIBLE_DIVORCE_PAPERS, Fun = spawnBoneHeart, EID = boneHeartDesc, Stats = {Tears = 0.35} }
+    ,{ Id = CollectibleType.COLLECTIBLE_BONE_SPURS, Fun = spawnBoneHeart, EID = boneHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_VANISHING_TWIN, Fun = spawnBoneHeart, EID = boneHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_BERSERK, Fun = spawnBoneHeart, EID = boneHeartDesc, Stats={ ForceDmg = 0.5, ForceTempDmg = 10}, NoActive = true }
 )
 
 
@@ -141,6 +167,14 @@ Mod:AddConsumeItemEffect(
     ,{ Id = CollectibleType.COLLECTIBLE_HOLY_LIGHT, Fun = spawnEternalHeart, EID = eternalHeartDesc }
     ,{ Id = CollectibleType.COLLECTIBLE_CIRCLE_OF_PROTECTION, Fun = spawnEternalHeart, EID = eternalHeartDesc, Stats = {ForceDmg = 1, ForceTempDmg = 1} }
     ,{ Id = CollectibleType.COLLECTIBLE_TRISAGION, Fun = spawnEternalHeart, EID = eternalHeartDesc, Stats={DmgOffset = 0.25, Tears=0.16} }
+    ,{ Id = CollectibleType.COLLECTIBLE_PASCHAL_CANDLE, Fun = spawnEternalHeart, EID = eternalHeartDesc, Stats={Tears=0.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_DIVINE_INTERVENTION, Fun = spawnEternalHeart, EID = eternalHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_IMMACULATE_HEART, Fun = spawnEternalHeart, EID = eternalHeartDesc, Stats = {ForceDmg = 2.33, ForceTempDmg = 2} }
+    ,{ Id = CollectibleType.COLLECTIBLE_MONSTRANCE, Fun = spawnEternalHeart, EID = eternalHeartDesc, Stats={DmgOffset = 0.25} }
+    ,{ Id = CollectibleType.COLLECTIBLE_ACT_OF_CONTRITION, Fun = spawnEternalHeart, EID = eternalHeartDesc, Stats={Tears=0.25} }
+    ,{ Id = CollectibleType.COLLECTIBLE_REVELATION, Fun = spawnEternalHeart, EID = eternalHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_INNER_CHILD, Fun = spawnEternalHeart, EID = eternalHeartDesc, Stats={Speed=0.1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_SALVATION, Fun = spawnEternalHeart, EID = eternalHeartDesc }
 )
 
 
@@ -155,35 +189,16 @@ Mod:AddConsumeItemEffect(
     { Id = CollectibleType.COLLECTIBLE_SACRIFICIAL_DAGGER, Fun = spawnBlackHeart, EID = blackHeartDesc },
     { Id = CollectibleType.COLLECTIBLE_LIL_BRIMSTONE, Fun = spawnBlackHeart, EID = blackHeartDesc },
     { Id = CollectibleType.COLLECTIBLE_DARK_BUM, Fun = spawnBlackHeart, EID = blackHeartDesc },
-    { Id = CollectibleType.COLLECTIBLE_INCUBUS, Fun = spawnBlackHeart, EID = blackHeartDesc,
-        Stats = {
-            DmgOffset = 1.5,
-            TempDmgOffset = -0.5,
-            Tears = 0.22,
-        }
-    },
+    { Id = CollectibleType.COLLECTIBLE_INCUBUS, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = { DmgOffset = 1.5, TempDmgOffset = -0.5, Tears = 0.22, } },
     { Id = CollectibleType.COLLECTIBLE_SUCCUBUS, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = { ForceDmg = 2.5, ForceTempDmg =1 } },
     { Id = CollectibleType.COLLECTIBLE_MY_SHADOW, Fun = spawnBlackHeart, EID = blackHeartDesc },
     { Id = CollectibleType.COLLECTIBLE_SHADE, Fun = spawnBlackHeart, EID = blackHeartDesc },
     { Id = CollectibleType.COLLECTIBLE_LIL_ABADDON, Fun = spawnBlackHeart, EID = blackHeartDesc },
-    { Id = CollectibleType.COLLECTIBLE_TWISTED_PAIR, Fun = spawnBlackHeart, EID = blackHeartDesc,
-        Stats = {
-            DmgOffset = -1,
-            TempDmgOffset = 2.5,
-            Tears = 0.15,
-        }
-    },
+    { Id = CollectibleType.COLLECTIBLE_TWISTED_PAIR, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = { DmgOffset = -0.5, TempDmgOffset = 2.5, Tears = 0.15, } },
     { Id = CollectibleType.COLLECTIBLE_MY_SHADOW, Fun = spawnBlackHeart, EID = blackHeartDesc },
     { Id = Mod.Enum.Item.BEELZEBUB, Fun = spawnBlackHeart, EID = blackHeartDesc },
-    {
-        Id = Mod.Enum.Item.LIL_BITER,
-        Fun = spawnBlackHeart,
-        EID = blackHeartDesc,
-        Stats = {
-            DmgOffset = -1.5,
-            TempDmgOffset = 2.5,
-        }
-    }, { Id = CollectibleType.COLLECTIBLE_PENTAGRAM, Fun = spawnBlackHeart, EID = blackHeartDesc }
+    { Id = Mod.Enum.Item.LIL_BITER, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = { DmgOffset = -1.5, TempDmgOffset = 2.5, } }
+    ,{ Id = CollectibleType.COLLECTIBLE_PENTAGRAM, Fun = spawnBlackHeart, EID = blackHeartDesc }
     ,{ Id = CollectibleType.COLLECTIBLE_NECRONOMICON, Fun = spawnBlackHeart, EID = blackHeartDesc }
     ,{ Id = CollectibleType.COLLECTIBLE_MARK, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {Speed = 0.15} }
     ,{ Id = CollectibleType.COLLECTIBLE_PACT, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {Tears = 0.35} }
@@ -237,6 +252,35 @@ Mod:AddConsumeItemEffect(
             spa = "Genera un Corazón Negro y un objeto de la sala del diablo que no se puede consumir"
         }, NoActive = true
     }
+    ,{ Id = CollectibleType.COLLECTIBLE_2SPOOKY, Fun = spawnBlackHeart, EID = blackHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_SULFUR, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {ForceDmg = 1, ForceTempDmg = 5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_BLOOD_OATH, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {ForceDmg = 0.75, Tears=0.12, Speed=0.1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_EYE_OF_THE_OCCULT, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {Range =1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_VOODOO_HEAD,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local pos = player.Position
+            for _=1, 3 do spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 10, 6, player, rng:Next()) end
+        end,
+        EID = {en_us = "Spawns 3 Black Hearts", spa = "Genera 3 Corazones Negro"},
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_OCULAR_RIFT, Fun = spawnBlackHeart, EID = blackHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_TOOTH_AND_NAIL,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local pos = player.Position
+            for _=1, 2 do spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 10, 6, player, rng:Next()) end
+        end,
+        EID = {en_us = "Spawns 2 Black Hearts", spa = "Genera 2 Corazones Negro"}
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_REDEMPTION, Fun = spawnBlackHeart, EID = blackHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_SANGUINE_BOND, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats={ForceDmg = 0.75} }
+    ,{ Id = CollectibleType.COLLECTIBLE_AZAZELS_RAGE, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats = {Tears = -0.175, ShotSpeed = 0.075, Range = 2.35, ForceDmg = 1.25, ForceTempDmg = 1.6} }
+    ,{ Id = CollectibleType.COLLECTIBLE_DARK_ARTS, Fun = spawnBlackHeart, EID = blackHeartDesc, NoActive = true }
+    ,{ Id = Mod.Enum.Item.CURSED_PLUSHIE, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats={ForceTempDmg = 5.75} }
+    ,{ Id = Mod.Enum.Item.GALLUS, Fun = spawnBlackHeart, EID = blackHeartDesc }
+    ,{ Id = Mod.Enum.Item.FRIENDLY_BITE, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats={ForceTempDmg = 8} }
+    ,{ Id = Mod.Enum.Item.FRIENDLY_BITE_ALT, Fun = spawnBlackHeart, EID = blackHeartDesc, Stats={ForceTempDmg = 8} }
 )
 
 
@@ -286,6 +330,7 @@ Mod:AddConsumeItemEffect(
     ,{ Id = CollectibleType.COLLECTIBLE_DESSERT, Fun = spawnRedHeart, EID = redHeartDesc}
     ,{ Id = CollectibleType.COLLECTIBLE_ROTTEN_MEAT, Fun = spawnRedHeart, EID = redHeartDesc}
     ,{ Id = CollectibleType.COLLECTIBLE_SNACK, Fun = spawnRedHeart, EID = redHeartDesc}
+    ,{ Id = CollectibleType.COLLECTIBLE_SUPPER, Fun = spawnRedHeart, EID = redHeartDesc}
     ,{ Id = CollectibleType.COLLECTIBLE_MEAT, Fun = spawnRedHeart, EID = redHeartDesc, Stats = {DmgOffset = 0.5}}
     ,{ Id = CollectibleType.COLLECTIBLE_MIDNIGHT_SNACK, Fun = spawnRedHeart, EID = redHeartDesc}
     ,{ Id = CollectibleType.COLLECTIBLE_STEM_CELLS, Fun = spawnRedHeart, EID = redHeartDesc, Stats = {ShotSpeed = 0.1}}
@@ -328,6 +373,21 @@ Mod:AddConsumeItemEffect(
     ,{ Id = CollectibleType.COLLECTIBLE_MAGGYS_BOW, Fun = spawnRedHeart, EID = redHeartDesc}
     ,{ Id = CollectibleType.COLLECTIBLE_THUNDER_THIGHS, Fun = spawnRedHeart, EID = redHeartDesc, Stats = {Speed = -0.25}}
     ,{ Id = CollectibleType.COLLECTIBLE_LEPROSY, Fun = spawnRedHeart, EID = redHeartDesc}
+    ,{ Id = CollectibleType.COLLECTIBLE_BLOOD_PUPPY, Fun = spawnRedHeart, EID = redHeartDesc, Stats = {ForceDmg = 1}}
+    ,{
+        Id = CollectibleType.COLLECTIBLE_BINGE_EATER,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local pos = player.Position
+            for _=1, 5 do
+                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 10, 1, player, rng:Next())
+            end
+        end,
+        EID = {en_us = "Spawns 5 Red Hearts", spa = "Genera 5 Corazones Rojos"},
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_CANDY_HEART, Fun = spawnRedHeart, EID = redHeartDesc}
+    ,{ Id = CollectibleType.COLLECTIBLE_EMPTY_HEART, Fun = spawnRedHeart, EID = redHeartDesc}
+    ,{ Id = CollectibleType.COLLECTIBLE_HYPERCOAGULATION, Fun = spawnRedHeart, EID = redHeartDesc}
 )
 
 
@@ -404,6 +464,16 @@ Mod:AddConsumeItemEffect(
     ,{ Id = CollectibleType.COLLECTIBLE_PJS, Fun = spawnSoulHeart2, EID = soulHeart2Desc }
     ,{ Id = CollectibleType.COLLECTIBLE_METAL_PLATE, Fun = spawnSoulHeart, EID = soulHeartDesc }
     ,{ Id = CollectibleType.COLLECTIBLE_BLANKET, Fun = spawnSoulHeart, EID = soulHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_DREAM_CATCHER, Fun = spawnSoulHeart, EID = soulHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_SOCKS, Fun = spawnSoulHeart, EID = soulHeartDesc, Stats={Speed =0.12} }
+    ,{ Id = CollectibleType.COLLECTIBLE_LUNA, Fun = spawnSoulHeart, EID = soulHeartDesc, Stats={Tears =0.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_LIL_DUMPY, Fun = spawnSoulHeart3, EID = soulHeart3Desc }
+    ,{ Id = CollectibleType.COLLECTIBLE_SPIRIT_SHACKLES, Fun = spawnSoulHeart, EID = soulHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_ASTRAL_PROJECTION, Fun = spawnSoulHeart, EID = soulHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_SOUL_LOCKET, Fun = spawnSoulHeart, EID = soulHeartDesc }
+    ,{ Id = CollectibleType.COLLECTIBLE_JELLY_BELLY, Fun = spawnSoulHeart2, EID = soulHeart2Desc }
+    ,{ Id = Mod.Enum.Item.USE_PLACENTA, Fun = spawnSoulHeart, EID = soulHeartDesc }
+    ,{ Id = Mod.Enum.Item.CENTEPIED, Fun = spawnSoulHeart2, EID = soulHeart2Desc }
 )
 
 
@@ -417,6 +487,7 @@ Mod:AddConsumeItemEffect(
         EID = {en_us = "Grants 20 Keys", spa = "Da 20 Llaves"}
     }
     ,{ Id = CollectibleType.COLLECTIBLE_LATCH_KEY, Fun = spawnKey, EID = keyDesc, Stats = {Luck = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_SHARP_KEY, Fun = spawnKey, EID = keyDesc, Stats = {ForceDmg = 1} }
 )
 
 
@@ -505,6 +576,32 @@ Mod:AddConsumeItemEffect(
             en_us = "Spawns a dime#For each heart container, spawns an additional dime",
             spa = "Genera un dime#Por canda contenedor de corazón, general un dime adicional"
         }
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_GOLDEN_RAZOR, Fun = coinDesc, EID = coinDesc, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_KEEPERS_SACK,
+        Fun = function(player, rng)
+            local grantStats = math.min(player:GetNumCoins() // 3, 10)
+            player:AddCoins( -grantStats *3 )
+
+            local permaStats = playerSave(SAVE_PERMA_STATS_NAME, player):Get({})
+
+            for _=1, grantStats do
+                local choice = rng:RandomInt(3)
+                if choice == 1 then
+                    permaStats.Range = (permaStats.Range or 0) + 0.25
+                elseif choice == 2 then
+                    permaStats.Speed = (permaStats.Speed or 0) + 0.03
+                else
+                    permaStats.Damage = (permaStats.Damage or 0) + 0.5
+                end
+            end
+            playerSave(SAVE_PERMA_STATS_NAME, player):Set(permaStats)
+            Mod.PlayerTools.DoCache(player, CacheFlag.CACHE_DAMAGE | CacheFlag.CACHE_RANGE | CacheFlag.CACHE_SPEED)
+        end,
+        EID = {
+            en_us = "Spawns a dime#For each heart container, spawns an additional dime",
+            spa = "Genera un dime#Por canda contenedor de corazón, general un dime adicional"
+        }, Stats={ ForceDmg = 0.75 }
     }
 )
 
@@ -635,6 +732,15 @@ Mod:AddConsumeItemEffect(-- batteries
     ,{ Id = CollectibleType.COLLECTIBLE_JACOBS_LADDER, Fun = spawnBattery, EID = batteryDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_JUMPER_CABLES, Fun = spawnBattery, EID = batteryDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_TECHNOLOGY_ZERO, Fun = spawnBattery, EID = batteryDesc, Stats = {Range = 2.5, ShotSpeed = 0.1}}
+    ,{ Id = CollectibleType.COLLECTIBLE_120_VOLT, Fun = spawnBattery, EID = batteryDesc, Stats = {DmgOffset = 1.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_BATTERY_PACK,
+        Fun = function(player, rng)
+            spawnBattery(player, rng)
+            spawnBattery(player, rng)
+            spawnMegaBattery(player, rng)
+        end,
+        EID = {en_us = "Spawns 2 Battery and a Mega Battery", spa = "Genera 2 Baterias y una Mega Bateria"},
+    }
 )
 
 
@@ -728,11 +834,20 @@ Mod:AddConsumeItemEffect(
         EID = {en_us = "Spawns 2 Pills", spa = "Genera 2 Pildoras"},
     }
     ,{ Id = CollectibleType.COLLECTIBLE_CAFFEINE_PILL, Fun = spawnPill, EID = pillDesc, }
+    ,{ Id = CollectibleType.COLLECTIBLE_JUPITER, Fun = spawnPill, EID = pillDesc, Stats={Speed = -0.1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_FALSE_PHD,
+        Fun = function(player, rng)
+            spawnBlackHeart(player, rng)
+            spawnPill(player, rng)
+        end, EID = {en_us = "Spawns a Black Heart and a Pill", spa = "Genera un Corazón Negro y una Pildora"},
+    }
 )
 
 
 local spawnCard = function(player, rng) spawnPickup(game:GetRoom():FindFreePickupSpawnPosition(player.Position, 40, true), 300, itemPool:GetCard(rng:Next(), true, false, false), player, rng:Next() ) end
 local cardDesc = {en_us = "Spawns a Card", spa = "Genera una Carta"}
+local spawnRune = function(player, rng) spawnPickup(game:GetRoom():FindFreePickupSpawnPosition(player.Position, 40, true), 300, itemPool:GetCard(rng:Next(), false, true, true), player, rng:Next() ) end
+local runeDesc = {en_us = "Spawns a Rune", spa = "Genera una Runa"}
 Mod:AddConsumeItemEffect(
     { Id = CollectibleType.COLLECTIBLE_DECK_OF_CARDS, Fun = spawnCard, EID = cardDesc }
     ,{ Id = CollectibleType.COLLECTIBLE_MAGIC_8_BALL, Fun = spawnCard, EID = cardDesc }
@@ -750,6 +865,51 @@ Mod:AddConsumeItemEffect(
         end,
         EID = {en_us = "Spawns 2 Cards", spa = "Genera 2 Cartas"}
     }
+    ,{ Id = CollectibleType.COLLECTIBLE_CARD_READING,
+        Fun = function(player, rng)
+            local teleCards = {
+                Card.CARD_FOOL,
+                Card.CARD_EMPEROR,
+                Card.CARD_HERMIT,
+                Card.CARD_STARS,
+                Card.CARD_MOON,
+            }
+
+            if itemConfig:GetCard(Card.CARD_REVERSE_EMPEROR):IsAvailable() then
+                teleCards[#teleCards +1] = Card.CARD_REVERSE_EMPEROR
+            end
+            if itemConfig:GetCard(Card.CARD_REVERSE_MOON):IsAvailable() then
+                teleCards[#teleCards +1] = Card.CARD_REVERSE_MOON
+            end
+
+            local room = game:GetRoom()
+            spawnPickup(room:FindFreePickupSpawnPosition(player.Position, 40, true), 300, teleCards[ rng:RandomInt(#teleCards) +1] , player, rng:Next() )
+            spawnPickup(room:FindFreePickupSpawnPosition(player.Position, 40, true), 300, teleCards[ rng:RandomInt(#teleCards) +1] , player, rng:Next() )
+            spawnPickup(room:FindFreePickupSpawnPosition(player.Position, 40, true), 300, teleCards[ rng:RandomInt(#teleCards) +1] , player, rng:Next() )
+        end,
+        EID = {en_us = "Spawns 3 Cards that can teleport Isaac", spa = "Genera 3 Cartas que pueden teletransportar a Isaac"}
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_CLEAR_RUNE,
+        Fun = function(player, rng)
+		    local room = game:GetRoom()
+            local pos = player.Position
+            for _=1, 5 do
+                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 300, itemPool:GetCard(rng:Next(), false, true, true), player, rng:Next())
+            end
+        end,
+        EID = {en_us = "Spawns 5 Runes", spa = "Genera 5 Runas"},
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_BLANK_CARD,
+        Fun = function(player, rng)
+		    local room = game:GetRoom()
+            local pos = player.Position
+            for _=1, 5 do
+                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 300, itemPool:GetCard(rng:Next(), true, false, false), player, rng:Next())
+            end
+        end,
+        EID = {en_us = "Spawns 5 Cards", spa = "Genera 5 Cartas"},
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_MOMS_RING, Fun = spawnRune, EID = runeDesc }
 )
 
 
@@ -865,6 +1025,48 @@ Mod:AddConsumeItemEffect( -- mostly stat things or setting an active off
     ,{ Id = CollectibleType.COLLECTIBLE_HAEMOLACRIA, Stats = {Tears = -1, Range = -2.5, DmgOffset=5.75} }
     ,{ Id = CollectibleType.COLLECTIBLE_LACHRYPHAGY, Stats = {Tears = 0.2} }
     ,{ Id = CollectibleType.COLLECTIBLE_FLAT_STONE, Stats = {Tears = 0.3} }
+    ,{ Id = CollectibleType.COLLECTIBLE_EYE_SORE, Stats = {Tears = 0.3} }
+    ,{ Id = CollectibleType.COLLECTIBLE_IT_HURTS, Stats = {Tears = 0.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_ALMOND_MILK, Stats = {Tears = 2.12, ForceDmg = 0.3} }
+    ,{ Id = CollectibleType.COLLECTIBLE_ROCK_BOTTOM, Stats = {Tears = 0.35, ShotSpeed = 0.12, Speed = 0.12, Range = 1.25, Luck = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_BAR_OF_SOAP, Stats = {Tears = 0.2} }
+    ,{ Id = CollectibleType.COLLECTIBLE_SPIRIT_SWORD, Stats = {Tears = 0.12, ForceDmg = 4.5, ForceTempDmg = 1.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_WAVY_CAP, Stats = {Tears = 1.24} }
+    ,{ Id = CollectibleType.COLLECTIBLE_SOL, Stats = {ForceDmg = 1, Luck = 0.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_MARS, Stats = {ForceDmg = 1.25, Speed = 0.15} }
+    ,{ Id = CollectibleType.COLLECTIBLE_SATURNUS, Stats = {Tears = 0.3} }
+    ,{ Id = CollectibleType.COLLECTIBLE_NEPTUNUS, Stats = {Tears = 1.24} }
+    ,{ Id = CollectibleType.COLLECTIBLE_PLUTO, Stats = {Tears = 0.3} }
+    ,{ Id = CollectibleType.COLLECTIBLE_EYE_DROPS, Stats = {Tears = 0.35} }
+    ,{ Id = CollectibleType.COLLECTIBLE_MOMS_BRACELET, Stats = {ForceDmg = 1}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_SCOOPER, Stats = {ForceDmg = 1}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_BOILED_BABY, Stats = {Tears = 0.12} }
+    ,{ Id = CollectibleType.COLLECTIBLE_BIRD_CAGE, Stats = {ForceDmg = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_LARYNX, Stats = {ForceTempDmg = 5}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_RED_STEW, Stats = {ForceDmg = 1, ForceTempDmg = 7.5} }
+    ,{ Id = CollectibleType.COLLECTIBLE_GENESIS, Stats = {ForceDmg = 1, Tears = 0.35, ShotSpeed = 0.1, Speed = 0.1, Range = 1.5, Luck = 1}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_MEGA_MUSH, Stats = {ForceDmg = 3.5, ForceTempDmg = 1, Tears = -075}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_KNIFE_PIECE_1, Stats = {ForceDmg = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_KNIFE_PIECE_2, Stats = {ForceDmg = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_MEAT_CLEAVER, Stats = {ForceTempDmg = 8}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_EVIL_CHARM, Stats = {Luck = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_DOGMA, Stats = {ForceDmg = 2.5, Speed = 0.2} }
+    ,{ Id = CollectibleType.COLLECTIBLE_ERASER, Stats = {ForceTempDmg = 10}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_URN_OF_SOULS, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_CONSOLATION_PRIZE, Stats = {ForceDmg = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_SPIN_TO_WIN, Stats = {Speed = 0.25}, NoActive = true}
+    ,{ Id = CollectibleType.COLLECTIBLE_VASCULITIS, Stats = {ForceDmg = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_TROPICAMIDE, Stats = {Range = 1.25} }
+    ,{ Id = CollectibleType.COLLECTIBLE_SAUSAGE, Stats = {Tears = 0.35, ShotSpeed = 0.12, Speed = 0.12, Range = 1.25, Luck = 1} }
+    ,{ Id = CollectibleType.COLLECTIBLE_ESAU_JR, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_ABYSS, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_SUPLEX, Stats = {ForceTempDmg = 7.5}, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_FLIP, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_SUMPTORIUM, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_GELLO, NoActive = true }
+    ,{ Id = CollectibleType.COLLECTIBLE_DECAP_ATTACK, NoActive = true }
+    ,{ Id = Mod.Enum.Item.FETAL_JAR, NoActive = true }
+    ,{ Id = Mod.Enum.Item.LIL_EMBRION, Stats = {Tears = 0.5} }
 )
 
 
@@ -912,7 +1114,6 @@ Mod:AddConsumeItemEffect(
         end,
         EID = {en_us = "Spawns 3 Sacks", spa = "Genera 3 Bolsas"},
     }
-
     
     ,{
         Id = CollectibleType.COLLECTIBLE_LIL_CHEST,
@@ -950,7 +1151,6 @@ Mod:AddConsumeItemEffect(
         EID = {en_us = "Spawns a pickup", spa = "Genera un recolectable"},
     }
 
-    
     ,{
         Id = CollectibleType.COLLECTIBLE_7_SEALS,
         Fun = function(player) 
@@ -1393,26 +1593,6 @@ Mod:AddConsumeItemEffect(
         }
     }
 
-    ,{  Id = CollectibleType.COLLECTIBLE_CLEAR_RUNE,
-        Fun = function(player, rng)
-		    local room = game:GetRoom()
-            local pos = player.Position
-            for _=1, 5 do
-                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 300, itemPool:GetCard(rng:Next(), false, true, true), player, rng:Next())
-            end
-        end,
-        EID = {en_us = "Spawns 5 Runes", spa = "Genera 5 Runas"},
-    }
-    ,{  Id = CollectibleType.COLLECTIBLE_BLANK_CARD,
-        Fun = function(player, rng)
-		    local room = game:GetRoom()
-            local pos = player.Position
-            for _=1, 5 do
-                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 300, itemPool:GetCard(rng:Next(), true, false, false), player, rng:Next())
-            end
-        end,
-        EID = {en_us = "Spawns 5 Cards", spa = "Genera 5 Cartas"},
-    }
     ,{  Id = CollectibleType.COLLECTIBLE_PLACEBO,
         Fun = function(player, rng)
 		    local room = game:GetRoom()
@@ -1801,8 +1981,8 @@ Mod:AddConsumeItemEffect(
             sav:Set(statsTypes)
         end,
         EID = {
-            en_us = "Entering a hostile room will grant one of these:#{{ArrowUp}} {{Damage}} +2 Damage#{{ArrowUp}} {{Tears}} +1.25 Tears#{{ArrowUp}} {{Range}} +1.25 Range#{{ArrowUp}} {{Speed}} +0.2 Speed",
-            spa = "Entrar a un cuarto hostil dará uno de estos:#{{ArrowUp}} {{Damage}} +2 Daño#{{ArrowUp}} {{Tears}} +1.25 Lágrimas#{{ArrowUp}} {{Range}} +1.25 Rango#{{ArrowUp}} {{Speed}} +0.2 Velocidad",
+            en_us = "Entering a hostile room will grant one of these:#↑ {{Damage}} +2 Damage#↑ {{Tears}} +1.25 Tears#↑ {{Range}} +1.25 Range#↑ {{Speed}} +0.2 Speed",
+            spa = "Entrar a un cuarto hostil dará uno de estos:#↑ {{Damage}} +2 Daño#↑ {{Tears}} +1.25 Lágrimas#↑ {{Range}} +1.25 Rango#↑ {{Speed}} +0.2 Velocidad",
         }
     }
     ,{  Id = CollectibleType.COLLECTIBLE_CAMBION_CONCEPTION,
@@ -1839,7 +2019,7 @@ Mod:AddConsumeItemEffect(
         end,
         EID = {
             en_us = "On the next 10 hostile rooms:#Charms all enemies for 5 seconds",
-            spa = "En los siguientes 10 cuaros hortiles:#Encanta a todos los enemigos por 5 segundos",
+            spa = "En los siguientes 10 cuartos hortiles:#Encanta a todos los enemigos por 5 segundos",
         }
     }
     ,{  Id = CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS,
@@ -2083,7 +2263,7 @@ Mod:AddConsumeItemEffect(
         Fun = function(player, rng)
 		    local room = game:GetRoom()
             local pos = player.Position
-            for _=3, rng:RandomInt(7) +1 do
+            for _=1, 3 +rng:RandomInt(5) do
                 spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 0, 2, player, rng:Next())
             end
         end,
@@ -2092,12 +2272,19 @@ Mod:AddConsumeItemEffect(
     ,{  Id = CollectibleType.COLLECTIBLE_SCHOOLBAG,
         Fun = function(player)
             local itemId = nil
-            local count = 0
             local pos = game:GetRoom():FindFreePickupSpawnPosition(player.Position, 40, true)
-            repeat
+            local itemEnt = nil
+
+            for _=1, 100 do
                 count = count +1
                 itemId = Mod:GetRandomCollectible(-1, false, nil, nil, true)
-            until (itemId ~= 0 and itemConfig:GetCollectible(itemId).Type == ItemType.ITEM_ACTIVE and Mod:TrySpawnItem(itemId, pos, player, false, false)) or count > 100
+                
+                if itemId ~= 0 and itemConfig:GetCollectible(itemId).Type == ItemType.ITEM_ACTIVE then
+                    itemEnt = Mod:TrySpawnItem(itemId, pos, player, false, false)
+                    if itemEnt then break end
+                end
+            end
+            if itemEnt then Mod:SetPickupNonEat(itemEnt) end
         end,
         EID = {en_us = "Spawns a random active item", spa = "Genera una activa"},
     }
@@ -2121,6 +2308,447 @@ Mod:AddConsumeItemEffect(
             end
         end,
         EID = {en_us = "Spawns 3 Bonies", spa = "Invoca a 3 Huesudos"},
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_FORTUNE_COOKIE,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local pos = player.Position
+            for i=1, 3 do
+                local choice = rng:RandomInt(3)
+                local spawn = {v= 20, s=HeartSubType.HEART_SOUL}
+                if choice == 0 then
+                    spawn = {v= 300, s=0}
+                elseif choice == 1 then
+                    spawn = {v= 350, s=0}
+                end
+                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), spawn.v, spawn.s, player, rng:Next())
+            end
+        end,
+        EID = {
+            en_us = "Spawns 3 things that can be:#A soul heart#A card or rune#A trinket",
+            spa = "Genera 3 cosas que pueden ser:#Un corazón de alma#Una carta o runa#Un trinket"
+        }, NoActive = true
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_DIRTY_MIND,
+        Fun = function(player, rng)
+            local pos = player.Position
+            for _=1, 12 do
+                local dipType = rng:RandomInt(11)
+                if dipType > 10 then
+                    dipType = dipType +10
+                elseif dipType > 6 then
+                    dipType = dipType +6
+                end
+                
+                player:AddFriendlyDip(dipType, pos)
+            end
+        end,
+        EID = {en_us = "Spawns 12 friendly dips", spa = "Invoca 12 caquitas amistosas"},
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_RED_KEY,
+        Fun = function(player)
+            local sav = saveHand("Consume - Red Key")
+            sav:Set(sav:Get(0) + 8)
+        end,
+        EID = {
+            en_us = "Upon clearing a room, has a 35% to reward a Cracked Key",
+            spa = "Al limpiar un cuarto, hay un 35% de recompenzar con una Llave Quebrada",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES,
+        Fun = function(player)
+            player:UseCard(Card.CARD_SOUL_BETHANY, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
+            player:UseCard(Card.CARD_SOUL_BETHANY, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
+        end,
+        EID = { en_us = "Spawns various wisps", spa = "Invoca varios fuegos fatuos", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_ALABASTER_BOX,
+        Fun = function(player)
+            local pos = game:GetRoom():FindFreePickupSpawnPosition(player.Position, 40, true)
+            local itemEnt = Mod:TrySpawnItem( Mod:GetRandomCollectible(PoolType.POOL_ANGEL, false, nil, nil, true) , pos, player, false, false)
+            if not itemEnt then
+                Mod:SpawnItem(CollectibleType.COLLECTIBLE_BREAKFAST, pos, player)
+            else
+                Mod:SetPickupNonEat(itemEnt)
+            end
+        end,
+        EID = { en_us = "Spawns an item from the Angel pool", spa = "Genera un objeto de la sala del Angel", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_STAIRWAY,
+        Fun = function(player)
+            local pos = game:GetRoom():FindFreePickupSpawnPosition(player.Position, 40, true)
+            local itemEnt = Mod:TrySpawnItem( Mod:GetRandomCollectible(PoolType.POOL_ANGEL, false, nil, nil, true) , pos, player, false, false)
+            if not itemEnt then
+                local pickup = Mod:SpawnItem(CollectibleType.COLLECTIBLE_BREAKFAST, pos, player)
+                pickup.Price = 1
+                pickup.ShopItemId = -1
+            else
+                itemEnt.Price = 1
+                itemEnt.ShopItemId = -1
+                Mod:SetPickupNonEat(itemEnt)
+            end
+        end,
+        EID = { en_us = "Spawns an item from the Angel pool#The item will cost money", spa = "Genera un objeto de la sala del Angel#El objeto costará dinero", }
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_MERCURIUS,
+        Fun = function()
+            local sav = saveHand("Consume - Dads Key")
+            sav:Set(sav:Get(0) +3)
+        end,
+        EID = {
+            en_us = "Clearing or entering on a non hostile room with a locked door, will activate {{Collectible"..CollectibleType.COLLECTIBLE_DADS_KEY.."}} Dad's Key",
+            spa = "Limpiar o entrar a un cuarto no hostil con una puerta cerrada, activara {{Collectible"..CollectibleType.COLLECTIBLE_DADS_KEY.."}} Llave de Papá"
+        }, Stats = {Speed = 0.2}
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_VENUS,
+        Fun = function(player)
+            local sav = saveHand("Consume - Kidney Bean")
+            sav:Set(sav:Get(0) + 10)
+        end,
+        EID = {
+            en_us = "On the next 10 hostile rooms:#Charms all enemies for 5 seconds",
+            spa = "En los siguientes 10 cuartos hortiles:#Encanta a todos los enemigos por 5 segundos",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_URANUS,
+        Fun = function(player)
+            local sav = saveHand("Consume - Uranus")
+            sav:Set(sav:Get(0) + 10)
+        end,
+        EID = {
+            en_us = "On the next 10 hostile rooms:#Slowdown all enemies for 5 seconds",
+            spa = "En los siguientes 10 cuartos hortiles:#Ralentiza a todos los enemigos por 5 segundos",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_MEMBER_CARD,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local playerPos = player.Position
+            for i=1, 3 do
+                local pos = room:FindFreePickupSpawnPosition(playerPos, 40, true)
+                local pool = PoolType.POOL_SHOP
+                local choice = rng:Random(5)
+                if choice == 1 then
+                    pool = PoolType.POOL_SECRET
+                elseif choice == 2 then
+                    pool = PoolType.POOL_DEVIL
+                elseif choice == 3 then
+                    pool = PoolType.POOL_ANGEL
+                elseif choice == 4 then
+                    pool = PoolType.POOL_BOSS
+                end
+                
+                local itemEnt = Mod:TrySpawnItem( Mod:GetRandomCollectible(pool, false, nil, nil, true) , pos, player, false, false)
+                if not itemEnt then
+                    itemEnt = Mod:SpawnItem(CollectibleType.COLLECTIBLE_BREAKFAST, pos, player)
+                    itemEnt.Price = Mod:RandomInt(15, 30, rng)
+                    itemEnt.ShopItemId = -1
+                    itemEnt.AutoUpdatePrice = false
+                else
+                    local price
+                    if pool == PoolType.POOL_DEVIL or pool == PoolType.POOL_ANGEL then
+                        price = Mod:RandomInt(15, 50, rng)
+                    elseif pool == PoolType.POOL_SECRET then
+                        price = Mod:RandomInt(15, 99, rng)
+                    else
+                        price = Mod:RandomInt(15, 30, rng)
+                    end
+                    itemEnt.Price = price
+                    itemEnt.ShopItemId = -1
+                    itemEnt.AutoUpdatePrice = false
+                    Mod:SetPickupNonEat(itemEnt)
+                end
+            end
+        end,
+        EID = { en_us = "Spawns an 3 items from random pools#The items will cost money", spa = "Genera 3 objetos de varios cuartos#Los objetos costaran dinero", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_FREEZER_BABY,
+        Fun = function(player)
+            local sav = saveHand("Consume - Uranus")
+            sav:Set(sav:Get(0) + 5)
+        end,
+        EID = {
+            en_us = "On the next 5 hostile rooms:#Slowdown all enemies for 5 seconds",
+            spa = "En los siguientes 5 cuartos hortiles:#Ralentiza a todos los enemigos por 5 segundos",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_LOST_SOUL,
+        Fun = function(player, rng)
+            local choice = rng:Random(3)
+            if choice == 0 then
+                local pos = game:GetRoom():FindFreePickupSpawnPosition(player.Position, 40, true)
+                local pool = PoolType.POOL_TREASURE
+                if rng:RandomInt(2) == 0 then
+                    pool = PoolType.POOL_ANGEL
+                end
+                
+                local itemEnt = Mod:TrySpawnItem( Mod:GetRandomCollectible(pool, false, nil, nil, true) , pos, player, false, false)
+                if not itemEnt then
+                    itemEnt = Mod:SpawnItem(CollectibleType.COLLECTIBLE_BREAKFAST, pos, player)
+                else Mod:SetPickupNonEat(itemEnt) end
+            elseif choice == 1 then
+                spawnEternalHeart(player, rng)
+                spawnEternalHeart(player, rng)
+            else
+                spawnSoulHeart3(player, rng)
+            end
+        end,
+        EID = { en_us = "Spawns one of Lost Soul's reward", spa = "Genera una de las recompenzas de Alma Perdida", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_LODESTONE,
+        Fun = function(player)
+            local sav = saveHand("Consume - Lodestone")
+            sav:Set(sav:Get(0) + 10)
+        end,
+        EID = {
+            en_us = "On the next 10 hostile rooms, makes an enemy magnetized",
+            spa = "En los siguientes 10 cuartos hortiles, hace a un enemigo magnetico",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_ROTTEN_TOMATO,
+        Fun = function(player)
+            local sav = saveHand("Consume - Rotten Tomato")
+            sav:Set(sav:Get(0) + 10)
+        end,
+        EID = {
+            en_us = "On the next 10 hostile rooms, marks an enemy",
+            spa = "En los siguientes 10 cuartos hortiles, marca a un enemigo",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_DEATH_CERTIFICATE,
+        Fun = function(player)
+            local groupIdx = Mod:GetFreeGroup()
+            local room = game:GetRoom()
+            local playerPos = player.Position
+
+            for _=1, 3 do
+                local pos = room:FindFreePickupSpawnPosition(playerPos, 40, true)
+                local itemEnt = Mod:TrySpawnItem( Mod:GetRandomCollectible(-1, false, nil, nil, true), pos, player, false, false)
+                if not itemEnt then
+                    itemEnt = Mod:SpawnItem(CollectibleType.COLLECTIBLE_BREAKFAST, pos, player)
+                else
+                    Mod:SetPickupNonEat(itemEnt)
+                end
+
+                itemEnt.OptionsPickupIndex = groupIdx
+            end
+        end,
+        EID = { en_us = "Spawns 3 items#Isaac can only pick one", spa = "Genera 3 objetos#Isaac solo puede tomar uno", }, NoActive = true
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_PURGATORY,
+        Fun = function(player)
+            local sav = saveHand("Consume - Purgatory")
+            sav:Set(sav:Get(0) + 7)
+        end,
+        EID = {
+            en_us = "On the next 7 hostile rooms, Isaac summons a ghost",
+            spa = "En los siguientes 7 cuartos hortiles, Isaac invoca a un fantasma",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_HUNGRY_SOUL,
+        Fun = function(player)
+            local sav = saveHand("Consume - Purgatory")
+            sav:Set(sav:Get(0) + 7)
+        end,
+        EID = {
+            en_us = "On the next 7 hostile rooms, Isaac summons a ghost",
+            spa = "En los siguientes 7 cuartos hortiles, Isaac invoca a un fantasma",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_STITCHES,
+        Fun = function(player)
+            local sav = playerSave("Consume - Stitches", player)
+            sav:Set(sav:Get(0) + 8)
+        end,
+        EID = {
+            en_us = "On the next 8 hostile rooms, Isaac appears on one of the available door place",
+            spa = "En los siguientes 8 cuartos hortiles, Isaac aparece en uno de los lugares donde puede ir una puerta",
+        }, NoActive = true
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_R_KEY,
+        Fun = function()
+            local sav = saveHand("Consume - Forget me now")
+            sav:Set(sav:Get(0) +10)
+        end,
+        EID = {
+            en_us = "Clearing all of the normal rooms will activate {{Collectible"..CollectibleType.COLLECTIBLE_FORGET_ME_NOW.."}} Forget Me Now#This can be done up to 10 times",
+            spa = "Limpiar todos los cuartos normales va activar {{Collectible"..CollectibleType.COLLECTIBLE_FORGET_ME_NOW.."}} Olvídame Ya#Esto puede hacerse hasta 10 veces"
+        }, NoActive = true
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_MAGIC_SKIN,
+        Fun = function(player)
+            local room = game:GetRoom()
+            local playerPos = player.Position
+
+            local pos = room:FindFreePickupSpawnPosition(playerPos, 40, true)
+            local itemEnt = Mod:TrySpawnItem( Mod:GetRandomCollectible(-1, false), pos, player, false, false)
+            if not itemEnt then
+                itemEnt = Mod:SpawnItem(CollectibleType.COLLECTIBLE_BREAKFAST, pos, player)
+            else
+                Mod:SetPickupNonEat(itemEnt)
+            end
+
+            if player:GetEffectiveMaxHearts() > 0 then
+                if player:GetMaxHearts() >0 then
+                    player:AddMaxHearts(-2)
+                else
+                    player:AddBoneHearts(-1)
+                end
+            else
+                player:AddSoulHearts(-4)
+            end
+            player:AddBrokenHearts(1)
+        end,
+        EID = {
+            en_us = "Spawns an items#↓ Remove 1 heart container, 1 bone heart or 2 soul hearts#↓ Add a broken heart",
+            spa = "Genera un objetos#↓ Remueve 1 contenedor de corazón, 1 corazón de hueso o 2 corazones de alma#↓ Agrega un corazón roto",
+        }, NoActive = true
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_CUBE_BABY,
+        Fun = function(player)
+            local sav = saveHand("Consume - Uranus")
+            sav:Set(sav:Get(0) + 5)
+        end,
+        EID = {
+            en_us = "On the next 5 hostile rooms:#Slowdown all enemies for 5 seconds",
+            spa = "En los siguientes 5 cuartos hortiles:#Ralentiza a todos los enemigos por 5 segundos",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_VADE_RETRO,
+        Fun = function(player)
+            local sav = saveHand("Consume - Purgatory")
+            sav:Set(sav:Get(0) + 14)
+        end,
+        EID = {
+            en_us = "On the next 14 hostile rooms, Isaac summons a ghost",
+            spa = "En los siguientes 14 cuartos hortiles, Isaac invoca a un fantasma",
+        }, NoActive = true
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_GIANT_CELL,
+        Fun = function(player)
+            player:AddMinisaac(player.Position, false)
+            player:AddMinisaac(player.Position, false)
+            player:AddMinisaac(player.Position, false)
+        end,
+        EID = { en_us = "Spawns 3 minisaacs", spa = "Invoca 3 minisaacs", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_GUPPYS_EYE,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local playerPos = player.Position
+
+            for _=1, 3 do
+                spawnPickup(room:FindFreePickupSpawnPosition(playerPos, 40, true), 50, 0, player, rng:Next())
+            end
+        end,
+        EID = { en_us = "Spawns 3 chests or sacks", spa = "Genera 3 cofres o bolsas", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_OPTIONS,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local playerPos = player.Position
+
+            for _=1, 3 do
+                local groupIdx = Mod:GetFreeGroup()
+
+                for _=1, 2 do
+                    local pickup = spawnPickup(room:FindFreePickupSpawnPosition(playerPos, 40, true), 0, 4, player, rng:Next()):ToPickup()
+                    pickup.OptionsPickupIndex = groupIdx
+                end
+            end
+        end,
+        EID = { en_us = "Spawns 3 pairs of pickups#Only one of each can be pick up", spa = "Genera 3 pares de recolectables#Solo uno de cada uno se puede recolectar", }
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_CRACKED_ORB,
+        Fun = function()
+            local sav = saveHand("Consume - Dads Key")
+            sav:Set(sav:Get(0) +3)
+        end,
+        EID = {
+            en_us = "Clearing or entering on a non hostile room with a locked door, will activate {{Collectible"..CollectibleType.COLLECTIBLE_DADS_KEY.."}} Dad's Key",
+            spa = "Limpiar o entrar a un cuarto no hostil con una puerta cerrada, activara {{Collectible"..CollectibleType.COLLECTIBLE_DADS_KEY.."}} Llave de Papá"
+        },
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_MONTEZUMAS_REVENGE,
+        Fun = function(player)
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_POOP, UseFlag.USE_NOANIM)
+        end,
+        EID = { en_us = "Isaac poops", spa = "Isaac caga" },
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_SACRED_ORB,
+        Fun = function()
+            local sav = saveHand("Consume - Sacred Orb")
+            sav:Set(sav:Get(0) +3)
+        end,
+        EID = {
+            en_us = "If Isaac enters for the first time a room with an item of quality 2 or lower, it gets rerolled#This is only done up to 3 times and counting individual items",
+            spa = "Si Isaac entra a un cuarto por primera vez con un objeto de calidad 2 o menor, el objeto es reroleado#Esto solo puede hacerse hasta 3 veces y contando cada objeto individualmente"
+        },
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_HEARTBREAK,
+        Fun = function(player, rng)
+            local permaStats = playerSave(SAVE_PERMA_STATS_NAME, player):Get({})
+            permaStats.Damage = (permaStats.Damage or 0) + player:GetBrokenHearts() * 0.25
+            
+            playerSave(SAVE_PERMA_STATS_NAME, player):Set(permaStats)
+            Mod.PlayerTools.DoCache(player, CacheFlag.CACHE_DAMAGE)
+        end,
+        EID = {
+            en_us = "↑ {{Damage}} +0.25 Damage for each broken heart Isaac currently has",
+            spa = "↑ {{Damage}} +0.25 Daño por cada corazón roto Isaac tiene",
+        }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_ECHO_CHAMBER,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local pos = player.Position
+            
+            for i=1, 3 do
+                local pickupType = (rng:RandomInt(2) == 0 and 300) or 70
+                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), pickupType, 0, player, rng:Next())
+            end
+        end,
+        EID = { en_us = "Spawns 3 cards and/or pills", spa = "Genera 3 cartas y/o pildoras", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_ISAACS_TOMB,
+        Fun = function(player, rng)
+            local room = game:GetRoom()
+            local pos = player.Position
+            
+            for i=1, 3 do
+                spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), PickupVariant.PICKUP_OLDCHEST, 0, player, rng:Next())
+            end
+        end,
+        EID = { en_us = "Spawns 3 Old Chests", spa = "Genera 3 Cofres Viejos", }
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_BAG_OF_CRAFTING,
+        Fun = function(player, rng)
+		    local room = game:GetRoom()
+            local pos = player.Position
+            for _=1, 3 do spawnPickup(room:FindFreePickupSpawnPosition(pos, 40, true), 69, 0, player, rng:Next()) end
+        end,
+        EID = {en_us = "Spawns 3 Sacks", spa = "Genera 3 Bolsas"}, NoActive = true
+    }
+    ,{ Id = CollectibleType.COLLECTIBLE_ANIMA_SOLA,
+        Fun = function()
+            local sav = saveHand("Consume - Anima Sola")
+            sav:Set(sav:Get(0) +8)
+        end,
+        EID = {
+            en_us = "On the next 8 hostile rooms it chains a random enemy for 5 seconds",
+            spa = "En los siguientes 8 cuartos hortiles encadena a un enemigo por 5 segundos",
+        }, NoActive= true
+    }
+    ,{ Id = Mod.Enum.Item.MOTHERLY_CHICKEN,
+        Fun = function(player)
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
+            player:UseActiveItem(CollectibleType.COLLECTIBLE_MONSTER_MANUAL, UseFlag.USE_NOANIM)
+        end,
+        EID = {
+            en_us = "Spawns 3 familiars for the duration of the floor",
+            spa = "Invoca 3 familiares por la duración del piso",
+        }, 
     }
     
     --CollectibleType.COLLECTIBLE_KING_BABY
@@ -2163,6 +2791,73 @@ Mod:AddConsumeItemEffect({  Id = CollectibleType.COLLECTIBLE_MYSTERY_EGG,
 })
 
 
+local function damoclesEffect(player, rng)
+    local pos = game:GetRoom():FindFreePickupSpawnPosition(player.Position, 40, true)
+    local items = Mod.TableTools.Shuffle( Mod.PlayerTools.GetPlayerItems(player, true), rng)
+    local itemId = nil
+
+    for i=1, #items do
+        itemId = items[i]
+        if itemId ~= 0 and itemId ~= CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE and itemConfig:GetCollectible(itemId).Type ~= ItemType.ITEM_ACTIVE and Mod:TrySpawnItem(itemId, pos, player, false, false) then
+            return
+        end
+    end
+
+    for _=1, 100 do
+        itemId = Mod:GetRandomCollectible(-1, false)
+        local itemEnt = Mod:TrySpawnItem(itemId, pos, player, false, false)
+        if itemId ~= 0 and itemEnt then
+            Mod:SetPickupNonEat(itemEnt)
+            return
+        end
+    end
+    spawnPickup(pos, 100, CollectibleType.COLLECTIBLE_BREAKFAST, player, rng:Next())
+end
+local damoclesDesc = {en_us = "Spawns a random passive item Isaac currently has", spa = "Genera un objeto pasivo que Isaac actualmente tenga"}
+Mod:AddConsumeItemEffect(
+    {  Id = CollectibleType.COLLECTIBLE_DAMOCLES,
+        Fun = damoclesEffect,
+        EID = damoclesDesc,
+        NoActive = true
+    }
+    ,{  Id = CollectibleType.COLLECTIBLE_DAMOCLES_PASSIVE,
+        Fun = damoclesEffect,
+        EID = damoclesDesc
+    }
+)
+
+
+local function lilHamsterEffect()
+    local sav = saveHand("Consume - Lil Hamster")
+    sav:Set(sav:Get(0) +6)
+end
+local lilHamsterDesc = {
+    en_us = "On the next 6 hostile rooms does one of the Lil Hamster's effect",
+    spa = "En los siguientes 6 cuartos hortiles hace uno de los efectos de Pequeño Hamster",
+}
+Mod:AddConsumeItemEffect(
+    {  Id = Mod.Enum.Item.LIL_HAMSTER,
+        Fun = lilHamsterEffect,
+        EID = lilHamsterDesc,
+        NoActive = true
+    }
+    ,{  Id = Mod.Enum.Item.LIL_HAMSTER_2,
+        Fun = lilHamsterEffect,
+        EID = lilHamsterDesc,
+        NoActive = true
+    }
+    ,{  Id = Mod.Enum.Item.LIL_HAMSTER_3,
+        Fun = lilHamsterEffect,
+        EID = lilHamsterDesc,
+        NoActive = true
+    }
+    ,{  Id = Mod.Enum.Item.LIL_HAMSTER_4,
+        Fun = lilHamsterEffect,
+        EID = lilHamsterDesc,
+        NoActive = true
+    }
+)
+
 
 -- functions for effects
 
@@ -2176,7 +2871,7 @@ local dadsKeyTargetDoors = {
     [RoomType.ROOM_SECRET_EXIT] = true,
 }
 local GENERIC_ROOM_RNG = RNG()
-Mod:AddPriorityCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, -100, function()
+Mod:AddPriorityCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, 200, function()
     local room = game:GetRoom()
     local level = game:GetLevel()
     local genericPlayer = Isaac.GetPlayer()
@@ -2257,10 +2952,19 @@ Mod:AddPriorityCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, -100, function()
     if deepPocketSav:Get(0) >0 then
         spawnPickup(room:FindFreePickupSpawnPosition(room:GetCenterPos(), 0), 20, 1, nil, genericPlayer:GetCollectibleRNG(CollectibleType.COLLECTIBLE_DEEP_POCKETS):Next())
     end
+
+    local redKeySav = saveHand("Consume - Red Key")
+    if redKeySav:Get(0) >0 then
+        if GENERIC_ROOM_RNG:RandomFloat() < 0.35 then
+            spawnPickup(room:FindFreePickupSpawnPosition(room:GetCenterPos(), 0), 300, Card.CARD_CRACKED_KEY, nil, GENERIC_ROOM_RNG)
+            redKeySav:Set(redKeySav:Get(0) -1)
+        end
+    end
 end)
 
 
-local function forEachPlayer_room(player)
+local function forEachPlayer_room(player, room)
+
     local belialBookSav = playerSave("Consume - Book of Belial", player)
     if belialBookSav:Get(0)>0 then
         player:UseActiveItem(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL, UseFlag.USE_NOANIM)
@@ -2343,22 +3047,56 @@ local function forEachPlayer_room(player)
         end
         deadToothSav:Set(deadToothSav:Get(0)-1)
     end
+
+
+    local stitchesSav = playerSave("Consume - Stitches", player)
+    if stitchesSav:Get(0) > 0 then
+        local validDoors = {}
+        for doorSlot=0, DoorSlot.NUM_DOOR_SLOTS do
+            if room:IsDoorSlotAllowed(doorSlot) then validDoors[#validDoors +1] = doorSlot end
+        end
+        local selectedSlot = validDoors[GENERIC_ROOM_RNG:RandomInt(#validDoors) +1]
+
+        local pos = room:GetDoorSlotPosition(selectedSlot)
+        player.Position = pos + Vector(40,0):Rotated( 90 * (selectedSlot%4) )
+        stitchesSav:Set(stitchesSav:Get(0)-1)
+    end
 end
 
-
+local SLOWNEST_COLOR = Color(1,1,1,1, 0.25, 0.25, 0.25)
 Mod:AddPriorityCallback(ModCallbacks.MC_POST_NEW_ROOM, -100, function()
     local room = game:GetRoom()
     local genericPlayer = Isaac.GetPlayer()
     GENERIC_ROOM_RNG:SetSeed(room:GetDecorationSeed(), 24)
 
     if room:IsFirstVisit() then
+        local itemList = Mod.TableTools.Exclude(Isaac.FindByType(5), function(ent) return ent:ToPickup() and ent.SubType > 0 end)
         local couponSav = saveHand("Consume - Coupon")
-        if couponSav:Get(0) > 0 then
-            local itemsList = Mod.TableTools.Exclude(Isaac.FindByType(5), function(ent) return ent:ToPickup() and ent.SubType > 0 and ent:ToPickup().Price ~= 0 end)
-            if #itemsList > 0 then
-                itemsList[GENERIC_ROOM_RNG:RandomInt(#itemsList) +1]:ToPickup().Price = 0
+        if #itemList > 0 and couponSav:Get(0) > 0 then
+            local shopList = Mod.TableTools.Exclude(itemList, function(ent) return ent:ToPickup().Price ~= 0 end)
+            if #shopList > 0 then
+                shopList[GENERIC_ROOM_RNG:RandomInt(#shopList) +1]:ToPickup().Price = 0
                 couponSav:Set(couponSav:Get(0)-1)
             end
+        end
+
+        local sacredOrbSav = saveHand("Consume - Sacred Orb")
+        if #itemList > 0 and sacredOrbSav:Get(0) > 0 then
+            local shuffleList = Mod.TableTools.Shuffle(itemList, GENERIC_ROOM_RNG)
+            local rerollcount = 0
+
+            for i=1, #shuffleList do    
+                local item = shuffleList[i]:ToPickup()
+                local con = itemConfig:GetCollectible(item.SubType)
+                if con and con.Quality <= 2 then
+
+                    item:Morph(5, 100, 0)
+                    rerollcount = rerollcount +1
+                    if rerollcount >= sacredOrbSav:Get(0) then break end
+                end
+            end
+
+            sacredOrbSav:Set(sacredOrbSav:Get(0)-1)
         end
     end
 
@@ -2375,8 +3113,10 @@ Mod:AddPriorityCallback(ModCallbacks.MC_POST_NEW_ROOM, -100, function()
             end
         end
     else
-
-        Mod.PlayerTools.ForEach(forEachPlayer_room)
+        for i=0, game:GetNumPlayers()-1 do
+            local p = Isaac.GetPlayer(i)
+            if p.Variant == 0 then forEachPlayer_room(p, room) end
+        end
 
         local d10Sav = saveHand("Consume - d10")
         if d10Sav:Get(0) > 0 then
@@ -2384,9 +3124,18 @@ Mod:AddPriorityCallback(ModCallbacks.MC_POST_NEW_ROOM, -100, function()
             d10Sav:Set(d10Sav:Get(0)-1)
         end
 
+        local purgatorySav = saveHand("Consume - Purgatory")
+        if purgatorySav:Get(0) > 0 then
+            Mod:Spawn(1000, EffectVariant.PURGATORY, 1, genericPlayer.Position, Vector.Zero)
+            purgatorySav:Set(purgatorySav:Get(0) + 7)
+        end
+
         local kidneyBeanSav = saveHand("Consume - Kidney Bean")
         local backstabberSav = saveHand("Consume - Backstabber")
         local sharpStrawSav = saveHand("Consume - Sharp Straw")
+        local uranusSav = saveHand("Consume - Uranus")
+        local lodestoneSav = saveHand("Consume - Lodestone")
+        local rottenTomatoSav = saveHand("Consume - Rotten Tomato")
         
         local ref = EntityRef(genericPlayer)
         ref.Type = 0; ref.Variant = 0; ref.Entity = nil;
@@ -2399,6 +3148,9 @@ Mod:AddPriorityCallback(ModCallbacks.MC_POST_NEW_ROOM, -100, function()
             if ent:ToNPC() ~= nil and ent:CanShutDoors() and ent:IsActiveEnemy() and ent:GetEntityFlags() & (EntityFlag.FLAG_NO_QUERY | EntityFlag.FLAG_NO_STATUS_EFFECTS | EntityFlag.FLAG_NO_TARGET | EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_ICE_FROZEN) == 0 then
                 if kidneyBeanSav:Get(0) > 0 then
                     ent:AddCharmed(ref, 5 *30)
+                end
+                if uranusSav:Get(0) > 0 then
+                    ent:AddSlowing(ref, 5 *30, 0.5, SLOWNEST_COLOR)
                 end
                 if not DidBackstabberEff and backstabberSav:Get(0) > 0 then
                     if GENERIC_ROOM_RNG:RandomInt(#list - idx) == 0 then
@@ -2415,14 +3167,36 @@ Mod:AddPriorityCallback(ModCallbacks.MC_POST_NEW_ROOM, -100, function()
             end
         end
 
-        if not DidBackstabberEff and backstabberSav:Get(0) > 0 then
-            if #validNpcs > 0 then
+        if #validNpcs > 0 then
+
+            if not DidBackstabberEff and backstabberSav:Get(0) > 0 then
                 validNpcs[GENERIC_ROOM_RNG:RandomInt(#validNpcs) +1]:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
                 backstabberSav:Set(backstabberSav:Get(0)-1)
+            end
+            if lodestoneSav:Get(0) > 0 then
+                Mod.EffectTools.AddMagnetized(validNpcs[GENERIC_ROOM_RNG:RandomInt(#validNpcs) +1], ref, 150)                
+                lodestoneSav:Set(lodestoneSav:Get(0)-1)
+            end
+            if rottenTomatoSav:Get(0) > 0 then
+                Mod.EffectTools.AddBaited(validNpcs[GENERIC_ROOM_RNG:RandomInt(#validNpcs) +1], ref, 150)                
+                rottenTomatoSav:Set(rottenTomatoSav:Get(0)-1)
+            end
+
+            local animaSolaSav = saveHand("Consume - Anima Sola")
+            if animaSolaSav:Get(0) > 0 then
+                player:UseActiveItem(CollectibleType.COLLECTIBLE_ANIMA_SOLA, UseFlag.USE_NOANIM)
+                animaSolaSav:Set(animaSolaSav:Get(0)-1)
+            end
+
+            local lilHamsterSav = saveHand("Consume - Lil Hamster")
+            if lilHamsterSav:Get(0) > 0 then
+                player:UseActiveItem( Mod:RandomInt(Mod.Enum.Item.LIL_HAMSTER_4, Mod.Enum.Item.LIL_HAMSTER, GENERIC_ROOM_RNG) , UseFlag.USE_NOANIM)
+                lilHamsterSav:Set(lilHamsterSav:Get(0)-1)
             end
         end
         if kidneyBeanSav:Get(0) > 0 then kidneyBeanSav:Set(kidneyBeanSav:Get(0)-1) end
         if sharpStrawSav:Get(0) > 0 then sharpStrawSav:Set(sharpStrawSav:Get(0)-1) end
+        if uranusSav:Get(0) > 0 then uranusSav:Set(uranusSav:Get(0)-1) end
 
     end
 end)

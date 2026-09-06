@@ -47,7 +47,6 @@ function SaveHandler.Save(saveType)
 
 
 	function f:Get(default)
-		if default == nil then default = {} end
 		GelloCharMod.Data.Save = GelloCharMod.Data.Save or {}
 		local save = GelloCharMod.Data.Save[saveType]
 
@@ -69,7 +68,6 @@ function SaveHandler.StaticSave(saveType)
 
 
 	function f:Get(default)
-		if default == nil then default = {} end
 		GelloCharMod.Data.StaticSave = GelloCharMod.Data.StaticSave or {}
 		local save = GelloCharMod.Data.StaticSave[saveType]
 
@@ -96,7 +94,6 @@ function SaveHandler.Player(saveType, player, justPlayers)
 
 
 	function f:Get(default)
-		if default == nil then default = {} end
 		pSave[saveType] = pSave[saveType] or {}
 		local save = pSave[saveType][index]
 

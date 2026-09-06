@@ -103,19 +103,19 @@ local CLASSES = {
         "figther",
         "scout",
         "tank",
-        "singer"
+        "singer",
     },
     MEDIUM = {
         "explosivo",
         "jester",
         "healer",
-        "botanic",
+        "venom",
     },
     HIGH = {
         "geologist",
         "merchant",
         "gravediger",
-        "venom"
+        "botanic",
     }
 }
 
@@ -1409,20 +1409,26 @@ local pointsHUDIcon = Sprite()
 pointsHUDIcon:Load("gfx/ui_gello/pointsIcon_ui.anm2", true)
 function renderPointsIcon()
     if not pointsHUDIcon:IsLoaded() or not IsTaintedGelloPresent then return end
-    local points = GelloPoints:Get(0)
-    if game:GetRoom():HasCurseMist() then points = 0 end
-
+    local points = math.floor(GelloPoints:Get(0))
+    
     local hudOffset = Options.HUDOffset * 10
     local xPos = 11 + 5 *2
     local yPos = 32
-    local alpha = game:GetRoom():HasCurseMist() and 0.5 or 1
+    local alpha = 1
+    
+    if game:GetRoom():HasCurseMist() then
+        points = 0
+        alpha = 0.5
+    end
 
-    local mainPlayer = Isaac.GetPlayer(0):GetPlayerType()
-    local pType = mainPlayer
+
+    local mainPlayer = Isaac.GetPlayer(0)
+    local pType = mainPlayer:GetPlayerType()
 
     if pType == PlayerType.PLAYER_ISAAC_B then
         yPos = yPos + 24
-    elseif REPENTOGON then
+    end
+    if REPENTOGON then
         local maxCoins = mainPlayer:GetMaxCoins()
         local count = 0
         while maxCoins >1 do
@@ -1442,8 +1448,8 @@ function renderPointsIcon()
     pointsHUDIcon.Color = color
     pointsHUDIcon:Render( Vector(xPos, yPos) )
 
-    font:DrawString(string.format("%02d", points), xPos, yPos, KColor(1, 1, 1, alpha))
-end
+    font:DrawString(string.format("%02d", points ), xPos + 4, yPos, KColor(1, 1, 1, alpha))
+end--[[
 if REPENTOGON then
     Mod:AddPriorityCallback(ModCallbacks.MC_POST_HUD_RENDER, -10000, function()
         renderPointsIcon()
@@ -1453,7 +1459,7 @@ else
         if shaderName ~= "RenderGelloHUD" then return end
         renderPointsIcon()
     end)
-end
+end]]
 
 
 -------------------------------------------------------------------------------------------

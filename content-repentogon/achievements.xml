@@ -12,8 +12,8 @@
 	<achievement name="Lil Hamster" text='"Lil Hamster" has appeared in the basement' gfx="Lil Hamster.png" />
 	<achievement name="Motherly Chicken" text='"Motherly Chicken" has appeared in the basement' gfx="Motherly Chicken.png" />
 	<achievement name="Use Placenta" text='"Use Placenta" has appeared in the basement' gfx="Use Placenta.png" />
-	<achievement name="Void Stomach" text='"Void Stomach" has appeared in the basement' gfx="Void Stomach.png" />
 	<achievement name="Weird Candy" text='"Weird Candy" has appeared in the basement' gfx="Weird Candy.png" />
+	<achievement name="Void Stomach" text='"Void Stomach" has appeared in the basement' gfx="Void Stomach.png" />
 
 	<achievement name="Tainted Gello" text='You unlocked "Gello"' gfx="Tainted Gello.png" />
 	<achievement name="Lil Cow" text='"Lil Cow" has appeared in the basement' gfx="Lil Cow.png" />

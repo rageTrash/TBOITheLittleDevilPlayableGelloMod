@@ -386,22 +386,24 @@ Mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 end)
 
 
---- adapted(?) from Fiend Folio
 if not Mod.RepentogonPlus then
-local hiddenFromSiren = {}
-Mod:AddPriorityCallback(ModCallbacks.MC_PRE_NPC_UPDATE, CallbackPriority.LATE, function(_, siren)
-	for _, e in ipairs(Isaac.FindByType(3, Mod.Enum.Familiar.LARRY_JR_JR)) do
-		e:AddEntityFlags(EntityFlag.FLAG_NO_QUERY)
-		table.insert(hiddenFromSiren, e)
-	end
-end, EntityType.ENTITY_SIREN)
+	--- adapted(?) from Fiend Folio
+	
+	local hiddenFromSiren = {}
+	Mod:AddPriorityCallback(ModCallbacks.MC_PRE_NPC_UPDATE, CallbackPriority.LATE, function(_, siren)
+		for _, e in ipairs(Isaac.FindByType(3, Mod.Enum.Familiar.LARRY_JR_JR)) do
+			e:AddEntityFlags(EntityFlag.FLAG_NO_QUERY)
+			table.insert(hiddenFromSiren, e)
+		end
+	end, EntityType.ENTITY_SIREN)
 
-Mod:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, siren)
-	for _,familiar in ipairs(hiddenFromSiren) do
-		familiar:ClearEntityFlags(EntityFlag.FLAG_NO_QUERY)
-	end
-	hiddenFromSiren = {}
-end, EntityType.ENTITY_SIREN)
+	Mod:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, siren)
+		for _,familiar in ipairs(hiddenFromSiren) do
+			familiar:ClearEntityFlags(EntityFlag.FLAG_NO_QUERY)
+		end
+		hiddenFromSiren = {}
+	end, EntityType.ENTITY_SIREN)
+
 end
 
 
@@ -411,3 +413,12 @@ Mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, _, _, src)
 	if not srcEnt or not (srcEnt.Type == 3 and srcEnt.Variant == Mod.Enum.Familiar.LARRY_JR_JR) then return end
 	if ent.Type == 1 or ent.Type == 3 then return false end
 end)
+
+if Mod.RepentogonPlus then
+
+	Mod:AddCallback(ModCallbacks.MC_GET_BOSS_THEMATIC_ITEM, function(_, goingToSpawn)
+		if not goingToSpawn or not Mod.GetSetting("LarryJrJr_ThematicDrop") then return end
+		if game:GetRoom():GetBossID() ~= BossType.LARRY_JR then return end
+		return {Collectible = Mod.Enum.Item.LARRY_JR_JR}
+	end)
+end

@@ -107,7 +107,7 @@ function GelloCharMod:SetMarkNAchievementsData(data)
             [tostring(Mod.Enum.Character.GELLO_B13)] = data.Marks.GELLO_B,
         },
     })
-    if Mod.RepentogonPlus and not GelloCharMod.Init then -- syncing the vanilla data to repentogon
+    if Mod.RepentogonPlus and not GelloCharMod.Init then -- syncing the old data to repentogon
         local GelloMarks = {
             PlayerType = Mod.Enum.Character.GELLO,
             MomsHeart  = 0,

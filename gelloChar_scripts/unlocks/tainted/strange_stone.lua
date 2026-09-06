@@ -2,7 +2,6 @@
 local Mod = GelloCharMod
 local game = Mod.Game
 local SFX = Mod.SFX
-local pSave = Mod.SaveHandler.Player
 local pTools = Mod.PlayerTools
 
 

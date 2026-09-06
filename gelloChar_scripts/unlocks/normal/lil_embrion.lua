@@ -1,6 +1,5 @@
 local Mod = GelloCharMod
 local game = Mod.Game
-local pSave = Mod.SaveHandler.Player
 
 local pTools = Mod.PlayerTools
 local fTools = Mod.FamiliarTools
@@ -133,50 +132,6 @@ local function shot(fam, player, offset)
 end
 
 
-
---[[
-Mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	if not game:GetRoom():IsFirstVisit() then
-		for _, e in pairs(Isaac.FindByType(5, 350, Mod.Enum.Trinket.LIL_EMBRION)) do
-			local pick = e:ToPickup()
-			if pick and pick.Price == 0 then
-				pick:Morph(5, 350, Mod.Enum.Trinket.DRY_EMBRION)
-			end
-		end
-	end
-end)
-
-local function embrionProgression(player)
-	if player:HasTrinket(Mod.Enum.Trinket.LIL_EMBRION) then
-		local pro = pSave("LilEmbrion_Progression", player):Get(0)
-		pSave("LilEmbrion_Progression", player):Set(pro +1)
-	end
-end
-Mod:AddPriorityCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, -200, function()
-	pTools.ForEach(embrionProgression)
-end)
-
-Mod:AddCallback(ModCallbacks.WC_WAVE_CHANGE, function()
-	pTools.ForEach(embrionProgression)
-end, WaveHelper.WaveType.ALL_WAVES_NO_GIDEON)
-
-
-Mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
-	if pSave("LilEmbrion_Progression", player):Get(0) >= 10 then
-		pSave("LilEmbrion_Progression", player):Set(0)
-		
-		local trinketNum = player:GetTrinketMultiplier(Mod.Enum.Trinket.LIL_EMBRION)
-		if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_BOX) then
-			trinketNum = trinketNum -1
-		end
-		player:TryRemoveTrinket(Mod.Enum.Trinket.LIL_EMBRION)
-		
-		local famNum = pSave("LilEmbrion_FamNum", player):Get(0)
-		pSave("LilEmbrion_FamNum", player):Set(famNum + (trinketNum - player:GetTrinketMultiplier(Mod.Enum.Trinket.LIL_EMBRION)) )
-
-		pTools.DoCache(player, CacheFlag.CACHE_FAMILIARS)
-	end
-end)]]
 
 
 Mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_, player, cacheflag)

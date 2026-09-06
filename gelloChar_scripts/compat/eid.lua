@@ -80,25 +80,25 @@ local itemsDesc = {
 	{ID = Mod.Enum.Item.FETAL_JAR, Desc = {
 		en_us = makeDesc(
 			"On use",
-			"{{ArrowUp}} +1 Life",
-			"{{ArrowDown}} Removes an item from Isaac",
+			"↑ +1 Life",
+			"↓ Removes an item from Isaac",
 			"Upon death:",
 			"Revives on the current room",
 			"Damage enemies around Isaac",
-			"{{ArrowUp}} {{Damage}} + 0.5 Damage",
-			"{{ArrowUp}} {{Tears}} + 0.24 Tears",
-			"{{ArrowUp}} Size down"),
+			"↑ {{Damage}} + 0.5 Damage",
+			"↑ {{Tears}} + 0.24 Tears",
+			"↑ Size down"),
 
 		spa = makeDesc(
 			"Al usarlo",
-			"{{ArrowUp}} +1 Vida extra",
-			"{{ArrowDown}} Le remueve un objeto a Isaac",
+			"↑ +1 Vida extra",
+			"↓ Le remueve un objeto a Isaac",
 			"Al morir:",
 			"Revive en el cuarto actual",
 			"Daña a los enemigos alrededor de Isaac",
-			"{{ArrowUp}} {{Damage}} + 0.5 Daño",
-			"{{ArrowUp}} {{Tears}} + 0.24 Lágrimas",
-			"{{ArrowUp}} Reduce tu tamaño"),
+			"↓ {{Damage}} + 0.5 Daño",
+			"↓ {{Tears}} + 0.24 Lágrimas",
+			"↓ Reduce tu tamaño"),
 	}, Name = {
 		en_us = "Fetal Jar",
 		spa = "Jarra Fetal",
@@ -132,15 +132,15 @@ local itemsDesc = {
 	{ID = Mod.Enum.Item.CURSED_PLUSHIE, Desc = {
 		en_us = makeDesc(
 			"{{BlackHeart}} + 1 Black Heart",
-			"{{ArrowUp}} {{Damage}} + 1.5 Damage",
-			"{{ArrowUp}} Per Half a Black Heart",
+			"↑ {{Damage}} + 1.5 Damage",
+			"↑ Per Half a Black Heart",
 			"{{Blank}} + x0.025 Damage multiplier",
 			"Black hearts are slightly more common"),
 
 		spa = makeDesc(
 			"{{BlackHeart}} + 1 Corazón Negro",
-			"{{ArrowUp}} {{Damage}} + 1.5 Daño",
-			"{{ArrowUp}} Por cada medio Corazón Negro",
+			"↑ {{Damage}} + 1.5 Daño",
+			"↑ Por cada medio Corazón Negro",
 			"{{Blank}} + x0.025 Multiplicador de Daño",
 			"Corazónes Negros son ligeramente más comunes"),
 	}, Name = {
@@ -224,7 +224,7 @@ local itemsDesc = {
 		en_us = makeDesc(
 			"Double-tapping a fire key make Isaac bite",
 			"Per each enemy kill by the bite",
-			"{{ArrowUp}} {{Damage}} + 0.5 Temporary Damage",
+			"↑ {{Damage}} + 0.5 Temporary Damage",
 			"The damage caps at + 7.5 Damage",
 			"The bite does 150% of Isaac damage",
 			"Getting hit recharges the bite"),
@@ -232,7 +232,7 @@ local itemsDesc = {
 		spa = makeDesc(
 			"Tocar dos veces la tecla de disparo hara que Isaac muerda",
 			"Por cada enemigo matado por la mordida",
-			"{{ArrowUp}} {{Damage}} + 0.5 Daño Temporal",
+			"↑ {{Damage}} + 0.5 Daño Temporal",
 			"El daño se limita a + 7.5 Daño",
 			"La mordida hace 150% del daño de Isaac",
 			"Ser golpeado recarga la mordida"),
@@ -244,20 +244,36 @@ local itemsDesc = {
 		en_us = makeDesc(
 			"On use makes Isaac bite on his current fire or moving direction",
 			"Per each enemy kill by the bite",
-			"{{ArrowUp}} {{Damage}} + 0.5 Temporary Damage",
+			"↑ {{Damage}} + 0.5 Temporary Damage",
 			"The damage caps at + 7.5 Damage",
 			"The bite does 150% of Isaac damage"),
 
 		spa = makeDesc(
 			"Al usarlo hace que Isaac muerda hacia donde dispara o mueve",
 			"Por cada enemigo matado por la mordida",
-			"{{ArrowUp}} {{Damage}} + 0.5 Daño Temporal",
+			"↑ {{Damage}} + 0.5 Daño Temporal",
 			"El daño se limita a + 7.5 Daño",
 			"La mordida hace 150% del daño de Isaac"),
 	}, Name = {
 		en_us = "Friendly Bite",
 		spa = "Mordida Amistosa",
 	}},
+
+	{ID = Mod.Enum.Item.VOID_STOMACH, Desc = {
+		en_us = makeDesc(
+			"Isaac can consume items if he is close to them",
+			"Consuming items will most of the time grant a pemanent damage up and a temporary one",
+			"Some items may grant more or less stats or do some effects" ),
+
+		spa = makeDesc(
+			"Isaac puede consumir objetos si el esta cerca de estos",
+			"Consumir objetos dará la mayoria de las veces aumentara el daño permanentemente y temporalmente",
+			"Algunos objetos podran dar más o menos estadisticas o hacer algun efecto" ),
+	}, Name = {
+		en_us = "Void Stomach",
+		spa = "Vacío Estomacal",
+	}},
+
 
 	{ID = Mod.Enum.Item.LIL_BITER, Desc = {
 		en_us = makeDesc(
@@ -430,15 +446,15 @@ local cardsDesc = {
 
 	{ID = Mod.Enum.Card.SOUL_OF_GELLO, Desc = {
 		en_us = makeDesc(
-			"{{ArrowUp}} {{Damage}} + 1 Temporary Damage",
+			"↑ {{Damage}} + 1 Temporary Damage",
 			"Per each familiar collectible",
-			"{{ArrowUp}} {{Damage}} + 0.5 Temporary Damage",
+			"↑ {{Damage}} + 0.5 Temporary Damage",
 			"Has a 33% to spawn a Soul of Gello on use"),
 
 		spa = makeDesc(
-			"{{ArrowUp}} {{Damage}} + 1 Daño Temporal",
+			"↑ {{Damage}} + 1 Daño Temporal",
 			"Por cada objeto de familiar",
-			"{{ArrowUp}} {{Damage}} + 0.5 Daño Temporal",
+			"↑ {{Damage}} + 0.5 Daño Temporal",
 			"Tiene un 33% de generar un Alma de Gello al usarlo"),
 	}, Name = {
 		en_us = "Soul of Gello",
@@ -446,7 +462,7 @@ local cardsDesc = {
 	}},
 }
 
-for _, data in ipairs(trinketsDesc) do
+for _, data in ipairs(cardsDesc) do
 	for leng, desc in pairs(data.Desc) do
 		EID:addCard(data.ID, desc, (data.Name[leng] or data.Name.en_us), leng)
 	end
@@ -477,14 +493,14 @@ local birthrightTab = {
 			en_us = makeDesc(
 				"Double-tapping a fire key make Gello bite",
 				"Per enemy kill in the bite zone",
-				"{{ArrowUp}} {{Damage}} + 0.5 Temporary Damage",
+				"↑ {{Damage}} + 0.5 Temporary Damage",
 				"The damage caps at + 7.5 Damage",
 				"The bite does 150% of Gello damage"),
 
 			spa = makeDesc(
 				"Tocar dos veces la tecla de disparo hara una mordida",
 				"Por cada enemigo matado por la mordida",
-				"{{ArrowUp}} {{Damage}} + 0.5 Daño Temporal",
+				"↑ {{Damage}} + 0.5 Daño Temporal",
 				"El daño se limita a + 7.5 Daño",
 				"La mordida hace 150% del daño de Gello"),
 		}
@@ -497,14 +513,14 @@ local birthrightTab = {
 		en_us = makeDesc(
 			"Double-tapping a fire key make Gello bite",
 			"Per enemy kill in the bite zone",
-			"{{ArrowUp}} {{Damage}} + 0.5 Temporary Damage",
+			"↑ {{Damage}} + 0.5 Temporary Damage",
 			"The damage caps at + 7.5 Damage",
 			"The bite does 165% of Gello damage"),
 
 		spa = makeDesc(
 			"Tocar dos veces la tecla de disparo hara una mordida",
 			"Por cada enemigo matado por la mordida",
-			"{{ArrowUp}} {{Damage}} + 0.5 Daño Temporal",
+			"↑ {{Damage}} + 0.5 Daño Temporal",
 			"El daño se limita a + 7.5 Daño",
 			"La mordida hace 165% del daño de Gello"),
 	}},
@@ -746,9 +762,10 @@ for leng, text in pairs(gelloSynergy) do
 end
 EID:AddPlayerConditional({Mod.Enum.Item.FRIENDLY_BITE}, {Mod.Enum.Character.GELLO}, synergyID, nil, false)
 
+--[[
 local semiClassicGelloSynergy = {
-	en_us = {"{{ArrowUp}} {{Damage}} x1.25 Damage multiplier"},
-	spa = {"{{ArrowUp}} {{Damage}} x1.25 multiplicador de Daño"},
+	en_us = {"↑ {{Damage}} x1.25 Damage multiplier"},
+	spa = {"↑ {{Damage}} x1.25 multiplicador de Daño"},
 }
 local bffsSynergy = "5.100."..tostring(CollectibleType.COLLECTIBLE_BFFS).." (Gello Character)"
 for leng, text in pairs(semiClassicGelloSynergy) do
@@ -783,7 +800,7 @@ for _, charID in ipairs({
 		variableText = "{{NameOnlyI" .. charID .. "}}",
 		bulletpoint = "Player" .. charID
 	})
-end
+end]]
 
 
 local lilHamsterCarBattery = {

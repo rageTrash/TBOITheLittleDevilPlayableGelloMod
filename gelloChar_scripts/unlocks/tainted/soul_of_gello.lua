@@ -1,5 +1,4 @@
 local Mod = GelloCharMod
-local playerSave = Mod.SaveHandler.Player
 
 local config = Isaac.GetItemConfig()
 --local MAX_TEMP_DMG = 400 -- 10 dmg

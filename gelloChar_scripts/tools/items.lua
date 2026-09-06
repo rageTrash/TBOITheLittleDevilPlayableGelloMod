@@ -285,7 +285,17 @@ local PressentPools = {
 		ItemPoolType.POOL_BABY_SHOP,
 		ItemPoolType.POOL_WOODEN_CHEST,
 		ItemPoolType.POOL_ROTTEN_BEGGAR,
-	}
+	},
+	NormalToGreed = {
+		[ItemPoolType.POOL_TREASURE] = ItemPoolType.POOL_GREED_TREASURE,
+		[ItemPoolType.POOL_SHOP] = ItemPoolType.POOL_GREED_SHOP,
+		[ItemPoolType.POOL_BOSS] = ItemPoolType.POOL_GREED_BOSS,
+		[ItemPoolType.POOL_DEVIL] = ItemPoolType.POOL_GREED_DEVIL,
+		[ItemPoolType.POOL_ANGEL] = ItemPoolType.POOL_GREED_ANGEL,
+		[ItemPoolType.POOL_SECRET] = ItemPoolType.POOL_GREED_SECRET,
+		[ItemPoolType.POOL_CURSE] = ItemPoolType.POOL_GREED_CURSE,
+
+	},
 }
 function GelloCharMod:GetRandomPool(ignoreGreedPool)
 	ignoreGreedPool = (type(ignoreGreedPool) == "boolean" and ignoreGreedPool) or false
@@ -331,6 +341,8 @@ function GelloCharMod:GetRandomCollectible(pool, decrease, seed, default, ignore
 		else
 			pool = Mod:GetRandomPool(ignoreGreedPool)
 		end
+	elseif not ignoreRoomPool and game:IsGreedMode() then
+		pool = PressentPools.NormalToGreed[pool] or pool
 	end
 
 	return gamePools:GetCollectible( pool, decrease, seed, (default or CollectibleType.COLLECTIBLE_NULL) )

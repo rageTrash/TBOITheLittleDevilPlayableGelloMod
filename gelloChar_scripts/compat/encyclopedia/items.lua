@@ -270,6 +270,25 @@ for itemID, data in pairs({
         Unlock = function() return Mod:IsUnlock("Lil Embrion") end,
         UnlockNote = "Defeate Hush as Gello"
     },
+    [itemEnum.LIL_EMBRION] = {
+        Name = "Void Stomach",
+        Desc = {
+            {
+                { str = "Effect", fsize = 2, clr = 3, halign = 0 },
+                { str = "Isaac can consume items if he is close to them" },
+                { str = "Consuming items will most of the time grant a pemanent damage up and a temporary one" },
+                { str = "Some items may grant more or less stats or do some effects" },
+            },
+            {
+                { str = "Achievement", fsize = 2, clr = 3, halign = 0 },
+                { str = "Get all compleation marks" },
+                { str = "On hard mode with with Gello" },
+            }
+        },
+        Pools = { "Treasure", "TreasureGreed", "ShopGreed", "UltraSecret", "BabyShop" },
+        Unlock = function() return Mod:IsUnlock("Void Stomach") end,
+        UnlockNote = "Get all compleation mark on hard mode with Gello"
+    },
     [itemEnum.LIL_BITER] = {
         Name = "Lil Biter",
         Desc = {

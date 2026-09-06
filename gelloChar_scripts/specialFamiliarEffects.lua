@@ -3,6 +3,7 @@ local game = Mod.Game
 local playerSave = Mod.SaveHandler.Player
 local saveHand = Mod.SaveHandler.Save("Non Edible Item")
 local tGelloPointsSave = Mod.SaveHandler.Save("GelloPoints")
+local deathCertificateSave = Mod.SaveHandler.Save("Death Certificate Data")
 local SAVE_FLAT_DMG_NAME = "Gello perma damage"
 local SAVE_PERMA_STATS_NAME = "Gello extra perma stats"
 --local ADD_DMG = 40
@@ -12,6 +13,8 @@ local CONSUME_BLACKLIST = {
 	[CollectibleType.COLLECTIBLE_BROKEN_SHOVEL_2]=true,
 	[CollectibleType.COLLECTIBLE_BROKEN_SHOVEL]=true,
 	[CollectibleType.COLLECTIBLE_DADS_NOTE]=true,
+	[CollectibleType.COLLECTIBLE_RECALL]=true,
+	[CollectibleType.COLLECTIBLE_HOLD]=true,
 }
 
 local GELLO_SAVEDATA = {
@@ -23,7 +26,7 @@ local GELLO_SAVEDATA = {
 
 local itemPool = game:GetItemPool()
 local itemConfig = Isaac.GetItemConfig()
-
+local DeathCertificateCooldown = -1
 
 local itemExtraEffects = {}
 
@@ -96,8 +99,8 @@ local itemExtraEffectsEID = {
 	},
 
 	TGelloPoints = {
-		en_us = "{{ArrowUp}} {{TaintedGelloPoints}} +{1} Points",
-		spa = "{{ArrowUp}} {{TaintedGelloPoints}} +{1} Puntos",
+		en_us = "↑ {{TaintedGelloPoints}} +{1} Points",
+		spa = "↑ {{TaintedGelloPoints}} +{1} Puntos",
 	},
 
 
@@ -119,11 +122,11 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup, isVoidStomach)
 
 	if pickup.Variant == 100 and Mod:CanEatPickup(pickup) then
 		if not Mod.PlayerTools.PayPickup(player, pickup, false) then return false end
-		
+		local deathCertData = deathCertificateSave:Get({})
 		--player:AddHearts(2)
 		--if holditem then player:AnimateCollectible(sub, "Pickup", "PlayerPickup") end
 
-		if itemExtraEffects[sub] and sub > 2 then -- dont touch sad onion and inner eye rng just in case
+		if itemExtraEffects[sub] and sub > 2 then -- dont touch sad onion and inner eye rng just in case (they are use for seeding and stuff)
 			itemExtraEffects[sub](player, player:GetCollectibleRNG(sub), pickup)
 		end
 
@@ -210,10 +213,13 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup, isVoidStomach)
 		playerSave(SAVE_PERMA_STATS_NAME, player):Set(permaStats)
 		Mod.PlayerTools.DoCache(player, cacheflags)
 
-		
-		for _, ent in ipairs(Mod:GetChoiceGroup(pickup)) do
-			Mod:Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, ent.Position, Vector.Zero, nil)
-			ent:Remove()
+		if REPENTOGON then
+			pickup:TriggerTheresOptionsPickup()
+		else
+			for _, ent in ipairs(Mod:GetChoiceGroup(pickup)) do
+				Mod:Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, ent.Position, Vector.Zero, nil)
+				ent:Remove()
+			end
 		end
 
 		if itemCon.Type == ItemType.ITEM_ACTIVE and itemCon.ChargeType == ItemConfig.CHARGE_NORMAL and itemNoActive[sub] ~= true then
@@ -236,7 +242,16 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup, isVoidStomach)
 			tGelloPointsSave:Set(points + add)
 		end
 
-		if pickup.Price ~= 0 then
+		
+		if deathCertData.InDeathCertificate and game:GetLevel():GetCurrentRoomIndex() >= 0 then
+			Mod:Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector.Zero, nil)
+
+			deathCertData.EatedInDeathCertificate = true
+			game:ShakeScreen(120)
+			DeathCertificateCooldown = game:GetFrameCount() + 121
+			deathCertificateSave:Set(deathCertData)
+
+		elseif pickup.Price ~= 0 then
 			if REPENTOGON then
 				if pickup:GetFlipCollectible() == nil then
 					pickup:Remove()
@@ -249,12 +264,16 @@ function GelloCharMod:GelloTryConsumePickup(player, pickup, isVoidStomach)
 			pickup.Price = 0
 		end
 
-		pickup.SubType = 0
-		local sp = pickup:GetSprite()
-		sp:ReplaceSpritesheet(1, "")
-		sp:ReplaceSpritesheet(4, "")
-		sp:LoadGraphics()
-		
+		if REPENTOGON then
+			pickup:TryRemoveCollectible()
+		else
+			pickup.SubType = 0
+			local sp = pickup:GetSprite()
+			sp:ReplaceSpritesheet(1, "")
+			sp:ReplaceSpritesheet(4, "")
+			sp:LoadGraphics()
+		end
+
 		return true
 	end
 	return false
@@ -296,6 +315,17 @@ function GelloCharMod:AddConsumeItemEffect(...)
 	end
 end
 
+function GelloCharMod:AddItemToConsumeBlacklist(...)
+	local list = {...}
+	for idx, itemId in ipairs(list) do
+		if type(itemId) ~="number" then 
+			error("argument #"..idx..", key Id is not a number", 2)
+			return
+		end
+		CONSUME_BLACKLIST[itemId] = true
+	end
+end
+
 function GelloCharMod:GetConsumeItemEffect(itemID)
 	if itemID == -1 then return itemExtraStatMod end
 	return itemExtraStatMod[itemID]
@@ -313,6 +343,80 @@ function GelloCharMod:CanEatPickup(pickup)
 	local list = saveHand:Get({})
 	return list[tostring(pickup.InitSeed)] ~= true
 end
+
+
+Mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, _,_, player)
+	local data = deathCertificateSave:Get({})
+	data.PlayerUse = Mod.PlayerTools.GetIndex(player)
+	deathCertificateSave:Set(data)
+end, CollectibleType.COLLECTIBLE_DEATH_CERTIFICATE)
+
+Mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+	local data = deathCertificateSave:Get({})
+	local wasInDeathCertificate = data.InDeathCertificate
+	data.InDeathCertificate = Mod.LevelTools.GetDimension() == 2
+	if data.InDeathCertificate then
+		local level = game:GetLevel()
+		if not wasInDeathCertificate then
+			data.PreUseRoomIdx = level:GetPreviousRoomIndex()
+			data.PreUseDimension = Mod.LevelTools.GetDimension()
+			if data.PreUseDimension == 2 then
+				data.PreUseDimension = 0
+				data.PreUseRoomIdx = 84
+			end
+			DeathCertificateCooldown = -1
+		end
+
+		if game:GetRoom():IsFirstVisit() and level:GetCurrentRoomIndex() >= 0 then
+			local currentItems = {}
+			for _, e in ipairs(Isaac.FindByType(5, 100)) do
+				currentItems[tostring(e.InitSeed)] = true
+			end
+			data.SpawnedItemsInRoom = (data.SpawnedItemsInRoom or {})
+			data.SpawnedItemsInRoom[level:GetCurrentRoomIndex()] =currentItems
+		end
+
+		if data.EatedInDeathCertificate then
+			data.SpawnedItemsInRoom = (data.SpawnedItemsInRoom or {})
+			local currentItems = data.SpawnedItemsInRoom[level:GetCurrentRoomIndex()]
+			for _, e in ipairs(Isaac.FindByType(5, 100)) do
+				if currentItems[tostring(e.InitSeed)] then
+					Mod:Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 2, e.Position, Vector.Zero, nil)
+					e:Remove()
+				end
+			end
+		end
+	else
+		data = nil
+	end
+	deathCertificateSave:Set(data)
+end)
+
+Mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+	local data = deathCertificateSave:Get({})
+	if data.InDeathCertificate then
+		if DeathCertificateCooldown >= 0 and game:GetFrameCount() >= DeathCertificateCooldown then
+			DeathCertificateCooldown= -1
+
+			for i = 0, game:GetNumPlayers()-1 do
+				local player = Isaac.GetPlayer(i)
+				if Mod.PlayerTools.GetIndex(player) == data.PlayerUse then
+					game:StartRoomTransition(data.PreUseRoomIdx, -1, RoomTransitionAnim.DEATH_CERTIFICATE, player, data.PreUseDimension)
+					return
+				end
+			end
+			game:StartRoomTransition(84, -1, RoomTransitionAnim.DEATH_CERTIFICATE, Isaac.GetPlayer(), 0)
+		end
+	end
+end)
+
+Mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
+	local data = deathCertificateSave:Get({})
+	if data.InDeathCertificate and data.EatedInDeathCertificate then
+		game:ShakeScreen(30)
+		DeathCertificateCooldown = game:GetFrameCount() +31
+	end
+end)
 
 
 if EID then
@@ -346,8 +450,8 @@ if EID then
 			local sub = descObj.ObjSubType
 
 			local itemCon = itemConfig:GetCollectible(sub)
-			local itemval = itemCon.Quality+1
-			local dmg = itemval /4
+			local itemQuality = itemCon.Quality
+			local dmg = (itemQuality+1) /4
 			local tempdmg = dmg *1.75 +0.25
 
 			local voidNames = EID:getDescriptionEntry("VoidNames")
@@ -357,7 +461,7 @@ if EID then
 				if itemExtraStatMod[sub] and itemExtraStatMod[sub].GelloPoints then
 					add = itemExtraStatMod[sub].GelloPoints
 				else
-					add = 1.55 ^ itemCon.Quality +0.24
+					add = 1.55 ^ itemQuality +0.24
 				end
 				add = Mod:RoundToClosest(add, 0)
 				if add < 1 then add = 1 end
@@ -383,10 +487,10 @@ if EID then
 
 				if dmg ~= 0 then
 					local isPos = dmg >0
-					str = str .. "#{{Arrow".. (isPos and "Up" or "Down") .. "}} {{Damage}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[3], 1, string.format("%.4g", Mod:RoundToClosest(dmg, 2)))
+					str = str .. "#".. (isPos and "↑" or "↓") .. " {{Damage}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[3], 1, string.format("%.4g", Mod:RoundToClosest(dmg, 2)))
 				end
 				if tempdmg > 0 then
-					str = str .. "#{{ArrowUp}} {{Damage}} +".. EID:ReplaceVariableStr(
+					str = str .. "#↑ {{Damage}} +".. EID:ReplaceVariableStr(
 						itemExtraEffectsEID.StatsName.TempDmg[leng] or itemExtraEffectsEID.StatsName.TempDmg.en_us,
 						1,
 						string.format("%.4g", Mod:RoundToClosest(tempdmg , 2))
@@ -396,27 +500,27 @@ if EID then
 
 				if itemExtraStatMod[sub].Tears then
 					local isPos = itemExtraStatMod[sub].Tears >0
-					str = str .. "#{{Arrow".. (isPos and "Up" or "Down") .. "}} {{Tears}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[2], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Tears, 2)))
+					str = str .. "#".. (isPos and "↑" or "↓") .. " {{Tears}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[2], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Tears, 2)))
 				end
 				if itemExtraStatMod[sub].Speed then
 					local isPos = itemExtraStatMod[sub].Speed >0
-					str = str .. "#{{Arrow".. (isPos and "Up" or "Down") .. "}} {{Speed}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[1], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Speed, 2)))
+					str = str .. "#".. (isPos and "↑" or "↓") .. " {{Speed}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[1], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Speed, 2)))
 				end
 				if itemExtraStatMod[sub].ShotSpeed then
 					local isPos = itemExtraStatMod[sub].ShotSpeed >0
-					str = str .. "#{{Arrow".. (isPos and "Up" or "Down") .. "}} {{ShotSpeed}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[5], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].ShotSpeed, 2)))
+					str = str .. "#".. (isPos and "↑" or "↓") .. " {{ShotSpeed}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[5], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].ShotSpeed, 2)))
 				end
 				if itemExtraStatMod[sub].Range then
 					local isPos = itemExtraStatMod[sub].Range >0
-					str = str .. "#{{Arrow".. (isPos and "Up" or "Down") .. "}} {{Range}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[4], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Range, 2)))
+					str = str .. "#".. (isPos and "↑" or "↓") .. " {{Range}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[4], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Range, 2)))
 				end
 				if itemExtraStatMod[sub].Luck then
 					local isPos = itemExtraStatMod[sub].Luck >0
-					str = str .. "#{{Arrow".. (isPos and "Up" or "Down") .. "}} {{Luck}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[6], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Luck, 2)))
+					str = str .. "#".. (isPos and "↑" or "↓") .. " {{Luck}}"..(isPos and " +" or " ").. EID:ReplaceVariableStr(voidNames[6], 1, string.format("%.4g", Mod:RoundToClosest(itemExtraStatMod[sub].Luck, 2)))
 				end
 			else
-				str = str .. "#{{ArrowUp}} +".. EID:ReplaceVariableStr(voidNames[3], 1, string.format("%.4g", Mod:RoundToClosest(dmg, 2)))
-				str = str .. "#{{ArrowUp}} {{Damage}} +".. EID:ReplaceVariableStr(
+				str = str .. "#↑ +".. EID:ReplaceVariableStr(voidNames[3], 1, string.format("%.4g", Mod:RoundToClosest(dmg, 2)))
+				str = str .. "#↑ {{Damage}} +".. EID:ReplaceVariableStr(
 					itemExtraEffectsEID.StatsName.TempDmg[leng] or itemExtraEffectsEID.StatsName.TempDmg.en_us,
 					1,
 					string.format("%.4g", Mod:RoundToClosest(tempdmg, 2))

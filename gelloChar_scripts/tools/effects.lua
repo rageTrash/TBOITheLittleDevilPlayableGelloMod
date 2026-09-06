@@ -7,77 +7,70 @@ GelloCharMod.EffectTools = EffectTools
 if not Mod.Repentogon then
 	function EffectTools.AddBaited(ent, entRef, duration)
 		if ent:HasEntityFlags(EntityFlag.FLAG_NO_STATUS_EFFECTS) then return end
-		local d = ent:GetData()["Effects Tools"]
-		d = d or {}
+		local d = Mod:GetEntityData(ent, "Effects Tools", {})
 		d.BaitedEffect = d.BaitedEffect or {}
 		d.BaitedEffect.Duration = (d.BaitedEffect.Duration or 0) + duration
 		d.BaitedEffect.EntityRef = entRef
-		ent:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(ent, "Effects Tools", d)
 	end
 
 	function EffectTools.AddBleeding(ent, entRef, duration)
 		if ent:HasEntityFlags(EntityFlag.FLAG_NO_STATUS_EFFECTS) then return end
-		local d = ent:GetData()["Effects Tools"]
-		d = d or {}
+		local d = Mod:GetEntityData(ent, "Effects Tools", {})
 		d.BleedingEffect = d.BleedingEffect or {}
 		d.BleedingEffect.Duration = (d.BleedingEffect.Duration or 0) + duration
 		d.BleedingEffect.EntityRef = entRef
-		ent:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(ent, "Effects Tools", d)
 	end
 
 	function EffectTools.AddBrimstoneMark(ent, entRef, duration)
 		if ent:HasEntityFlags(EntityFlag.FLAG_NO_STATUS_EFFECTS) then return end
-		local d = ent:GetData()["Effects Tools"]
-		d = d or {}
+		local d = Mod:GetEntityData(ent, "Effects Tools", {})
 		d.BrimMarkEffect = d.BrimMarkEffect or {}
 		d.BrimMarkEffect.Duration = (d.BrimMarkEffect.Duration or 0) + duration
 		d.BrimMarkEffect.EntityRef = entRef
-		ent:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(ent, "Effects Tools", d)
 	end
 
 	local slowColor = Color(1,1,1,1, 0.16, 0.16, 0.2) -- close enough
 	function EffectTools.AddIce(ent, entRef, duration)
 		if ent:HasEntityFlags(EntityFlag.FLAG_NO_STATUS_EFFECTS) then return end
-		local d = ent:GetData()["Effects Tools"]
-		d = d or {}
+		local d = Mod:GetEntityData(ent, "Effects Tools", {})
 		d.IceEffect = d.IceEffect or {}
 		d.IceEffect.Duration = (d.IceEffect.Duration or 0) + duration
 		d.IceEffect.EntityRef = entRef
-		ent:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(ent, "Effects Tools", d)
 
 		ent:AddSlowing(entRef, duration, 0.5, slowColor)
 	end
 
 	function EffectTools.AddKnockback(ent, entRef, pushDir, duration, takeDmgInImpact)
 		if ent:HasEntityFlags(EntityFlag.FLAG_NO_STATUS_EFFECTS) then return end
-		local d = ent:GetData()["Effects Tools"]
-		d = d or {}
+		local d = Mod:GetEntityData(ent, "Effects Tools", {})
 		d.KnockEffect = d.KnockEffect or {}
 		d.KnockEffect.Duration = math.min((d.KnockEffect.Duration or 0) + duration, 15)
 		d.KnockEffect.Push = pushDir
 		d.KnockEffect.TakeDmg = takeDmgInImpact
 		d.KnockEffect.EntityRef = entRef
-		ent:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(ent, "Effects Tools", d)
 	end
 
 	function EffectTools.AddMagnetized(ent, entRef, duration)
 		if ent:HasEntityFlags(EntityFlag.FLAG_NO_STATUS_EFFECTS) then return end
-		local d = ent:GetData()["Effects Tools"]
-		d = d or {}
+		local d = Mod:GetEntityData(ent, "Effects Tools", {})
 		d.MagneEffect = d.MagneEffect or {}
 		d.MagneEffect.Duration = (d.MagneEffect.Duration or 0) + duration
 		d.MagneEffect.EntityRef = entRef
-		ent:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(ent, "Effects Tools", d)
 	end
 
 	function EffectTools.AddWeakness(ent, entRef, duration)
 		if ent:HasEntityFlags(EntityFlag.FLAG_NO_STATUS_EFFECTS) then return end
-		local d = ent:GetData()["Effects Tools"]
-		d = d or {}
+		local d = Mod:GetEntityData(ent, "Effects Tools", {})
 		d.WeakEffect = d.WeakEffect or {}
 		d.WeakEffect.Duration = (d.WeakEffect.Duration or 0) + duration
 		d.WeakEffect.EntityRef = entRef
-		ent:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(ent, "Effects Tools", d)
 	end
 else
 	function EffectTools.AddBaited(ent, entRef, duration)
@@ -111,7 +104,7 @@ end
 
 if not Mod.Repentogon and not EffectTools.Fun then
 	function EffectTools.Fun(_, npc)
-		local d = npc:GetData()["Effects Tools"]
+		local d = Mod:GetEntityData(npc, "Effects Tools", nil)
 		if not d or (d.LastCheckFrame and game:GetFrameCount() == d.LastCheckFrame) then return end
 
 		if d.BaitedEffect then
@@ -186,7 +179,7 @@ if not Mod.Repentogon and not EffectTools.Fun then
 		end
 
 		d.LastCheckFrame = game:GetFrameCount()
-		npc:GetData()["Effects Tools"] = d
+		Mod:SetEntityData(npc, "Effects Tools", d)
 	end
 	Mod:AddCallback(ModCallbacks.MC_NPC_UPDATE, EffectTools.Fun)
 end

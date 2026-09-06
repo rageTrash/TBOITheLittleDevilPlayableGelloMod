@@ -2,8 +2,6 @@ local Mod = GelloCharMod
 local game = Mod.Game
 local sfx = Mod.SFX
 
-local playerSave = Mod.SaveHandler.Player
-
 --local MAX_TEMP_DMG = 300 -- 7.5 dmg
 local MAX_TEMP_DMG = 7.5
 local BITE_RADIUS = 50

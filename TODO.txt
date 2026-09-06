@@ -1,10 +1,5 @@
 
-arreglar "fetal jar" revavis
-arreglar los stats
-
-
 terminar las clases "merchant" de tainted gello
 hacer tarnish gello
 
-
-hacer dad's key consume efecto
+testear "Stitches" consume effect
