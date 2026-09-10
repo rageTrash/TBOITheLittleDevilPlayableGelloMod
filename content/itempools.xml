@@ -9,6 +9,7 @@
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Lil Biter"/>
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Lil Embrion"/>
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Use Placenta"/>
+		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Void Stomach"/>
 	</Pool>
 	<Pool Name="shop">
 		<Item Weight="0.5" DecreaseBy="0.5" RemoveOn="0.05" Name="Lil Hamster"/>
@@ -25,6 +26,7 @@
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Friendly Bite"/>
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Lil Biter"/>
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Lil Cow"/>
+		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Void Stomach"/>
 	</Pool>
 	<Pool Name="angel">
 	</Pool>
@@ -41,6 +43,7 @@
 	<Pool Name="greedTreasure">
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Lil Hamster"/>
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Lil Embrion"/>
+		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Void Stomach"/>
 	</Pool>
 	<Pool Name="greedBoss">
 		<Item Weight="1" DecreaseBy="1" RemoveOn="0.1" Name="Use Placenta"/>
