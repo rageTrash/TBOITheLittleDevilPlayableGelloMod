@@ -1,6 +1,15 @@
-version 2.0
-added total compatibility to repentogon
-reworked gello and tainted gello
+ver 1.32
+fix an item having the wrong information on "encyclopedia"
+added "halo of flies" consume effect (idk how this one got over me)
+
+ver 1.31
+i forgot to put the new item in item pools
+
+version 1.3
+added full repentogon compatibility
+added a new mechanic to gello
+added 1 new unlockable
+fix consumables not having their eid description
 
 version 1.203
 fix achievements not working

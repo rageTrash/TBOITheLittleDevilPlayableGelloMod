@@ -21,6 +21,7 @@ local flysDesc = {en_us = "Spawns 3 to 5 flies", spa = "Genera 3 a 5 moscas"}
 Mod:AddConsumeItemEffect(
     -- blue flies drops
     { Id = CollectibleType.COLLECTIBLE_SKATOLE, Fun = spawnFlys, EID = flysDesc, }
+    ,{ Id = CollectibleType.COLLECTIBLE_HALO_OF_FLIES, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_DISTANT_ADMIRATION, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_FOREVER_ALONE, Fun = spawnFlys, EID = flysDesc, }
     ,{ Id = CollectibleType.COLLECTIBLE_BEST_BUD, Fun = spawnFlys, EID = flysDesc, }

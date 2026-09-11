@@ -1,5 +1,5 @@
 GelloCharMod = RegisterMod("Gello Character", 1)
-GelloCharMod.Version = 1.3
+GelloCharMod.Version = 1.32
 
 
 GelloCharMod.Data = {}

@@ -270,7 +270,7 @@ for itemID, data in pairs({
         Unlock = function() return Mod:IsUnlock("Lil Embrion") end,
         UnlockNote = "Defeate Hush as Gello"
     },
-    [itemEnum.LIL_EMBRION] = {
+    [itemEnum.VOID_STOMACH] = {
         Name = "Void Stomach",
         Desc = {
             {
@@ -285,7 +285,7 @@ for itemID, data in pairs({
                 { str = "On hard mode with with Gello" },
             }
         },
-        Pools = { "Treasure", "TreasureGreed", "ShopGreed", "UltraSecret", "BabyShop" },
+        Pools = { "Treasure", "TreasureGreed", "Devil" },
         Unlock = function() return Mod:IsUnlock("Void Stomach") end,
         UnlockNote = "Get all compleation mark on hard mode with Gello"
     },
